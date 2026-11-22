@@ -105,7 +105,7 @@ h2{font-size:clamp(26px,4.5vw,46px);line-height:1.25;margin:0;font-weight:800;le
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
 .opt{padding:12px 18px;border:0;background:none;color:#fff;font-size:clamp(16px,2vw,22px);font-weight:700;transition:.2s;
   text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.6)}
-.opt:hover{transform:translateY(-3px);text-decoration:underline;text-underline-offset:6px}
+.opt:hover,.opt:focus-visible{outline:0;transform:translateY(-3px);text-decoration:underline;text-underline-offset:6px}
 .opt small{display:block;font-size:13px;font-weight:500;opacity:.7;margin-bottom:4px}
 
 .btn{padding:16px 30px;border-radius:999px;background:var(--fg);color:var(--bg);font-size:18px;font-weight:700;transition:.2s}
