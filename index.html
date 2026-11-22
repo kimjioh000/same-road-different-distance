@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>같은 길, 다른 거리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* 레퍼런스: 밴더스내치(영상 위 선택지), K-Town '92·Bear 71(어두운 화면 + 큰 타이포), 게임 HUD(미션·도착 알림) */
+:root{
+  --bg:#0b0d0e; --fg:#f4f6f5; --muted:#a3adab; --line:rgba(255,255,255,.14);
+  --teal:#3fb8b0; --teal-dim:rgba(63,184,176,.16);
+  --orange:#ff8a3d; --orange-dim:rgba(255,138,61,.16); --red:#ff4d4d;
+  --font:"Pretendard",-apple-system,"Apple SD Gothic Neo",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--font);overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+#stage{position:fixed;inset:0}
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;transition:filter .5s}
+#stage.dim video{filter:brightness(.35) blur(2px)}
+
+/* HUD: 위쪽 띠 */
+.hud{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:14px 20px;
+  background:linear-gradient(rgba(0,0,0,.7),transparent);z-index:3;pointer-events:none}
+.rec{font-size:12px;font-weight:700;letter-spacing:.12em;display:flex;align-items:center;gap:6px}
+.rec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.2}}
+.who{font-size:12px;font-weight:700;padding:4px 10px;background:#fff;color:#111;border:1px solid #000;box-shadow:inset 4px 0 0 var(--teal);padding-left:14px}
+.who.wheel{box-shadow:inset 4px 0 0 var(--orange)}
+.tt{display:flex;gap:6px;margin-left:auto}
+.tt div{font-size:11px;padding:4px 9px;color:#666;border:1px solid #000;background:rgba(255,255,255,.75);white-space:nowrap}
+.tt div b{font-weight:700;margin-right:4px;color:#111}
+.tt div.now{background:#fff;color:#111;box-shadow:inset 0 -3px 0 #111}
+.tt div.done{text-decoration:line-through;opacity:.5}
+.hidehud .hud{opacity:0}
+
+/* 자막: 영화 자막처럼 아래 가운데 */
+#sub{position:absolute;left:50%;bottom:12%;transform:translate(-50%,8px);opacity:0;z-index:4;pointer-events:none;
+  max-width:min(900px,calc(100% - 32px));text-align:center;transition:opacity .3s,transform .3s}
+#sub.show{opacity:1;transform:translate(-50%,0)}
+#sub span{display:inline-block;font-size:clamp(13px,1.3vw,16px);font-weight:600;line-height:1.5;padding:7px 16px;
+  background:#fff;color:#111;border:1px solid #000}
+#sub.good span{box-shadow:inset 4px 0 0 var(--teal)}
+#sub.late span{box-shadow:inset 4px 0 0 var(--red);color:var(--red)}
+/* 위치 자막: 왼쪽 위 장소 표시 */
+#loc{position:absolute;left:20px;top:104px;z-index:4;pointer-events:none;display:flex;align-items:stretch;
+  opacity:0;transform:translateX(-10px);transition:.4s}
+#loc.show{opacity:1;transform:none}
+#loc i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.08em;background:#111;color:#fff;
+  padding:5px 9px;border:1px solid #000;display:flex;align-items:center}
+.wheelside #loc i{background:var(--orange);color:#111}
+#loc b{font-size:12px;font-weight:600;padding:5px 11px;background:#fff;color:#111;border:1px solid #000;border-left:0}
+/* 시계: 오른쪽 위 디지털시계 */
+#clock{position:absolute;right:20px;top:58px;z-index:4;pointer-events:none;background:#fff;color:#111;border:1px solid #000;
+  padding:6px 12px;text-align:right;min-width:132px;transition:transform .2s}
+#clock[hidden]{display:none}
+#clock .t{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1.1}
+#clock .r{font-size:11px;font-weight:600;color:#555;font-variant-numeric:tabular-nums;margin-top:2px}
+#clock.alert{animation:tick .5s 4}
+@keyframes tick{50%{transform:scale(1.08)}}
+#clock.warn{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange)}
+#clock.warn .r{color:#c25a12}
+#clock.panic{border-color:var(--red);box-shadow:0 0 0 2px var(--red);animation:panic 1s infinite}
+#clock.panic .r,#clock.late .r{color:var(--red)}
+#clock.late{background:var(--red);color:#fff;border-color:#000}
+#clock.late .r{color:#fff}
+@keyframes panic{50%{box-shadow:0 0 0 5px rgba(255,77,77,.35)}}
+
+/* 하단 재생바: 마우스를 움직이면 나타남 */
+.ctrl{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:40px 20px 16px;display:grid;gap:10px;
+  background:linear-gradient(transparent,rgba(0,0,0,.8));opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}
+#stage.showctl .ctrl{opacity:1;transform:none;pointer-events:auto}
+.ctrl .row2{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
+.ctrl .row2 b{color:var(--fg);margin-right:6px}
+.ctrl .sp{flex:1}
+.ctrl button{font-size:12px;padding:5px 11px;background:#fff;border:1px solid #000;color:#111}
+.ctrl button:hover{background:#111;color:#fff}
+.time{font-variant-numeric:tabular-nums}
+#seek{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:999px;cursor:pointer;margin:0;
+  background:linear-gradient(to right,var(--fg) var(--p,0%),rgba(255,255,255,.25) var(--p,0%))}
+#seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--fg);border:0}
+#seek::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--fg);border:0}
+.wheelside #seek{background:linear-gradient(to right,var(--orange) var(--p,0%),rgba(255,255,255,.25) var(--p,0%))}
+
+/* 뒤로가기 */
+#back{position:absolute;left:20px;top:58px;z-index:6;font-size:12px;font-weight:600;padding:6px 12px;
+  background:#fff;border:1px solid #000;color:#111}
+#back:hover{background:#111;color:#fff}
+
+/* 오버레이: 선택지·카드·실패·결과 */
+#ov{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:80px 20px 40px}
+#ov.on{display:flex}
+#ov.solid{background:var(--bg)}
+.panel{width:min(760px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .5s ease both}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--teal)}
+.wheelside .kicker{color:var(--orange)}
+h1{font-size:clamp(40px,8vw,84px);line-height:1.1;margin:0;font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(26px,4.5vw,46px);line-height:1.25;margin:0;font-weight:800;letter-spacing:-.01em}
+.lead{margin:0;color:var(--muted);font-size:clamp(15px,1.8vw,18px);line-height:1.75}
+
+/* 선택지: 밴더스내치처럼 화면 아래쪽에 두 개 */
+#ov.choice{align-items:flex-end;background:linear-gradient(transparent 40%,rgba(0,0,0,.6))}
+#ov.choice h2{font-size:clamp(16px,2vw,22px);background:#fff;color:#111;border:1px solid #000;padding:8px 18px}
+#ov.choice .kicker{background:#111;color:#fff;padding:3px 10px;font-size:11px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.opt{padding:16px 18px;border:1px solid #000;background:#fff;color:#111;font-size:clamp(14px,1.6vw,18px);font-weight:700;transition:.2s}
+.opt:hover{background:#111;color:#fff;transform:translateY(-3px)}
+.opt small{display:block;font-size:13px;font-weight:500;opacity:.7;margin-bottom:4px}
+
+.btn{padding:16px 30px;border-radius:999px;background:var(--fg);color:var(--bg);font-size:18px;font-weight:700;transition:.2s}
+.btn:hover{transform:scale(1.04)}
+.btn.orange{background:var(--orange);color:#1a0d03}
+.btn.ghost{background:none;color:var(--fg);border:1px solid var(--line)}
+
+/* 실패 화면 */
+.fail{animation:shake .45s both}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+.stamp{font-size:clamp(56px,11vw,120px);font-weight:900;color:var(--red);line-height:1;letter-spacing:-.03em;
+  border:6px solid var(--red);padding:4px 28px;border-radius:12px;transform:rotate(-6deg)}
+#ov.failbg{background:radial-gradient(circle,rgba(120,10,10,.55),rgba(0,0,0,.9))}
+
+/* 교시 종료 카드 */
+.bell{font-size:15px;color:var(--muted)}
+.timeline{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
+.timeline span{padding:6px 12px;border-radius:999px;border:1px solid var(--line)}
+.timeline span.ok{border-color:var(--teal);color:var(--teal)}
+
+/* 결과 비교 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;text-align:left}
+.col{border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;align-content:start;background:rgba(255,255,255,.03)}
+.col h3{margin:0;font-size:17px}
+.col.walk h3{color:var(--teal)}.col.wheel h3{color:var(--orange)}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.nums div{font-size:12px;color:var(--muted)}
+.nums b{display:block;font-size:24px;color:var(--fg);font-variant-numeric:tabular-nums}
+.col ol{margin:0;padding-left:18px;font-size:14px;color:var(--muted);display:grid;gap:4px;max-height:30vh;overflow:auto}
+.col ol li.x{color:var(--red)}
+.note{font-size:13px;color:var(--muted);margin:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#ov.scroll{overflow:auto;align-items:flex-start}
+
+@media (max-width:640px){
+  .tt{display:none}.choices,.compare{grid-template-columns:1fr}
+  .ctrl .cap{display:none}
+}
+</style>
+</head>
+<body>
+<div id="stage" class="hidehud">
+  <video id="v" playsinline muted preload="auto"></video>
+  <div class="hud">
+    <span class="rec">POV</span>
+    <span class="who" id="who">비장애 학생</span>
+    <div class="tt" id="tt">
+      <div data-p="1"><b>1교시</b>미디어관</div>
+      <div data-p="2"><b>2교시</b>교양관</div>
+      <div data-p="3"><b>3교시</b>국제관</div>
+    </div>
+  </div>
+  <div id="loc"><i></i><b></b></div>
+  <div id="sub"><span></span></div>
+  <div id="clock" hidden><div class="t">09:21</div><div class="r"></div></div>
+  <div class="ctrl" id="ctrl" hidden>
+    <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
+    <div class="row2">
+      <button id="pp" aria-label="재생/정지">❚❚</button>
+      <span class="time" id="time">0:00 / 0:00</span>
+      <span class="cap" id="cap"></span>
+      <span class="sp"></span>
+      <button id="skip">건너뛰기 ▶▶</button>
+    </div>
+  </div>
+  <div id="ov"></div>
+  <button id="back" hidden>← 뒤로</button>
+</div>
+
+<script src="flow.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const stage = $('#stage'), v = $('#v'), ov = $('#ov'), subEl = $('#sub'), locEl = $('#loc'), skip = $('#skip'), cap = $('#cap'), ctrl = $('#ctrl'), seek = $('#seek');
+const blank = () => ({path:[], secs:0, blocked:0, choices:0, arrived:{}});
+let log = {walk:blank(), wheel:blank()}, side = 'walk', cur = null;
+let SUBS = {};  // subs.json: 영상별 자막(cues)·위치 자막(loc), 선택지·카드 문구
+const S = id => SUBS[id] || {};
+const label = id => S(id).loc ?? G[id].label;
+
+// ── 시계: 영상 속 시각 = 이 화면에 들어올 때 시각 + 원본 촬영 기준으로 흐른 시간
+let TM = {}, clk = 0, clkBase = 0;
+const toSec = s => { const [h, m, x] = s.split(':').map(Number); return h*3600 + m*60 + (x || 0); };
+const p2 = n => String(n).padStart(2, '0');
+function origAt(id, t){  // 영상 t초 → 원본에서 흐른 초 (timemap 꺾은선 보간)
+  const k = TM[id]; if (!k) return t;
+  for (let i = 1; i < k.length; i++) if (t <= k[i][0]){ const [a0, b0] = k[i-1], [a1, b1] = k[i]; return b0 + (b1-b0) * (t-a0) / ((a1-a0) || 1); }
+  return k[k.length-1][1];
+}
+let lastMin = -1;
+function drawClock(p, hurry){
+  const el = $('#clock'); if (!p){ el.hidden = true; return; }
+  el.hidden = false;
+  const s = Math.floor(clk);
+  el.querySelector('.t').textContent = `${p2(Math.floor(s/3600))}:${p2(Math.floor(s%3600/60))}:${p2(s%60)}`;
+  const st = toSec(CLOCK.cls[p][0]), left = st - s;
+  const r = el.querySelector('.r');
+  const arrived = log[side].arrived?.[p];
+  if (arrived != null){ r.textContent = arrived > st ? `${p}교시 지각 +${fmt(arrived - st)}` : `${p}교시 ${CLOCK.cls[p][0]} 시작 · 도착`; }
+  else r.textContent = left >= 0 ? `${p}교시 ${CLOCK.cls[p][0]} 시작 · ${fmt(left)} 남음` : `${p}교시 지각 +${fmt(-left)}`;
+  // 휠체어 시점: 남은 시간이 줄수록 시계가 점점 급해짐 / 비장애 시점: 커피 고를 때만 힐끗
+  let cls = '';
+  if (s > st && (arrived == null || arrived > st)) cls = 'late';
+  else if (arrived == null && side === 'wheel') cls = left < 180 ? 'panic' : left < 600 ? 'warn' : '';
+  const m = Math.floor(s / 60);
+  if ((hurry || (side === 'wheel' && arrived == null && m !== lastMin && lastMin >= 0)) && !el.classList.contains('alert')){
+    cls += ' alert'; setTimeout(() => el.classList.remove('alert'), 2000);
+  } else if (el.classList.contains('alert')) cls += ' alert';
+  lastMin = m;
+  el.className = cls.trim();
+}
+
+// 지금 재생 위치에 맞는 자막 보여주기
+function renderSub(){
+  const cues = S(cur).cues || [];
+  const c = cues.find(c => v.currentTime >= c.t && v.currentTime < c.t + c.d);
+  if (c){ subEl.querySelector('span').textContent = c.text; subEl.className = 'show' + (c.text.startsWith('✅') ? ' good' : c.text.startsWith('⏰') ? ' late' : ''); }
+  else subEl.className = '';
+  return c;
+}
+function period(p, ended){
+  document.querySelectorAll('#tt div').forEach(d => {
+    const n = +d.dataset.p;
+    d.className = n < p || (n === p && ended) ? 'done' : n === p ? 'now' : '';
+  });
+}
+function setSide(s){
+  side = s;
+  $('#who').textContent = s === 'walk' ? '비장애 학생' : '휠체어 이용 학생';
+  $('#who').className = 'who' + (s === 'wheel' ? ' wheel' : '');
+  stage.classList.toggle('wheelside', s === 'wheel');
+}
+// 오버레이 띄우기. mode: solid(검은 배경) / choice(영상 위) / failbg / scroll
+function show(html, mode){
+  ov.className = 'on ' + (mode || '');
+  ov.innerHTML = html;
+  stage.classList.toggle('dim', mode !== 'solid');
+  const b = ov.querySelector('button'); b && b.focus({preventScroll:true});
+}
+function hide(){ ov.className = ''; ov.innerHTML = ''; stage.classList.remove('dim'); }
+const fmt = s => `${Math.floor(s/60)}:${String(Math.round(s%60)).padStart(2,'0')}`;
+
+// 뒤로가기: 지나온 화면과 그때의 기록을 쌓아 둠
+let hist = [], failing = false;
+const clone = o => JSON.parse(JSON.stringify(o));
+let entry = null;  // 지금 화면에 들어오기 직전의 상태
+function nav(id){ hist.push(entry); go(id); }
+function back(){
+  if (failing) return go(cur);            // 실패 화면에서는 같은 선택지로
+  const h = hist.pop(); if (!h) return;
+  v.pause(); log = h.log; clk = h.clk; setSide(h.side); go(h.id);
+}
+$('#back').onclick = back;
+
+function go(id){
+  entry = {id, side, log:clone(log), clk};
+  const n = G[id]; cur = id; failing = false;
+  ctrl.hidden = true; cap.innerHTML = ''; subEl.className = ''; locEl.className = '';
+  $('#back').hidden = id === 'start' || !hist.length;
+  if (n && n.p) period(n.p, n.t === 'card');
+  if (n && n.t === 'card') clk = Math.max(clk, toSec(CLOCK.cls[n.p][1]));   // 수업 끝나는 시각
+  clkBase = clk; lastMin = -1;
+  drawClock(n && n.p);
+
+  if (id === 'start') return start();
+  if (id === 'switch') return toWheel();
+  if (id === 'result') return result();
+
+  if (n.t === 'video'){
+    hide(); stage.classList.remove('hidehud');
+    v.src = `videos/${n.src}.mp4`;
+    // 브라우저가 자동재생을 막으면 재생 버튼을 띄움
+    v.play().catch(() => {
+      show(`<div class="panel"><button class="btn" id="b">▶ 재생</button></div>`, 'choice');
+      $('#b').onclick = () => { hide(); v.play(); };
+    });
+    log[side].path.push(label(id));
+    cap.innerHTML = `<b>${n.p}교시</b>${label(id)}`;
+    locEl.querySelector('i').textContent = `${n.p}교시`;
+    locEl.querySelector('b').textContent = label(id);
+    setTimeout(() => cur === id && (locEl.className = 'show'), 300);
+    ctrl.hidden = false;
+  }
+
+  else if (n.t === 'choice'){
+    show(`<div class="panel"><div class="kicker">CHOICE</div><h2>${S(id).q ?? n.q}</h2>
+      <div class="choices">${n.opts.map(([l], i) => `<button class="opt" data-i="${i}"><small>${'AB'[i]}</small>${S(id).opts?.[i] ?? l}</button>`).join('')}</div></div>`, 'choice');
+    ov.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      const [l, to] = n.opts[b.dataset.i];
+      log[side].choices++;
+      if (to === 'X') fail(id, l); else nav(to);
+    });
+  }
+
+  else if (n.t === 'card'){
+    const names = ['미디어관','교양관','국제관'];
+    show(`<div class="panel"><div class="bell">🔔 수업 종료</div><h2>${S(id).title ?? n.title}</h2>
+      <div class="timeline">${names.map((x, i) => `<span class="${i < n.p ? 'ok' : ''}">${i + 1}교시 ${x}${i < n.p ? ' ✓' : ''}</span>`).join('')}</div>
+      <p class="lead">${S(id).sub ?? n.sub}</p><button class="btn" id="b">다음 수업으로 →</button></div>`, 'solid');
+    $('#b').onclick = () => nav(n.next);
+  }
+}
+
+// 영상 끝나기 3초 전 도착 멘트, 끝나면 다음으로
+v.ontimeupdate = () => {
+  const n = G[cur];
+  if (!n || n.t !== 'video' || !v.duration) return;
+  const end = n.stop || v.duration;
+  const c = renderSub();
+  clk = clkBase + origAt(cur, v.currentTime);
+  drawClock(n.p, c && /커피|늦/.test(c.text));
+  if (!dragging){ seek.value = v.currentTime / end * 1000; }
+  seek.style.setProperty('--p', seek.value / 10 + '%');
+  $('#time').textContent = `${fmt(v.currentTime)} / ${fmt(end)}`;
+  if (n.stop && v.currentTime >= n.stop) finish();
+};
+function finish(){
+  const n = G[cur]; if (!n || n.t !== 'video') return; v.pause(); log[side].secs += n.stop || v.duration || 0;
+  clk = clkBase + origAt(cur, n.stop || v.duration || 1e9);
+  if (G[n.next]?.t === 'card') log[side].arrived[n.p] = Math.floor(clk);   // 강의실 도착 시각
+  nav(n.next);
+}
+v.onended = finish;
+skip.onclick = finish;
+
+// 재생바 조작
+let dragging = false, ctlTimer;
+seek.oninput = () => {
+  dragging = true;
+  const end = G[cur]?.stop || v.duration || 0;
+  v.currentTime = seek.value / 1000 * end;
+  seek.style.setProperty('--p', seek.value / 10 + '%');
+};
+seek.onchange = () => { dragging = false; };
+$('#pp').onclick = () => v.paused ? v.play() : v.pause();
+v.onplay = () => $('#pp').textContent = '❚❚';
+v.onpause = () => $('#pp').textContent = '▶';
+// 마우스를 움직이면 재생바가 나오고, 2.5초 가만히 있으면 숨김
+stage.addEventListener('mousemove', () => {
+  stage.classList.add('showctl');
+  clearTimeout(ctlTimer);
+  ctlTimer = setTimeout(() => { if (!ctrl.matches(':hover')) stage.classList.remove('showctl'); }, 2500);
+});
+stage.addEventListener('mouseleave', () => stage.classList.remove('showctl'));
+
+function fail(back, label){
+  log[side].blocked++;
+  log[side].path.push(`✕ ${label} — 이동 불가`);
+  failing = true; $('#back').hidden = false;
+  show(`<div class="panel fail"><div class="stamp">실패!</div>
+    <h2>계단이다.<br>휠체어로는 지나갈 수 없어.</h2>
+    <p class="lead">아까는 아무 생각 없이 고를 수 있던 길이야.</p>
+    <button class="btn orange" id="b">↺ 다른 길 찾기</button></div>`, 'failbg');
+  $('#b').onclick = () => go(back);
+}
+
+function start(){
+  setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
+  log = {walk:blank(), wheel:blank()};
+  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · 인터랙티브 다큐멘터리</div>
+    <h1>같은 길,<br>다른 거리</h1>
+    <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b> 수업을 들으러 가.<br>갈림길이 나오면 어느 길로 갈지 직접 골라 줘.</p>
+    <button class="btn" id="b">▶ 오늘의 시간표 시작</button>
+    </div>`, 'solid');
+  $('#b').onclick = () => nav('w01');
+}
+
+function toWheel(){
+  period(4);
+  show(`<div class="panel"><div class="kicker">MISSION COMPLETE</div><h2>오늘의 시간표 완료!</h2>
+    <p class="lead">고민한 건 엘리베이터냐 계단이냐 정도였어.<br>이번엔 <b>똑같은 시간표</b>를 <b>휠체어를 타고</b> 다시 가 볼게.</p>
+    <button class="btn orange" id="b">휠체어 이용 학생의 시점으로 이동하기 →</button></div>`, 'solid');
+  $('#b').onclick = () => { hist.push(entry); setSide('wheel'); clk = toSec(CLOCK.depart[1]); go('h01'); };
+}
+
+function result(){
+  period(4); stage.classList.add('hidehud');
+  const col = (k, name) => { const r = log[k]; return `<div class="col ${k}"><h3>${name}</h3>
+    <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
+    <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
+    <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p}</li>`).join('')}</ol></div>`; };
+  show(`<div class="panel"><div class="kicker" style="color:var(--fg)">MISSION CLEAR · 두 이동 비교</div>
+    <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
+    <div class="compare">${col('walk','비장애 학생')}${col('wheel','휠체어 이용 학생')}</div>
+    <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
+    <div class="row"><button class="btn" id="b">처음부터 다시</button></div></div>`, 'solid scroll');
+  $('#b').onclick = () => { hist = []; go('start'); };
+}
+
+// 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로
+document.addEventListener('keydown', e => {
+  if (e.code === 'Backspace' && !$('#back').hidden){ e.preventDefault(); return back(); }
+  if (G[cur]?.t !== 'video' || ov.classList.contains('on')) return;
+  if (e.code === 'Space'){ e.preventDefault(); v.paused ? v.play() : v.pause(); }
+  if (e.code === 'ArrowRight') finish();
+});
+
+// subs.json을 읽고 시작 (못 읽으면 flow.js 기본 문구로)
+Promise.all([
+  fetch('subs.json', {cache:'no-store'}).then(r => r.json()).then(d => SUBS = d).catch(() => {}),
+  fetch('timemap.json', {cache:'no-store'}).then(r => r.json()).then(d => TM = d).catch(() => {}),
+]).finally(() => go('start'));
+</script>
+</body>
+</html>
