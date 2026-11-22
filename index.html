@@ -28,12 +28,13 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 .rec{font-size:12px;font-weight:700;letter-spacing:.12em;display:flex;align-items:center;gap:6px}
 .rec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite}
 @keyframes blink{50%{opacity:.2}}
-.who{font-size:12px;font-weight:700;padding:4px 10px;background:#fff;color:#111;border:1px solid #000;box-shadow:inset 4px 0 0 var(--teal);padding-left:14px}
-.who.wheel{box-shadow:inset 4px 0 0 var(--orange)}
+.who{font-size:12px;font-weight:700;color:var(--teal);text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+.who.wheel{color:var(--orange)}
 .tt{display:flex;gap:6px;margin-left:auto}
-.tt div{font-size:11px;padding:4px 9px;color:#666;border:1px solid #000;background:rgba(255,255,255,.75);white-space:nowrap}
-.tt div b{font-weight:700;margin-right:4px;color:#111}
-.tt div.now{background:#fff;color:#111;box-shadow:inset 0 -3px 0 #111}
+.tt{gap:14px}
+.tt div{font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+.tt div b{font-weight:700;margin-right:4px}
+.tt div.now{color:#fff;font-weight:600}
 .tt div.done{text-decoration:line-through;opacity:.5}
 .hidehud .hud{opacity:0}
 
@@ -49,25 +50,21 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 #loc{position:absolute;left:20px;top:104px;z-index:4;pointer-events:none;display:flex;align-items:stretch;
   opacity:0;transform:translateX(-10px);transition:.4s}
 #loc.show{opacity:1;transform:none}
-#loc i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.08em;background:#111;color:#fff;
-  padding:5px 9px;border:1px solid #000;display:flex;align-items:center}
-.wheelside #loc i{background:var(--orange);color:#111}
-#loc b{font-size:12px;font-weight:600;padding:5px 11px;background:#fff;color:#111;border:1px solid #000;border-left:0}
+#loc{gap:8px;align-items:baseline}
+#loc i{font-style:normal;font-size:12px;font-weight:700;color:var(--teal);text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+.wheelside #loc i{color:var(--orange)}
+#loc b{font-size:13px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
 /* 시계: 오른쪽 위 디지털시계 */
-#clock{position:absolute;right:20px;top:58px;z-index:4;pointer-events:none;background:#fff;color:#111;border:1px solid #000;
-  padding:6px 12px;text-align:right;min-width:132px;transition:transform .2s}
+#clock{position:absolute;right:20px;top:54px;z-index:4;pointer-events:none;color:#fff;text-align:right;transition:transform .2s;transform-origin:right top;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
 #clock[hidden]{display:none}
 #clock .t{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1.1}
-#clock .r{font-size:11px;font-weight:600;color:#555;font-variant-numeric:tabular-nums;margin-top:2px}
+#clock .r{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);font-variant-numeric:tabular-nums;margin-top:2px}
 #clock.alert{animation:tick .5s 4}
 @keyframes tick{50%{transform:scale(1.08)}}
-#clock.warn{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange)}
-#clock.warn .r{color:#c25a12}
-#clock.panic{border-color:var(--red);box-shadow:0 0 0 2px var(--red);animation:panic 1s infinite}
-#clock.panic .r,#clock.late .r{color:var(--red)}
-#clock.late{background:var(--red);color:#fff;border-color:#000}
-#clock.late .r{color:#fff}
-@keyframes panic{50%{box-shadow:0 0 0 5px rgba(255,77,77,.35)}}
+#clock.warn,#clock.warn .r{color:var(--orange)}
+#clock.panic,#clock.panic .r{color:var(--red);animation:panic 1s infinite}
+#clock.late,#clock.late .r{color:var(--red)}
+@keyframes panic{50%{opacity:.45}}
 
 /* 하단 재생바: 마우스를 움직이면 나타남 */
 .ctrl{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:40px 20px 16px;display:grid;gap:10px;
@@ -76,8 +73,8 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 .ctrl .row2{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
 .ctrl .row2 b{color:var(--fg);margin-right:6px}
 .ctrl .sp{flex:1}
-.ctrl button{font-size:12px;padding:5px 11px;background:#fff;border:1px solid #000;color:#111}
-.ctrl button:hover{background:#111;color:#fff}
+.ctrl button{font-size:12px;padding:5px 11px;background:none;border:1px solid rgba(255,255,255,.4);color:#fff}
+.ctrl button:hover{background:rgba(255,255,255,.2)}
 .time{font-variant-numeric:tabular-nums}
 #seek{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:999px;cursor:pointer;margin:0;
   background:linear-gradient(to right,var(--fg) var(--p,0%),rgba(255,255,255,.25) var(--p,0%))}
@@ -86,9 +83,8 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 .wheelside #seek{background:linear-gradient(to right,var(--orange) var(--p,0%),rgba(255,255,255,.25) var(--p,0%))}
 
 /* 뒤로가기 */
-#back{position:absolute;left:20px;top:58px;z-index:6;font-size:12px;font-weight:600;padding:6px 12px;
-  background:#fff;border:1px solid #000;color:#111}
-#back:hover{background:#111;color:#fff}
+#back{position:absolute;left:20px;top:58px;z-index:6;font-size:12px;font-weight:600;padding:4px 0;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+#back:hover{color:#fff;text-decoration:underline}
 
 /* 오버레이: 선택지·카드·실패·결과 */
 #ov{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:80px 20px 40px}
@@ -104,11 +100,12 @@ h2{font-size:clamp(26px,4.5vw,46px);line-height:1.25;margin:0;font-weight:800;le
 
 /* 선택지: 밴더스내치처럼 화면 아래쪽에 두 개 */
 #ov.choice{align-items:flex-end;background:linear-gradient(transparent 40%,rgba(0,0,0,.6))}
-#ov.choice h2{font-size:clamp(16px,2vw,22px);background:#fff;color:#111;border:1px solid #000;padding:8px 18px}
-#ov.choice .kicker{background:#111;color:#fff;padding:3px 10px;font-size:11px}
+#ov.choice h2{font-size:clamp(18px,2.4vw,26px);text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+#ov.choice .kicker{font-size:11px}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
-.opt{padding:16px 18px;border:1px solid #000;background:#fff;color:#111;font-size:clamp(14px,1.6vw,18px);font-weight:700;transition:.2s}
-.opt:hover{background:#111;color:#fff;transform:translateY(-3px)}
+.opt{padding:12px 18px;border:0;background:none;color:#fff;font-size:clamp(16px,2vw,22px);font-weight:700;transition:.2s;
+  text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.6)}
+.opt:hover{transform:translateY(-3px);text-decoration:underline;text-underline-offset:6px}
 .opt small{display:block;font-size:13px;font-weight:500;opacity:.7;margin-bottom:4px}
 
 .btn{padding:16px 30px;border-radius:999px;background:var(--fg);color:var(--bg);font-size:18px;font-weight:700;transition:.2s}
