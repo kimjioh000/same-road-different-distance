@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>자막 수정실</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.39.2/dist/galmuri.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css">
 <style>
 /* 자막 수정용 화면: 왼쪽 장면 목록 / 가운데 영상+타임라인 / 오른쪽 자막 편집 */
 :root{
@@ -47,10 +47,10 @@ video{width:100%;height:100%;object-fit:contain;display:block}
 /* 본편과 같은 자막·위치 자막 모양(미리보기) */
 #sub{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);text-align:center;max-width:calc(100% - 32px);pointer-events:none;display:none}
 /* 미리보기: 본편과 같은 픽셀 대화창 */
-#sub,#loc{font-family:"Galmuri11",var(--font);-webkit-font-smoothing:none}
+#sub,#loc{font-family:"NeoDunggeunmo",var(--font)}
 #sub{text-align:left}
-#sub span{position:relative;display:block;font-size:clamp(12px,1.05vw,15px);font-weight:700;line-height:1.6;padding:7px 30px 7px 14px;background:#fff;color:#1b1b1b;
-  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -3px 0 0 #d8d8d8,3px 6px 0 0 rgba(0,0,0,.35)}
+#sub span{position:relative;display:block;font-size:clamp(12px,1.05vw,15px);font-weight:700;line-height:1.6;padding:7px 30px 7px 14px;background:#fff;color:#2a2140;
+  box-shadow:0 -3px 0 0 #2a2140,0 3px 0 0 #2a2140,-3px 0 0 0 #2a2140,3px 0 0 0 #2a2140,inset 0 -3px 0 0 rgba(42,33,64,.15),3px 6px 0 0 rgba(0,0,0,.35)}
 #sub span::after{content:"▼";position:absolute;right:10px;bottom:5px;font-size:9px}
 #sub.late span{color:#d42020}
 #loc{position:absolute;left:14px;top:14px;display:flex;pointer-events:none}
