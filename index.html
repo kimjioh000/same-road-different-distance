@@ -662,7 +662,7 @@ function go(id){
   setTimeout(() => cur === id && warm(id === 'start' || id === 'tutorial' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
   // 음악: 걷기 쪽은 타이틀 곡이 영상 내내 이어지고, 반전 화면은 조용히 → 공개 순간부터 휠체어 쪽 내내 반전 곡
   const track = trackFor(id);
-  BGM.duck(n && n.t === 'video');
+  BGM.duck(!['start', 'tutorial', 'switch', 'result'].includes(id));   // 첫 화면·전환 화면에서만 크게
   if (track) BGM.on(track); else BGM.off();
   if (id === 'start') return start();
   if (id === 'tutorial') return tutorial();

@@ -19,7 +19,7 @@ const G = {
   w11:{t:'video', src:'walk/11', p:3, label:'국제관 강의실', next:'wE3'},
   wE3:{t:'card', p:3, title:'3교시 끝', sub:'오늘 수업 끝!', next:'switch'},
   // ── 2부: 휠체어 이용 학생 ──
-  h01:{t:'video', src:'wheel/01', p:1, label:'안암역 → 갈림길', next:'hQ1'},
+  h01:{t:'video', src:'wheel/01', p:1, label:'안암역 → 갈림길', next:'hQ1', stop:26.3},   // 갈림길 자막 뒤 3초 일찍 끊고 바로 선택지
   hQ1:{t:'choice', p:1, q:'미디어관으로 가는 길, 어디로 갈까?', opts:[['1층 입구 쪽','h02'],['정후 쪽','h03']]},
   h02:{t:'video', src:'wheel/02', p:1, label:'1층 입구 → 미디어관 1층', next:'hE1'},
   h03:{t:'video', src:'wheel/03', p:1, label:'정후 → 미디어관 2층', next:'hQ2'},
