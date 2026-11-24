@@ -301,23 +301,27 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
   --il:.0755;--it:.1213;--iw:.8479;--ih:.7787}
 #stage video,#stage #px{inset:auto;transform:none;left:calc(var(--fx) + var(--fw) * (var(--il) - .004));top:calc(var(--fy) + var(--fh) * (var(--it) - .006));
   width:calc(var(--fw) * (var(--iw) + .008));height:calc(var(--fh) * (var(--ih) + .012));object-fit:cover;background:#000}
-#frame{position:absolute;left:var(--fx);top:var(--fy);width:var(--fw);height:var(--fh);background:url(art/ingame_frame.png) 0 0/100% 100% no-repeat;z-index:2;pointer-events:none;
-  filter:drop-shadow(0 8px 0 rgba(46,44,61,.55)) drop-shadow(0 0 16px rgba(10,20,50,.55))}   /* 바깥 그림자로 배경과 구분 */
+#frame,#frameShadow{position:absolute;left:var(--fx);top:var(--fy);width:var(--fw);height:var(--fh);background:url(art/ingame_frame.png) 0 0/100% 100% no-repeat;pointer-events:none}
+#frame{z-index:2}
+/* 바깥 그림자만: 그림자 층을 영상 아래에 깔아서 안쪽 그림자는 영상에 가려짐 */
+#frameShadow{z-index:0;filter:drop-shadow(0 8px 0 rgba(46,44,61,.55)) drop-shadow(0 0 16px rgba(10,20,50,.55))}
+#stage video,#stage #px{z-index:1}
 .hud{display:none}
 /* 시계·위치: 틀 안쪽 위 모서리, 어두운 상자 + 하얀 테두리 */
 /* 장소·시계: 하늘색 강철 판 (안암런/인게임 버튼.png의 테두리를 잘라 9조각 테두리로) */
 #clock,#loc{background:#a2c1d5;background-clip:padding-box;color:#2b3f55;text-shadow:none;border-radius:0;box-shadow:none;
-  border-style:solid;border-width:12px 15px 18px 17px;border-image:url(art/plate.png) 56 67 80 76 round;
+  border-style:solid;border-width:9px 11px 13px 12px;border-image:url(art/plate.png) 56 67 80 76 round;
   filter:drop-shadow(0 4px 0 rgba(30,45,70,.35))}
-#clock{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);right:calc(var(--fx) + var(--fw) * (1 - var(--il) - var(--iw)) + 12px);padding:2px 6px 0}
-#loc{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);left:calc(var(--fx) + var(--fw) * var(--il) + 12px);padding:2px 8px 0;align-items:center}
-#clock .t{font-size:clamp(24px,2.6vw,34px)}
+#clock{top:calc(var(--fy) + var(--fh) * var(--it) + 26px);right:calc(var(--fx) + var(--fw) * (1 - var(--il) - var(--iw)) + 28px);padding:1px 4px 0}
+#loc{top:calc(var(--fy) + var(--fh) * var(--it) + 26px);left:calc(var(--fx) + var(--fw) * var(--il) + 28px);padding:1px 6px 0;align-items:center}
+#clock .t{font-size:clamp(18px,1.9vw,25px)}
 #clock .t{color:#2b3f55;text-align:center}
-#clock .r{color:#2b3f55;font-size:13px;margin-top:2px}
+#clock .r{color:#2b3f55;font-size:11px;margin-top:1px}
 #clock{text-align:center}
 #clock.warn .t,#clock.warn .r{color:#b8621b}
 #clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#c62828}
-#loc b{color:#2b3f55;border-left:3px solid #4b6a87;padding-left:12px}#loc i{color:#2f7a3a}.wheelside #loc i{color:#b3261e}
+#loc b{color:#2b3f55;border-left:2px solid #4b6a87;padding-left:9px;font-size:clamp(13px,1.3vw,16px)}
+#loc i{font-size:clamp(12px,1.2vw,14px)!important}#loc i{color:#2f7a3a}.wheelside #loc i{color:#b3261e}
 /* 대화창: 튜토리얼과 같은 하얀 창, 틀 아래쪽에 살짝 겹쳐서 */
 #sub{left:calc(var(--fx) + var(--fw) * .06);width:calc(var(--fw) * .88);max-width:none;top:calc(var(--fy) + var(--fh) * .885);bottom:auto;
   transform:translateY(30px);transition:opacity .2s steps(3),transform .25s steps(4)}
@@ -346,6 +350,7 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 </head>
 <body>
 <div id="stage" class="hidehud">
+  <div id="frameShadow"></div>
   <video id="v" playsinline muted preload="auto"></video>
   <div id="frame"></div>
   <canvas id="px" hidden></canvas>
