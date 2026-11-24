@@ -181,9 +181,9 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .tstart{position:absolute;left:50%;top:80%;transform:translateX(-50%);font-size:clamp(18px,1.8vw,24px);padding:11px 40px 13px 48px}
 .tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
 .tut{position:absolute;inset:0;z-index:1}
-/* 캐릭터는 본관 위쪽 가운데, 대화창은 화면 아래에 넓게 */
+/* 대화창은 화면 아래에 넓게, 캐릭터는 대화창 오른쪽 위에 작게 */
 .tut .chr::after{display:none}
-.tut .chr{position:absolute;left:50%;top:18%;transform:translateX(-50%);height:min(180px,24vh)!important}
+.tut .chr{position:absolute;right:6%;bottom:calc(4% + 172px);height:min(120px,17vh)!important}
 .win.talk{position:absolute;left:3%;right:3%;bottom:4%;width:auto;cursor:pointer;min-height:150px;align-content:start;padding:30px 36px 24px}
 .win.talk .lead{font-size:clamp(18px,1.9vw,24px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0;word-break:keep-all}
 .win.talk .next{position:absolute;right:22px;bottom:18px;color:#e01b1b;animation:blink .8s steps(1) infinite}
