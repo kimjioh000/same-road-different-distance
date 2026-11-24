@@ -23,10 +23,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 button:focus-visible{outline:0}
 
 /* 게임 창: 크림색 테두리 + 어두운 바깥선, 계단 모서리 */
-.win,#clock,#loc{position:relative;background:rgba(26,21,46,.92);color:#fff;text-shadow:0 2px 0 #0e0a1c;
-  box-shadow:0 -3px 0 0 #f4efe6,0 3px 0 0 #f4efe6,-3px 0 0 0 #f4efe6,3px 0 0 0 #f4efe6,
-    0 -6px 0 0 #0e0a1c,0 6px 0 0 #0e0a1c,-6px 0 0 0 #0e0a1c,6px 0 0 0 #0e0a1c,-3px -3px 0 0 #0e0a1c,3px -3px 0 0 #0e0a1c,-3px 3px 0 0 #0e0a1c,3px 3px 0 0 #0e0a1c,
-    9px 12px 0 0 rgba(0,0,0,.35)}
+/* 창·시계·위치: 버튼과 같은 밝은 판 (진보라 외곽선, 위는 밝은 테, 아래는 진한 테, 모서리 리벳) */
+.win,#clock,#loc{position:relative;color:#2e2c3d;text-shadow:none;--edge:#2e2c3d;
+  background:linear-gradient(#ffffff,#ffffff) left 9px top 9px/3px 3px no-repeat,linear-gradient(#ffffff,#ffffff) right 9px top 9px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) left 9px bottom 11px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) right 9px bottom 11px/3px 3px no-repeat,#e4e6dc;
+  box-shadow:0 -3px 0 0 var(--edge),0 3px 0 0 var(--edge),-3px 0 0 0 var(--edge),3px 0 0 0 var(--edge),
+    inset 0 3px 0 0 #ffffff,inset 3px 0 0 0 #f6f9fa,inset -3px 0 0 0 #b9beb4,inset 0 -6px 0 0 #b9beb4,0 9px 0 0 rgba(46,44,61,.4)}
 .win{padding:26px 30px 22px;width:100%;display:grid;gap:16px;text-align:left}
 .win .tab{position:absolute;left:22px;top:-24px;padding:7px 16px 6px;font-size:18px;letter-spacing:.08em;background:#4b2a8c;border-radius:6px;
   box-shadow:0 0 0 3px #0e0a1c,0 4px 0 3px #0e0a1c;--c1:#ffffff;--c2:#d9d2f2;--c3:#24124d}
@@ -34,11 +35,11 @@ button:focus-visible{outline:0}
 .win .tab.green{background:#2f2f33;--c1:#9cf06a;--c2:#4cc23a;--c3:#1d5a1a}
 .win .tab.red{background:#e8452c;--c1:#fff36b;--c2:#f6c21c;--c3:#a33a00}
 /* 레트로 간판 글씨: 위 절반 밝게, 아래 절반 진하게 + 아래로 진한 그림자 */
-.duo,.tab span,.btn span,.opt span{background:linear-gradient(var(--c1) 0 52%,var(--c2) 52%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 3px 0 var(--c3))}
-.btn span,.opt span{filter:drop-shadow(1px 0 0 #1a1008) drop-shadow(-1px 0 0 #1a1008) drop-shadow(0 1px 0 #1a1008) drop-shadow(0 -1px 0 #1a1008) drop-shadow(0 3px 0 #1a1008)}
-.win h2{font-size:clamp(22px,2.6vw,32px);text-shadow:0 2px 0 #0e0a1c}
-.win .lead{font-size:clamp(16px,1.7vw,20px);text-shadow:0 2px 0 #0e0a1c;line-height:1.7}
-.win hr{border:0;height:3px;margin:2px 0;background:repeating-linear-gradient(90deg,rgba(244,239,230,.35) 0 6px,transparent 6px 12px)}
+.duo,.tab span{background:linear-gradient(var(--c1) 0 52%,var(--c2) 52%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 3px 0 var(--c3))}
+.win h2{font-size:clamp(22px,2.6vw,32px);color:#2e2c3d;text-shadow:none}
+.win .lead{font-size:clamp(16px,1.7vw,20px);color:#3f4a5a;text-shadow:none;line-height:1.7}
+.win .lead b{color:#c82828}
+.win hr{border:0;height:3px;margin:2px 0;background:repeating-linear-gradient(90deg,#9da397 0 6px,transparent 6px 12px)}
 /* 메뉴 목록: 고른 줄은 밝게 + 슬라임 커서 */
 .menu{display:grid;gap:4px}
 .menu{gap:16px;padding:4px 3px 6px}
@@ -46,23 +47,22 @@ button:focus-visible{outline:0}
 .menu .opt small{display:none}
 /* 아이템 목록 (교시 시간표) */
 .items{display:grid;gap:8px;font-size:clamp(17px,1.8vw,22px)}
-.items div{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.55)}
-.items div::before{content:"";width:14px;height:14px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
-.items div.ok{color:#fff}
-.items div.ok::before{background:var(--teal);box-shadow:inset 0 0 0 3px #0e0a1c}
-.wheelside .items div.ok::before{background:var(--orange)}
-.items div.now{color:var(--hi)}
+.items div{display:flex;align-items:center;gap:12px;color:#8d9284}
+.items div::before{content:"";width:14px;height:14px;box-shadow:inset 0 0 0 3px #9da397}
+.items div.ok{color:#2e2c3d;font-weight:700}
+.items div.ok::before{background:#4bad8b;box-shadow:inset 0 0 0 3px #2e2c3d}
+.wheelside .items div.ok::before{background:#cb3639}
+.items div.now{color:#c82828;font-weight:700}
 /* 메뉴 항목: 고르면 슬라임 커서 */
 .ctrl button{position:relative;color:var(--fg);text-shadow:var(--ts)}
-.btn,.opt{--rv:#f7f5ee;--face:#d5d2c5;--c1:#ffd46a;--c2:#f0901e;--c3:#24160a;position:relative;display:block;text-align:center;font-weight:700;
-  padding:16px 40px 15px;font-size:clamp(22px,2.4vw,30px);line-height:1.2;
-  background:linear-gradient(var(--rv),var(--rv)) left 10px top 9px/4px 4px no-repeat,linear-gradient(var(--rv),var(--rv)) right 10px top 9px/4px 4px no-repeat,
-    linear-gradient(var(--rv),var(--rv)) left 10px bottom 13px/4px 4px no-repeat,linear-gradient(var(--rv),var(--rv)) right 10px bottom 13px/4px 4px no-repeat,var(--face);
-  --edge:#141414;
+.btn,.opt{position:relative;display:block;text-align:center;font-weight:700;white-space:nowrap;color:#2e2c3d;text-shadow:0 2px 0 #ffffff;--edge:#2e2c3d;--face:#cacfc5;
+  padding:15px 44px 14px;font-size:clamp(22px,2.4vw,28px);line-height:1.2;
+  background:linear-gradient(#ffffff,#ffffff) left 9px top 9px/3px 3px no-repeat,linear-gradient(#ffffff,#ffffff) right 9px top 9px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) left 9px bottom 11px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) right 9px bottom 11px/3px 3px no-repeat,var(--face);
   box-shadow:0 -3px 0 0 var(--edge),0 3px 0 0 var(--edge),-3px 0 0 0 var(--edge),3px 0 0 0 var(--edge),
-    inset 0 3px 0 0 #f3f1e9,inset 3px 0 0 0 #ebe8de,inset -3px 0 0 0 #aeaa99,inset 0 -7px 0 0 #9a9684,0 9px 0 0 rgba(0,0,0,.35);
+    inset 0 3px 0 0 #f6f9fa,inset 3px 0 0 0 #e6f0fb,inset -3px 0 0 0 #9da397,inset 0 -7px 0 0 #8d9284,0 8px 0 0 rgba(46,44,61,.45);
   transition:transform .08s steps(2)}
-.btn:hover,.btn:focus,.opt:hover,.opt:focus-visible{--face:#ebe8dc;--edge:#ffd84a;--c1:#ffe596;--c2:#ff9e2c;transform:translateY(-2px)}
+.btn:hover,.btn:focus,.opt:hover,.opt:focus-visible{--face:#f6f9fa;--edge:#c82828;color:#c82828;transform:translateY(-2px)}
+.btn:hover::after,.btn:focus::after,.opt:hover::after,.opt:focus-visible::after{content:"";position:absolute;left:18px;top:50%;width:22px;height:22px;margin-top:-13px;background:var(--cur) no-repeat center/contain;image-rendering:pixelated;animation:bob .6s steps(2) infinite}
 .btn:active,.opt:active{transform:translateY(3px)}
 @keyframes bob{50%{transform:translateY(-3px)}}
 
@@ -96,28 +96,29 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
   max-width:min(1000px,calc(100% - 48px));text-align:left;transition:opacity .15s steps(3),transform .15s steps(3)}
 #sub.show{opacity:1;transform:translate(-50%,0)}
 #sub em,#sub span{box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),inset 0 -3px 0 0 rgba(42,33,64,.15),3px 6px 0 0 rgba(20,14,36,.4)}
-#sub em{position:relative;display:inline-block;font-style:normal;font-size:16px;padding:4px 12px 3px;margin:0 0 6px 3px;background:var(--teal);color:var(--ink)}
-.wheelside #sub em{background:var(--orange)}
+#sub em{position:relative;display:inline-block;font-style:normal;font-size:16px;padding:4px 12px 3px;margin:0 0 6px 3px;background:#4bad8b;color:#fff;text-shadow:0 2px 0 #307963}
+.wheelside #sub em{background:#cb3639;text-shadow:0 2px 0 #822639}
 #sub.late em{background:var(--red);color:#fff}
 #sub span{position:relative;display:block;font-size:clamp(18px,1.8vw,24px);line-height:1.6;padding:14px 44px 14px 22px;background:#fff;color:var(--ink)}
 #sub span::after{content:"▼";position:absolute;right:16px;bottom:9px;font-size:12px;animation:blink .8s steps(1) infinite}
 #sub.late span{color:#c81e2a}
 /* 위치 자막 */
-#loc{position:absolute;left:28px;top:104px;padding:8px 14px 6px;z-index:4;pointer-events:none;display:flex;gap:10px;align-items:baseline;
+#loc{position:absolute;left:28px;top:104px;padding:10px 18px 12px;z-index:4;pointer-events:none;display:flex;gap:10px;align-items:baseline;
   opacity:0;transform:translateX(-10px);transition:.3s steps(4)}
 #loc.show{opacity:1;transform:none}
-#loc i{font-style:normal;font-size:16px;color:var(--teal)}
-.wheelside #loc i{color:var(--orange)}
-#loc b{font-size:20px;color:#fff}
+#loc i{font-style:normal;font-size:16px;color:#307963;font-weight:700}
+.wheelside #loc i{color:#cb3639}
+#loc b{font-size:20px;color:#2e2c3d}
 /* 시계: 상자 없이 큰 숫자 */
-#clock{position:absolute;right:30px;top:56px;z-index:4;pointer-events:none;text-align:right;padding:12px 16px 10px;transform-origin:right top}
+#clock{position:absolute;right:30px;top:56px;z-index:4;pointer-events:none;text-align:right;padding:14px 20px 14px;transform-origin:right top}
 #clock[hidden]{display:none}
 #clock .t{font-size:36px;letter-spacing:.02em;line-height:1}
-#clock .r{font-size:16px;color:var(--dim);margin-top:6px}
+#clock .r{font-size:15px;color:#3f4a5a;margin-top:6px}
 #clock.alert{animation:tick .5s steps(2) 4}
 @keyframes tick{50%{transform:scale(1.1) rotate(-2deg)}}
-#clock.warn .t,#clock.warn .r{color:var(--orange)}
-#clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#ff5a5f}
+#clock.warn .t,#clock.warn .r{color:#996241}
+#clock.panic,#clock.late{--edge:#df1a1a}
+#clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#c82828}
 #clock.panic .t{animation:blink .8s steps(1) infinite}
 
 /* 오른쪽 아래 재생/건너뛰기 */
@@ -201,14 +202,15 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;text-align:left}
 .col{align-content:start;justify-items:start;gap:12px}
 .col .spr{justify-self:center}
-.col h3{margin:0;font-size:24px;justify-self:center;color:var(--teal);text-shadow:var(--ts)}
-.col.wheel h3{color:var(--orange)}
+.col h3{margin:0;font-size:24px;justify-self:center;color:#307963;text-shadow:none}
+.col.wheel h3{color:#cb3639}
 .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
-.nums div{font-size:16px;color:var(--dim)}
-.nums b{display:block;font-size:32px;color:#fff;text-shadow:var(--ts)}
-.col ol{margin:0;padding-left:22px;font-size:16px;line-height:1.5;color:#fff;display:grid;gap:4px;max-height:26vh;overflow:auto;width:100%}
-.col ol li.x{color:#ff9a9e}
+.nums div{font-size:16px;color:#6a7b92}
+.nums b{display:block;font-size:32px;color:#2e2c3d;text-shadow:none}
+.col ol{margin:0;padding-left:22px;font-size:16px;line-height:1.5;color:#3f4a5a;display:grid;gap:4px;max-height:26vh;overflow:auto;width:100%}
+.col ol li.x{color:#c82828}
 .note{font-size:16px;line-height:1.6;color:#fff;margin:0;text-shadow:var(--ts)}
+.win .note,.win .press{color:#3f4a5a;text-shadow:none}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 #ov.scroll{overflow:auto;align-items:flex-start}
 
@@ -343,10 +345,11 @@ document.addEventListener('mouseover', e => { const b = e.target.closest('.opt,.
 document.addEventListener('click', e => { if (e.target.closest('.opt,.ctrl button,#back')) sfx('ok'); });
 
 // 픽셀 캐릭터: 글자 한 칸 = 픽셀 한 칸
-const PAL = {k:'#1b1b1b', h:'#3b2a22', s:'#f5c9a0', e:'#1b1b1b', p:'#3a4a7a', w:'#2a2a2a', g:'#b8c2c8'};
+// 캐릭터 도트 (글자 한 칸 = 픽셀 한 칸, o = 외곽선)
+const PAL = {"o": "#2e2c3d", "h": "#38303f", "H": "#6f6c7f", "s": "#f8dcb8", "S": "#e3b99e", "e": "#2e2c3d", "w": "#ffffff", "m": "#e19b75", "c": "#4bad8b", "C": "#307963", "L": "#8fd9b6", "b": "#893b3d", "B": "#6a2246", "p": "#3f4a5a", "P": "#2e2c3d", "k": "#f6f9fa", "K": "#b9beb4", "r": "#df1a1a", "R": "#822639", "f": "#9da397", "F": "#4b5856", "t": "#2e2c3d", "g": "#cacfc5", "y": "#6a7b92", "n": "#c82828"};
 const SPR = {
-  walk:['..kkkkkk..','.khhhhhhk.','khhhhhhhhk','khsssssshk','kssessessk','kssssssssk','.kssssssk.','..kttttk..','.kttttttk.','ksttttttsk','ksttttttsk','.kppppppk.','.kppkkppk.','.kpk..kpk.','.kpk..kpk.','kkkk..kkkk'],
-  wheel:['....kkkkkk....','...khhhhhhk...','..khhhhhhhhk..','..khsssssshk..','..kssessessk..','..kssssssssk..','...kssssssk...','w...kttttk...w','wg.kttttttk.gw','wgksttttttskgw','wgksttttttskgw','wgkkppppppkkgw','wg.kppppppk.gw','wg..kpk.kpk.gw','wg..kpk.kpk.gw','.w..kkk.kkk.w.'],
+  walk:["......oooooo......", "....oohhhhhhoo....", "...ohhhhHHhhhho...", "..ohhhhHHhhhhhho..", "..ohhhhhhhhhhhho..", ".ohhhhhhhhhhhhhho.", ".ohhhshhhhhhshhho.", ".ohssssshhhssssho.", "..osssessssesssSo.", "..osssessssesssSo.", "..oSmsssssssssmSo.", "...oSssssnssssSo..", "....ooSssssSoo....", "...obbCccccCbbo...", "..oCbbccLLccbbCo..", ".oCccbbcLLcbbccCo.", ".oCcccbcccccbcccCo", ".osCccbcccccbccCso", ".osoCcbcccccbcCoso", ".oSoCcccccccccCoSo", "..ooCCcccccccCCoo.", "....oCCCCCCCCo....", "....oppppPpppo....", "....opppoPpppo....", "....opppo.oppo....", "....opppo.oppo....", "....oPppo.oPpo....", "...okkkko.okkko...", "...oKKKKo.oKKKo...", "....oooo...ooo...."],
+  wheel:[".............oooooo...........", "...........oohhhhhhoo.........", "..........ohhhhHHhhhho........", ".........ohhhhHHhhhhhho.......", ".........ohhhhhhhhhhhho.......", "........ohhhhhhhhhhhhhho......", "........ohhhshhhhhhshhho......", "........ohssssshhhssssho......", ".........osssessssesssSo......", ".........osssessssesssSo......", ".........oSmsssssssssmSo......", "...ooooo..oSssssnssssSo.......", "..oFFFFfoooooSssssSooo........", "...oooFfrrrrrrrrRRRo..........", ".....oFfrrrrrrrrRRRo..........", ".....oFfrrtrrrrRRRRo..........", ".....oFtttttttrRRRRo..........", "....otttgggggtttRRRo..........", "...otttgrryrrgtttRRoooo.......", "...ottyfrrypppyttppppppo......", "..ottgFyrryppypgttpppppo......", "..otgoFfyoyPyPPPgtPPppPo......", "..otgooooyyyoooogtooppPo......", ".ottgyyyyyFyyyyygttoppPo......", "..otgooooyyyoooogtooppPo......", "..otgo.oyoyoyo.ogtooppPo......", "..ottgoyooyooyogttooppPoo.....", "...ottyo.oyo.oytto.okkkkko....", "...otttgooyoogttto.oKKKFKo....", "....otttgggggttto.oFFFFtFto...", ".....ootttttttoo...oooottto...", ".......oootooo........ottto..."],
 };
 // ── 일러스트 배경: 고려대 본관 (레트로 게임 타이틀 화풍)
 // 320x180에 한 픽셀씩 그린 뒤 크게 늘림. 하늘(가로 붓결) / 뭉게구름(덩어리마다 그림자, 천천히 흐름) / 본관·소나무 / 잔디(가로 붓결) / 앞쪽 덤불·풀 실루엣
@@ -359,7 +362,11 @@ function scene(who){
   const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
   const rgb = c => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
   let OY = 0;   // 건물·나무를 아래로 내리는 값
-  const buf = () => { const d = new ImageData(W, H); return {d, set(x, y, c){ x = Math.round(x); y = Math.round(y + OY); if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4, [r, g, b] = rgb(c); d.data[i] = r; d.data[i+1] = g; d.data[i+2] = b; d.data[i+3] = 255; }}; };
+  const MOB = ["#2e2c3d", "#307963", "#366b72", "#38303f", "#3f4a5a", "#453749", "#478167", "#4a886c", "#4b5856", "#4bad8b", "#524254", "#52bfe9", "#53b5e4", "#5f8863", "#68c9ed", "#69a550", "#6a2246", "#6a7b92", "#6f6c7f", "#72976f", "#75a073", "#788180", "#822639", "#868c7e", "#893b3d", "#8d9284", "#8f9c9c", "#996241", "#9da397", "#a4afae", "#b3e5f5", "#b9beb4", "#b9d029", "#c82828", "#cacfc5", "#cb3639", "#df1a1a", "#e19b75", "#e3b99e", "#e6f0fb", "#f6f9fa", "#f8dcb8", "#ffffff", "#f2c14e", "#8fc06a", "#a6cf7d", "#44a4db", "#7fd0f0"].map(rgb), near = new Map();
+  const toMob = c => { if (near.has(c)) return near.get(c); const [r, g, b] = rgb(c); let best = c, bd = 1e9;
+    for (const m of MOB){ const d = (m[0]-r)**2*.3 + (m[1]-g)**2*.59 + (m[2]-b)**2*.11; if (d < bd){ bd = d; best = '#' + m.map(v => v.toString(16).padStart(2, '0')).join(''); } }
+    near.set(c, best); return best; };
+  const buf = () => { const d = new ImageData(W, H); return {d, set(x, y, c){ c = toMob(c); x = Math.round(x); y = Math.round(y + OY); if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4, [r, g, b] = rgb(c); d.data[i] = r; d.data[i+1] = g; d.data[i+2] = b; d.data[i+3] = 255; }}; };
 
   // 하늘: 위는 진하고 아래는 밝게, 가로로 긴 붓결
   const S = buf(), SK = ['#3a98d4', '#44a4db', '#4eafe2', '#58b9e7', '#62c2eb', '#6ecbef', '#7cd3f2'];
@@ -480,7 +487,7 @@ function scene(who){
   bush(14, 166, 13); bush(40, 172, 10); bush(302, 164, 14); bush(278, 174, 9);
   // 주인공 (2배 크기, 그림자)
   if (who){
-    const rows = SPR[who], pal = {...PAL, t: who === 'walk' ? '#7ed957' : '#ff9f3a'}, s = 2, X0 = 226, Y0 = 136;
+    const rows = SPR[who], pal = PAL, s = 1, X0 = who === 'walk' ? 228 : 222, Y0 = 140;
     for (let i = -2; i < rows[0].length * s + 2; i++) L.set(X0 + i, Y0 + rows.length * s, '#4e7a48');
     rows.forEach((row, y) => [...row].forEach((c, x) => pal[c] && rect(X0 + x * s, Y0 + y * s, s, s, pal[c])));
   }
@@ -503,7 +510,7 @@ function scene(who){
 }
 
 function sprite(k, s = 5, mono){
-  const rows = SPR[k], pal = {...PAL, t: k === 'walk' ? '#7ed957' : '#ff9f3a'};
+  const rows = SPR[k], pal = {...PAL};
   if (mono) for (const c in pal) pal[c] = mono;   // 실루엣
   let r = '';
   rows.forEach((row, y) => [...row].forEach((c, x) => { if (pal[c]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[c]}"/>`; }));
@@ -625,7 +632,7 @@ function go(id){
     } else v.src = `videos/${n.src}.mp4`;
     // 브라우저가 자동재생을 막으면 재생 버튼을 띄움
     v.play().catch(() => {
-      show(`<div class="panel" style="width:min(320px,100%)"><div class="win"><div class="menu"><button class="btn" id="b">재생</button></div></div></div>`, 'choice');
+      show(`<div class="panel" style="width:min(380px,100%)"><div class="win"><div class="menu"><button class="btn" id="b">재생</button></div></div></div>`, 'choice');
       $('#b').onclick = () => { hide(); v.play(); };
     });
     log[side].path.push(label(id));
@@ -719,14 +726,14 @@ function toWheel(){
   period(4); sfx('clear');
   // 1단계: 평범한 캠퍼스 투어가 끝난 것처럼
   show(`<div class="panel" style="width:min(620px,100%)"><div class="win"><div class="tab kicker">QUEST CLEAR</div><h2>3교시까지 수업 듣기 완료!</h2>
-    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, '#0b0a16')}</span></div>
+    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 4)}<span class="press">?</span><span id="who2">${sprite('wheel', 4, '#2e2c3d')}</span></div>
     <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p><hr>
     <div class="menu"><button class="btn" id="b">다른 학생의 시점 보기</button></div></div></div>`, 'solid sky', 'end');
   ov.prepend(scene(null));
   // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
   $('#b').onclick = () => {
     sfx('reveal'); setSide('wheel');
-    $('#who2').innerHTML = sprite('wheel', 6); $('#who2').className = 'reveal';
+    $('#who2').innerHTML = sprite('wheel', 4); $('#who2').className = 'reveal';
     ov.querySelector('.kicker').innerHTML = '<span>NEW PLAYER</span>';
     ov.querySelector('h2').textContent = '휠체어를 타는 학생';
     ov.querySelector('.press').textContent = '▶▶';
@@ -738,7 +745,7 @@ function toWheel(){
 
 function result(){
   period(4); stage.classList.add('hidehud');
-  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 5)}<h3>${name}</h3>
+  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 3)}<h3>${name}</h3>
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
     <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
