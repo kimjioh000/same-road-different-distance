@@ -157,6 +157,18 @@ h2{font-size:clamp(24px,4vw,40px);line-height:1.35;margin:0;font-weight:700;text
 .col ol .ic{width:.85em;height:.85em}
 @keyframes hop{50%{transform:translateY(-3px)}}
 
+#ov.sky{padding:40px 20px 76px}
+#ov.sky .panel{gap:14px}
+#ov.sky h1{font-size:clamp(40px,8vw,84px);line-height:1.1}
+/* 시작 화면 퀘스트 리본 */
+.quest{position:relative;display:grid;gap:4px;padding:10px 30px 8px;font-size:clamp(18px,2.4vw,26px);font-weight:700;
+  background:#e8590c;color:#fff;text-shadow:2px 2px 0 #7a2a00;
+  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -3px 0 0 #b84400,inset 0 3px 0 0 #ff8a3d,3px 6px 0 0 rgba(0,0,0,.35)}
+.quest small{font-size:12px;letter-spacing:.2em;color:var(--yellow);text-shadow:2px 2px 0 #000}
+.quest::before,.quest::after{content:"";position:absolute;top:12px;width:18px;height:calc(100% - 12px);background:#b84400;z-index:-1;
+  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000}
+.quest::before{left:-18px}.quest::after{right:-18px}
+
 /* 실패 화면: GAME OVER */
 .fail{animation:shake .45s steps(6) both}
 @keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
@@ -495,8 +507,9 @@ function fail(back, label){
 function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
-  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · 캠퍼스 투어</div>
+  show(`<div class="panel"><div class="kicker">사회조사방법 8조</div>
     <h1 class="big">같은 길,<br>다른 거리</h1>
+    <div class="quest"><small>TODAY'S QUEST</small>3교시까지 수업 들으러 가기</div>
     <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b> 수업을 들으러 가.<br>갈림길이 나오면 어느 길로 갈지 직접 골라 줘.</p>
     <div class="press">PRESS START</div>
     <button class="btn" id="b">▶ 오늘의 시간표 시작</button>
@@ -507,7 +520,7 @@ function start(){
 function toWheel(){
   period(4); sfx('clear');
   // 1단계: 평범한 캠퍼스 투어가 끝난 것처럼
-  show(`<div class="panel"><div class="kicker">TOUR COMPLETE</div><h2>캠퍼스 투어 끝!</h2>
+  show(`<div class="panel"><div class="kicker">QUEST CLEAR</div><h2>3교시까지 수업 듣기 완료!</h2>
     <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, '#0b0a16')}</span></div>
     <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p>
     <button class="btn" id="b">다른 학생의 시점 보기 ▶</button></div>`, 'solid');
