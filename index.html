@@ -305,15 +305,19 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
   filter:drop-shadow(0 8px 0 rgba(46,44,61,.55)) drop-shadow(0 0 16px rgba(10,20,50,.55))}   /* 바깥 그림자로 배경과 구분 */
 .hud{display:none}
 /* 시계·위치: 틀 안쪽 위 모서리, 어두운 상자 + 하얀 테두리 */
-#clock,#loc{background:rgba(20,22,34,.9);color:#fff;text-shadow:none;border:4px solid #fff;border-radius:10px;box-shadow:0 0 0 3px #2e2c3d}
-#clock{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);right:calc(var(--fx) + var(--fw) * (1 - var(--il) - var(--iw)) + 12px);padding:10px 16px 10px}
-#loc{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);left:calc(var(--fx) + var(--fw) * var(--il) + 12px);padding:9px 16px 9px}
+/* 장소·시계: 하늘색 강철 판 (안암런/인게임 버튼.png의 테두리를 잘라 9조각 테두리로) */
+#clock,#loc{background:#a2c1d5;background-clip:padding-box;color:#2b3f55;text-shadow:none;border-radius:0;box-shadow:none;
+  border-style:solid;border-width:12px 15px 18px 17px;border-image:url(art/plate.png) 56 67 80 76 round;
+  filter:drop-shadow(0 4px 0 rgba(30,45,70,.35))}
+#clock{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);right:calc(var(--fx) + var(--fw) * (1 - var(--il) - var(--iw)) + 12px);padding:2px 6px 0}
+#loc{top:calc(var(--fy) + var(--fh) * var(--it) + 12px);left:calc(var(--fx) + var(--fw) * var(--il) + 12px);padding:2px 8px 0;align-items:center}
 #clock .t{font-size:clamp(24px,2.6vw,34px)}
-#clock .r{color:#c9d3e0;font-size:13px}
-#clock.warn .t,#clock.warn .r{color:#ffb347}
-#clock.panic,#clock.late{border-color:#ff5a5a}
-#clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#ff6b6b}
-#loc b{color:#fff}#loc i{color:#7be08a}.wheelside #loc i{color:#ff8a8a}
+#clock .t{color:#2b3f55;text-align:center}
+#clock .r{color:#2b3f55;font-size:13px;margin-top:2px}
+#clock{text-align:center}
+#clock.warn .t,#clock.warn .r{color:#b8621b}
+#clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#c62828}
+#loc b{color:#2b3f55;border-left:3px solid #4b6a87;padding-left:12px}#loc i{color:#2f7a3a}.wheelside #loc i{color:#b3261e}
 /* 대화창: 튜토리얼과 같은 하얀 창, 틀 아래쪽에 살짝 겹쳐서 */
 #sub{left:calc(var(--fx) + var(--fw) * .06);width:calc(var(--fw) * .88);max-width:none;top:calc(var(--fy) + var(--fh) * .885);bottom:auto;
   transform:translateY(30px);transition:opacity .2s steps(3),transform .25s steps(4)}
