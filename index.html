@@ -320,7 +320,7 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 #sub span{min-height:clamp(72px,12vh,120px);padding:24px 40px 20px;font-size:clamp(18px,1.9vw,24px);line-height:1.6;background:#fff;color:#2e2c3d;word-break:keep-all;box-shadow:0 -4px 0 0 #2e2c3d,0 4px 0 0 #2e2c3d,-4px 0 0 0 #2e2c3d,4px 0 0 0 #2e2c3d,inset 0 0 0 3px #8fd3f0,inset 0 -7px 0 0 #d4ecf7,0 10px 0 0 rgba(46,44,61,.35)}
 #sub span::after{content:"▼";right:22px;bottom:14px;left:auto;transform:none;color:#2e2c3d;font-size:16px}
 #sub.late span{color:#e01b1b}
-#sub em{position:absolute;left:22px;top:-26px;margin:0!important;z-index:1;padding:8px 16px 7px;font-size:17px;letter-spacing:.06em;background:#e01b1b;color:#fff;text-shadow:0 2px 0 #8a1622;
+#sub em{position:absolute;left:calc(var(--fw) * (var(--il) - .06) + 12px + 80px);top:-26px;margin:0!important;z-index:1;padding:8px 16px 7px;font-size:17px;letter-spacing:.06em;background:#e01b1b;color:#fff;text-shadow:0 2px 0 #8a1622;
   box-shadow:0 -3px 0 0 #2e2c3d,0 3px 0 0 #2e2c3d,-3px 0 0 0 #2e2c3d,3px 0 0 0 #2e2c3d,inset 0 -4px 0 0 #a8141c}
 .wheelside #sub em,#sub.late em{background:#e01b1b;color:#fff}
 /* 얼굴: 틀 안쪽 왼쪽 아래 */
@@ -328,7 +328,7 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
   background-color:#fff;border:3px solid #fff;border-radius:8px;box-shadow:0 0 0 3px #2e2c3d}
 /* 선택지: 대화창 자리에 같은 하얀 창 */
 #ov.choice{background:none}
-#ov.choice .panel.play{left:50%;top:calc(var(--fy) + var(--fh) * .4);width:min(320px,80vw);transform:translateX(-50%)}
+#ov.choice .panel.play{bottom:auto;left:50%;top:calc(var(--fy) + var(--fh) * .4);width:min(320px,80vw);transform:translateX(-50%)}
 #ov.choice .panel{position:absolute;left:calc(var(--fx) + var(--fw) * .06);width:calc(var(--fw) * .88);top:auto;bottom:1.5vh}
 #ov.choice .win{padding:22px 28px 18px;gap:12px}
 #ov.choice .win h2{font-size:clamp(20px,2.2vw,28px)}
@@ -474,7 +474,7 @@ const BGM = (() => {
             84,0,83,0,81,0,79,0, 79,0,77,0,76,0,74,0, 76,0,74,0,72,0,71,0, 72,0,0,0,0,0,0,0],
       bass:roots([48,43,45,41,48,43,41,48])},
   };
-  let timer = null, playing = null, i = 0, t = 0, gain = null, level = 1.6;   // level: 지금 음량 (영상 중엔 낮춤)
+  let timer = null, playing = null, i = 0, t = 0, gain = null, level = 2.4;   // level: 지금 음량 (영상 중엔 낮춤)
   const tone = (f, at, d, type, vol) => {
     const o = AC.createOscillator(), g = AC.createGain();
     o.type = type; o.frequency.setValueAtTime(f, at);
@@ -501,8 +501,8 @@ const BGM = (() => {
     },
     off(){ clearInterval(timer); timer = null; playing = null; if (gain){ gain.gain.setTargetAtTime(0, AC.currentTime, .05); gain = null; } },
     get playing(){ return playing; },
-    // 영상 나올 때는 음악을 40%로, 아닐 땐 원래대로 (0.4초에 걸쳐 부드럽게)
-    duck(on){ level = on ? .65 : 1.6; if (gain) gain.gain.setTargetAtTime(level, AC.currentTime, .15); },
+    // 영상 나올 때는 음악을 70% 정도로, 아닐 땐 원래대로 (0.4초에 걸쳐 부드럽게)
+    duck(on){ level = on ? 1.7 : 2.4; if (gain) gain.gain.setTargetAtTime(level, AC.currentTime, .15); },
   };
   return api;
 })();
@@ -623,7 +623,6 @@ function show(html, mode, bg){
   stage.classList.toggle('dim', mode !== 'solid');
   // 꽉 찬 화면은 타이틀과 같은 그림 배경 (구름·깃발·새·낙엽)
   if ((mode || '').includes('solid') && !(mode || '').includes('tutbg') && !ov.querySelector('.art16')) ov.prepend(document.createRange().createContextualFragment(titleArt(false)));
-  const b = ov.querySelector('button'); b && b.focus({preventScroll:true});
 }
 // 화면 전환: 검은 동그라미가 닫혔다가 다음 화면에서 열림
 // focus: 동그라미가 줄어들 중심 (캐릭터). 없으면 화면 가운데. 열릴 때는 화면 가운데에서
@@ -791,7 +790,7 @@ function tutorial(){
   };
   const done = () => {
     full = true; tl.textContent = TUTORIAL[i];
-    if (i === TUTORIAL.length - 1){ $('#go').hidden = false; $('#b').focus(); } else nx.hidden = false;
+    if (i === TUTORIAL.length - 1) $('#go').hidden = false; else nx.hidden = false;
   };
   const step = () => {
     if (!$('#go').hidden) return;
@@ -799,7 +798,7 @@ function tutorial(){
     i++; sfx('move'); line();
   };
   ov.querySelector('.talk').onclick = e => { if (!e.target.closest('#b')) step(); };
-  ov.onkeydown = e => { if ((e.code === 'Enter' || e.code === 'Space') && $('#go').hidden){ e.preventDefault(); step(); } };
+  ov.onkeydown = e => { if (e.code === 'Enter' || e.code === 'Space'){ e.preventDefault(); $('#go').hidden ? step() : $('#b').click(); } };
   ov.tabIndex = -1; ov.focus();
   // 끝: 대화창이 아래로 내려가고 → 까만 화면에서 게임 화면이 픽셀처럼 서서히 밝아짐
   $('#b').onclick = () => {
