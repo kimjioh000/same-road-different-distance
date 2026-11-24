@@ -55,8 +55,8 @@ button:focus-visible{outline:0}
   padding:15px 44px 16px;font-size:clamp(22px,2.4vw,28px);line-height:1.2;background:var(--face);
   box-shadow:0 -4px 0 0 var(--edge),0 4px 0 0 var(--edge),-4px 0 0 0 var(--edge),4px 0 0 0 var(--edge),inset 0 -6px 0 0 var(--shade),0 8px 0 0 rgba(46,44,61,.4);
   transition:transform .08s steps(2)}
-.btn:hover,.btn:focus,.opt:hover,.opt:focus-visible{--face:#e01b1b;--shade:#a8141c;color:#fff;text-shadow:0 2px 0 #8a1622;transform:translateY(-3px)}
-.btn:hover::after,.btn:focus::after,.opt:hover::after,.opt:focus-visible::after{content:"";position:absolute;left:18px;top:50%;width:22px;height:22px;margin-top:-13px;background:var(--cur) no-repeat center/contain;image-rendering:pixelated;animation:bob .6s steps(2) infinite}
+.btn:hover,.btn:focus-visible,.opt:hover,.opt:focus-visible{--face:#e01b1b;--shade:#a8141c;color:#fff;text-shadow:0 2px 0 #8a1622;transform:translateY(-3px)}
+.btn:hover::after,.btn:focus-visible::after,.opt:hover::after,.opt:focus-visible::after{content:"";position:absolute;left:18px;top:50%;width:22px;height:22px;margin-top:-13px;background:var(--cur) no-repeat center/contain;image-rendering:pixelated;animation:bob .6s steps(2) infinite}
 .btn:active,.opt:active{transform:translateY(3px)}
 @keyframes bob{50%{transform:translateY(-3px)}}
 
@@ -187,7 +187,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
   text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d;animation:blink 1.2s steps(1) infinite}
 .sound-on .sndhint{display:none}
 .tstart{position:absolute;left:50%;top:80%;transform:translateX(-50%);font-size:clamp(18px,1.8vw,24px);padding:11px 40px 13px 48px}
-.tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
+.tstart:hover,.tstart:focus-visible{transform:translate(-50%,-3px)}
 .tut{position:absolute;inset:0;z-index:1}
 /* 튜토리얼: 까만 화면에 대화창만, 아래에 넓게 */
 #ov.tutbg{background:#000}
