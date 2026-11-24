@@ -23,24 +23,19 @@ b,strong,h1,h2,h3,.btn,.opt,.win h2,.tab,#clock .t,#loc b,#sub span,#sub em{font
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 button:focus-visible{outline:0}
 
-/* 게임 창: 크림색 테두리 + 어두운 바깥선, 계단 모서리 */
-/* 창·시계·위치: 버튼과 같은 밝은 판 (진보라 외곽선, 위는 밝은 테, 아래는 진한 테, 모서리 리벳) */
-.win,#clock,#loc{position:relative;color:#2e2c3d;text-shadow:none;--edge:#2e2c3d;
-  background:linear-gradient(#ffffff,#ffffff) left 9px top 9px/3px 3px no-repeat,linear-gradient(#ffffff,#ffffff) right 9px top 9px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) left 9px bottom 11px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) right 9px bottom 11px/3px 3px no-repeat,#e4e6dc;
-  box-shadow:0 -3px 0 0 var(--edge),0 3px 0 0 var(--edge),-3px 0 0 0 var(--edge),3px 0 0 0 var(--edge),
-    inset 0 3px 0 0 #ffffff,inset 3px 0 0 0 #f6f9fa,inset -3px 0 0 0 #b9beb4,inset 0 -6px 0 0 #b9beb4,0 9px 0 0 rgba(46,44,61,.4)}
+/* 창·시계·위치: 타이틀 그림체에 맞춘 하얀 창 (진남색 계단 외곽선 + 하늘색 안쪽 테 + 아래 그림자) */
+.win,#clock,#loc{position:relative;color:#2e2c3d;text-shadow:none;--edge:#2e2c3d;background:#ffffff;
+  box-shadow:0 -4px 0 0 var(--edge),0 4px 0 0 var(--edge),-4px 0 0 0 var(--edge),4px 0 0 0 var(--edge),
+    inset 0 0 0 3px #8fd3f0,inset 0 -7px 0 0 #d4ecf7,0 10px 0 0 rgba(46,44,61,.35)}
 .win{padding:26px 30px 22px;width:100%;display:grid;gap:16px;text-align:left}
-.win .tab{position:absolute;left:22px;top:-24px;padding:7px 16px 6px;font-size:18px;letter-spacing:.08em;background:#4b2a8c;border-radius:6px;
-  box-shadow:0 0 0 3px #0e0a1c,0 4px 0 3px #0e0a1c;--c1:#ffffff;--c2:#d9d2f2;--c3:#24124d}
-.win .tab.orange{background:#f08a1c;--c1:#fff6dc;--c2:#ffe3a1;--c3:#9a4a00}
-.win .tab.green{background:#2f2f33;--c1:#9cf06a;--c2:#4cc23a;--c3:#1d5a1a}
-.win .tab.red{background:#e8452c;--c1:#fff36b;--c2:#f6c21c;--c3:#a33a00}
-/* 레트로 간판 글씨: 위 절반 밝게, 아래 절반 진하게 + 아래로 진한 그림자 */
-.duo,.tab span{background:linear-gradient(var(--c1) 0 52%,var(--c2) 52%);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 3px 0 var(--c3))}
+.win .tab{position:absolute;left:22px;top:-26px;padding:8px 16px 7px;font-size:18px;letter-spacing:.08em;background:#e01b1b;color:#fff;text-shadow:0 2px 0 #8a1622;
+  box-shadow:0 -3px 0 0 #2e2c3d,0 3px 0 0 #2e2c3d,-3px 0 0 0 #2e2c3d,3px 0 0 0 #2e2c3d,inset 0 -4px 0 0 #a8141c}
+.win .tab.green{background:#3f9a4a;text-shadow:0 2px 0 #1f5a2a;box-shadow:0 -3px 0 0 #2e2c3d,0 3px 0 0 #2e2c3d,-3px 0 0 0 #2e2c3d,3px 0 0 0 #2e2c3d,inset 0 -4px 0 0 #2a7036}
+.win .tab.orange{background:#2f8bc9;text-shadow:0 2px 0 #1d5a85;box-shadow:0 -3px 0 0 #2e2c3d,0 3px 0 0 #2e2c3d,-3px 0 0 0 #2e2c3d,3px 0 0 0 #2e2c3d,inset 0 -4px 0 0 #226b9c}
 .win h2{font-size:clamp(22px,2.6vw,32px);color:#2e2c3d;text-shadow:none}
 .win .lead{font-size:clamp(16px,1.7vw,20px);color:#3f4a5a;text-shadow:none;line-height:1.7}
-.win .lead b{color:#c82828}
-.win hr{border:0;height:3px;margin:2px 0;background:repeating-linear-gradient(90deg,#9da397 0 6px,transparent 6px 12px)}
+.win .lead b{color:#e01b1b}
+.win hr{border:0;height:3px;margin:2px 0;background:repeating-linear-gradient(90deg,#8fd3f0 0 6px,transparent 6px 12px)}
 /* 메뉴 목록: 고른 줄은 밝게 + 슬라임 커서 */
 .menu{display:grid;gap:4px}
 .menu{gap:16px;padding:4px 3px 6px}
@@ -51,18 +46,16 @@ button:focus-visible{outline:0}
 .items div{display:flex;align-items:center;gap:12px;color:#8d9284}
 .items div::before{content:"";width:14px;height:14px;box-shadow:inset 0 0 0 3px #9da397}
 .items div.ok{color:#2e2c3d;font-weight:700}
-.items div.ok::before{background:#4bad8b;box-shadow:inset 0 0 0 3px #2e2c3d}
+.items div.ok::before{background:#3f9a4a;box-shadow:inset 0 0 0 3px #2e2c3d}
 .wheelside .items div.ok::before{background:#cb3639}
-.items div.now{color:#c82828;font-weight:700}
+.items div.now{color:#e01b1b;font-weight:700}
 /* 메뉴 항목: 고르면 슬라임 커서 */
 .ctrl button{position:relative;color:var(--fg);text-shadow:var(--ts)}
-.btn,.opt{position:relative;display:block;text-align:center;font-weight:700;white-space:nowrap;color:#2e2c3d;text-shadow:0 2px 0 #ffffff;--edge:#2e2c3d;--face:#cacfc5;
-  padding:15px 44px 14px;font-size:clamp(22px,2.4vw,28px);line-height:1.2;
-  background:linear-gradient(#ffffff,#ffffff) left 9px top 9px/3px 3px no-repeat,linear-gradient(#ffffff,#ffffff) right 9px top 9px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) left 9px bottom 11px/3px 3px no-repeat,linear-gradient(#9da397,#9da397) right 9px bottom 11px/3px 3px no-repeat,var(--face);
-  box-shadow:0 -3px 0 0 var(--edge),0 3px 0 0 var(--edge),-3px 0 0 0 var(--edge),3px 0 0 0 var(--edge),
-    inset 0 3px 0 0 #f6f9fa,inset 3px 0 0 0 #e6f0fb,inset -3px 0 0 0 #9da397,inset 0 -7px 0 0 #8d9284,0 8px 0 0 rgba(46,44,61,.45);
+.btn,.opt{position:relative;display:block;text-align:center;font-weight:700;white-space:nowrap;color:#2e2c3d;text-shadow:none;--edge:#2e2c3d;--face:#ffffff;--shade:#cfe3ee;
+  padding:15px 44px 16px;font-size:clamp(22px,2.4vw,28px);line-height:1.2;background:var(--face);
+  box-shadow:0 -4px 0 0 var(--edge),0 4px 0 0 var(--edge),-4px 0 0 0 var(--edge),4px 0 0 0 var(--edge),inset 0 -6px 0 0 var(--shade),0 8px 0 0 rgba(46,44,61,.4);
   transition:transform .08s steps(2)}
-.btn:hover,.btn:focus,.opt:hover,.opt:focus-visible{--face:#f6f9fa;--edge:#c82828;color:#c82828;transform:translateY(-2px)}
+.btn:hover,.btn:focus,.opt:hover,.opt:focus-visible{--face:#e01b1b;--shade:#a8141c;color:#fff;text-shadow:0 2px 0 #8a1622;transform:translateY(-3px)}
 .btn:hover::after,.btn:focus::after,.opt:hover::after,.opt:focus-visible::after{content:"";position:absolute;left:18px;top:50%;width:22px;height:22px;margin-top:-13px;background:var(--cur) no-repeat center/contain;image-rendering:pixelated;animation:bob .6s steps(2) infinite}
 .btn:active,.opt:active{transform:translateY(3px)}
 @keyframes bob{50%{transform:translateY(-3px)}}
@@ -137,7 +130,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 #ov{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:80px 20px 40px}
 #ov.on{display:flex}
 /* 배경: 우리 영상 장면을 픽셀아트로 바꾼 그림 (bg/*.png) */
-#ov.solid{background:linear-gradient(rgba(14,10,28,.2),rgba(14,10,28,.5)),var(--bg,url(bg/start.png)) center/cover;image-rendering:pixelated}
+#ov.solid{background:#58b7de;overflow:hidden}
 /* 일러스트 배경 */
 #ov.sky{background:#58b7de;overflow:hidden}
 /* 타이틀 그림판: 16:9 그림을 화면에 꽉 채우고(아래 기준), 움직이는 것들은 이 판 안에서 % 좌표로 */
@@ -184,26 +177,27 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 /* 제목 로고: 안암 + RUN */
 #ov.sky .panel{z-index:1}
 .title-screen{position:absolute;inset:0;z-index:1}
-.tmenu{position:absolute;left:7%;top:64%;display:grid;gap:6px;justify-items:start}
-/* 타이틀 메뉴: 버튼 판 없이 하얀 글씨 (레퍼런스처럼), 고른 줄엔 슬라임 커서 */
-.tmenu .btn{background:none;box-shadow:none;transform:none;text-align:left;padding:4px 0 4px 50px;font-size:clamp(26px,2.8vw,36px);color:#ffffff;
-  text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.6)}
-.tmenu .btn:not(:hover):not(:focus){color:#d6d1e6}
-.tmenu .btn:hover,.tmenu .btn:focus{transform:translateX(4px)}
-.tmenu .btn:hover::after,.tmenu .btn:focus::after{left:6px;width:30px;height:30px;margin-top:-16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.tinfo[hidden]{display:none}
-.tinfo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 40px))}
+.tstart{position:absolute;left:50%;top:64%;transform:translateX(-50%);font-size:clamp(26px,2.8vw,36px);padding:18px 60px 20px}
+.tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
+.tut{position:relative;z-index:1;display:flex;align-items:flex-end;gap:24px;width:min(980px,100%);margin-top:auto}
+.tut .chr{flex:none}
+.win.talk{cursor:pointer;min-height:180px;align-content:start}
+.win.talk .lead{font-size:clamp(20px,2.2vw,28px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0}
+.win.talk .next{position:absolute;right:22px;bottom:18px;color:#e01b1b;animation:blink .8s steps(1) infinite}
+.win.talk .next[hidden]{display:none}
+.menu[hidden]{display:none}
+#ov.sky:has(.tut){align-items:flex-end;padding-bottom:6vh}
 .copy{position:absolute;bottom:2.2%;font-size:clamp(11px,1.1vw,14px);color:#8a84ad;font-weight:700}
 .copy.l{left:2.5%}.copy.r{right:2.5%}
 .panel{position:relative;z-index:1;width:min(780px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
-.kicker{font-size:16px;letter-spacing:.16em;color:#fff;text-shadow:var(--ts)}
+.kicker{font-size:16px;letter-spacing:.16em;color:#fff;text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.5)}
 /* 빨간 입체 제목 */
 .big,.stamp{font-family:"Galmuri11",var(--font);font-weight:700}
 .big{--c1:#ff6a5c;--c2:#e3221c;letter-spacing:-.01em;background:linear-gradient(var(--c1) 0 50%,var(--c2) 50%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 4px 0 #a51a2c) drop-shadow(0 5px 0 #4a1026)}
 h1{font-size:clamp(48px,8vw,96px);line-height:1.1;margin:0 0 16px}
-h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 var(--ink),3px 3px 0 var(--ink)}
+h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.5)}
 .lead{margin:0;color:#fff;font-size:clamp(16px,2vw,24px);line-height:1.7;text-shadow:var(--ts)}
 .lead b{color:var(--hi)}
 .press{font-size:16px;letter-spacing:.2em;color:#fff;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
@@ -231,15 +225,13 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 /* 실패 화면: GAME OVER */
 .fail{animation:shake .45s steps(6) both}
 @keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
-.hearts{font-size:32px;letter-spacing:6px;color:var(--red);text-shadow:0 3px 0 var(--red3)}
+.hearts{font-size:34px;letter-spacing:6px;color:#e01b1b;text-shadow:0 3px 0 #8a1622,3px 0 0 #2e2c3d,-3px 0 0 #2e2c3d,0 -3px 0 #2e2c3d}
 .hearts s{text-decoration:none;color:#4a4060;text-shadow:none}
-.stamp{font-size:clamp(56px,9vw,112px);line-height:1;padding:12px 40px 18px;background:#e8452c;border-radius:10px;box-shadow:0 0 0 4px #0e0a1c,0 8px 0 4px #0e0a1c}
-.stamp span{--c1:#fff36b;--c2:#f6c21c;--c3:#a33a00;background:linear-gradient(var(--c1) 0 52%,var(--c2) 52%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 5px 0 var(--c3))}
-#ov.failbg{background:#120c1e;background-image:repeating-linear-gradient(#0000 0 3px,#00000055 3px 6px)}
+.stamp{font-family:"Press Start 2P",var(--font);color:#e01b1b;text-shadow:3px 0 0 #2e2c3d,-3px 0 0 #2e2c3d,0 -3px 0 #2e2c3d,0 3px 0 #8a1622,0 6px 0 #8a1622,3px 6px 0 #2e2c3d,-3px 6px 0 #2e2c3d,0 9px 0 #2e2c3d;font-size:clamp(48px,7vw,92px);line-height:1.2;transform:skewX(-8deg)}
+#ov.failbg{background:rgba(46,44,61,.72)}
 
 /* 교시 종료 카드 */
-.bell{font-weight:700;font-size:clamp(28px,3.4vw,44px);letter-spacing:.06em;padding:10px 28px 14px;background:#2f2f33;border-radius:8px;box-shadow:0 0 0 4px #0e0a1c,0 6px 0 4px #0e0a1c;margin-bottom:10px}
-.bell span{--c1:#9cf06a;--c2:#4cc23a;--c3:#1d5a1a;background:linear-gradient(var(--c1) 0 52%,var(--c2) 52%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 var(--c3))}
+.bell{font-family:"Press Start 2P",var(--font);color:#e01b1b;text-shadow:3px 0 0 #2e2c3d,-3px 0 0 #2e2c3d,0 -3px 0 #2e2c3d,0 3px 0 #8a1622,0 6px 0 #8a1622,3px 6px 0 #2e2c3d,-3px 6px 0 #2e2c3d,0 9px 0 #2e2c3d;font-size:clamp(26px,3.6vw,46px);line-height:1.3;letter-spacing:.02em;margin-bottom:14px;transform:skewX(-8deg)}
 .timeline{display:flex;gap:28px;align-items:center;font-size:20px;flex-wrap:wrap;justify-content:center}
 .timeline span{color:rgba(255,255,255,.6);text-shadow:var(--ts)}
 .timeline span.ok{color:#fff}
@@ -250,14 +242,14 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;text-align:left}
 .col{align-content:start;justify-items:start;gap:12px}
 .col .spr,.col .chr{justify-self:center}
-.col h3{margin:0;font-size:24px;justify-self:center;color:#307963;text-shadow:none}
+.col h3{margin:0;font-size:24px;justify-self:center;color:#2f8bc9;text-shadow:none}
 .col.wheel h3{color:#cb3639}
 .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
 .nums div{font-size:16px;color:#6a7b92}
 .nums b{display:block;font-size:32px;color:#2e2c3d;text-shadow:none}
 .col ol{margin:0;padding-left:22px;font-size:16px;line-height:1.5;color:#3f4a5a;display:grid;gap:4px;max-height:26vh;overflow:auto;width:100%}
 .col ol li.x{color:#c82828}
-.note{font-size:16px;line-height:1.6;color:#fff;margin:0;text-shadow:var(--ts)}
+.note{font-size:16px;line-height:1.6;color:#fff;margin:0;text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.5)}
 .win .note,.win .press{color:#3f4a5a;text-shadow:none}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 #ov.scroll{overflow:auto;align-items:flex-start}
@@ -365,6 +357,7 @@ const SFX = {
   move:[[880,.04,'square',.04]],
   ok:[[660,.06],[990,.12]],
   sub:[[1320,.03,'square',.025],[1760,.03,'square',.02]],
+  blip:[[990,.025,'square',.025]],
   tick:[[1760,.04,'square',.05],[0,.08],[1760,.04,'square',.05]],
   start:[[523,.08],[659,.08],[784,.08],[1047,.28]],
   clear:[[784,.1],[659,.1],[784,.1],[1047,.12],[0,.05],[1047,.3]],
@@ -403,7 +396,7 @@ function titleArt(logo){
   return `<div class="art16"><img class="bgimg" src="art/bg_title.png" alt="">${clouds}
     <img class="flag" src="art/flag1.png" alt="" style="left:${926/19.2}%;top:${540/10.8}%;width:${24/19.2}%">
     <img class="flag f2" src="art/flag2.png" alt="" style="left:${1004/19.2}%;top:${538/10.8}%;width:${28/19.2}%">
-    ${birds}${leaves}${logo ? '<div class="runner"></div>' : ''}
+    ${birds}${leaves}${logo ? `<div class="runner"></div><div class="spark" style="right:12.5%;bottom:33%;animation-delay:-.3s">${SPARK('#ffffff')}</div><div class="spark" style="right:2%;bottom:30%;animation-delay:-.9s">${SPARK('#fff36b')}</div><div class="spark" style="right:11%;bottom:19%;animation-delay:-1.3s">${SPARK('#ffffff')}</div>` : ''}
     ${logo ? `<img class="logo" src="art/logo_anamrun.png" alt="ANAM RUN!">
       <div class="spark" style="left:29%;top:12%">${SPARK('#ffffff')}</div><div class="spark" style="left:70%;top:9%;animation-delay:-.5s">${SPARK('#fff36b')}</div><div class="spark" style="left:68.5%;top:38%;animation-delay:-1.1s">${SPARK('#ffffff')}</div>` : ''}</div>`;
 }
@@ -476,11 +469,10 @@ function setSide(s){
 // 오버레이 띄우기. mode: solid(검은 배경) / choice(영상 위) / failbg / scroll
 function show(html, mode, bg){
   ov.className = 'on ' + (mode || '');
-  ov.style.setProperty('--bg', `url(bg/${bg || 'start'}.png)`);
   ov.innerHTML = html;
   stage.classList.toggle('dim', mode !== 'solid');
-  // 버튼·이름표 글씨를 span으로 감싸서 간판 글씨 효과
-  ov.querySelectorAll('.btn, .tab').forEach(el => { if (!el.querySelector('span')) el.innerHTML = `<span>${el.innerHTML}</span>`; });
+  // 꽉 찬 화면은 타이틀과 같은 그림 배경 (구름·깃발·새·낙엽)
+  if ((mode || '').includes('solid') && !ov.querySelector('.art16')) ov.prepend(document.createRange().createContextualFragment(titleArt(false)));
   const b = ov.querySelector('button'); b && b.focus({preventScroll:true});
 }
 // 화면 전환: 검은 동그라미가 닫혔다가 다음 화면에서 열림
@@ -514,8 +506,9 @@ function go(id){
   clkBase = clk; lastMin = -1;
   drawClock(n && n.p);
 
-  setTimeout(() => cur === id && warm(id === 'start' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
+  setTimeout(() => cur === id && warm(id === 'start' || id === 'tutorial' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
   if (id === 'start') return start();
+  if (id === 'tutorial') return tutorial();
   if (id === 'switch') return toWheel();
   if (id === 'result') return result();
 
@@ -550,7 +543,7 @@ function go(id){
 
   else if (n.t === 'card'){
     const names = ['미디어관','교양관','국제관'];
-    show(`<div class="panel" style="width:min(560px,100%)"><div class="bell"><span>STAGE ${n.p} CLEAR!!</span></div>
+    show(`<div class="panel" style="width:min(560px,100%)"><div class="bell">STAGE ${n.p} CLEAR!</div>
       <div class="win"><div class="tab green">수업 종료</div><h2>${S(id).title ?? n.title}</h2>
       <div class="items">${names.map((x, i) => `<div class="${i < n.p ? 'ok' : i === n.p ? 'now' : ''}">${i + 1}교시 ${x}</div>`).join('')}</div><hr>
       <p class="lead">${S(id).sub ?? n.sub}</p>
@@ -594,7 +587,7 @@ function fail(back, label){
   log[side].path.push(`✕ ${label} — 이동 불가`);
   failing = true; $('#back').hidden = false; sfx('fail');
   const hp = Math.max(0, 3 - log[side].blocked);
-  show(`<div class="panel fail"><div class="hearts">${'♥'.repeat(hp)}<s>${'♥'.repeat(3 - hp)}</s></div><div class="stamp"><span>실패!</span></div>
+  show(`<div class="panel fail"><div class="hearts">${'♥'.repeat(hp)}<s>${'♥'.repeat(3 - hp)}</s></div><div class="stamp">GAME OVER</div>
     <div class="win" style="width:min(560px,100%)"><div class="tab red">GAME OVER</div><h2>계단이다.<br>휠체어로는 지나갈 수 없어.</h2>
     <p class="lead">아까는 아무 생각 없이 고를 수 있던 길이야.</p><hr>
     <div class="menu"><button class="btn" id="b">다른 길 찾기</button></div></div></div>`, 'failbg');
@@ -607,15 +600,50 @@ function start(){
   show(`${titleArt(true)}
     <div class="title-screen">
     <h1 class="sr">ANAM RUN!</h1>
-    <div class="tmenu"><button class="btn" id="b">게임 시작</button><button class="btn" id="info">오늘의 시간표</button></div>
-    <div class="win tinfo" hidden><div class="tab orange">QUEST</div>
-      <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b><br>수업을 들으러 가. 갈림길이 나오면 어느 길로 갈지 골라 줘.</p><hr>
-      <div class="menu"><button class="btn" id="close">닫기</button></div></div>
+    <button class="btn tstart" id="b">등교 시작!</button>
     <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
-  $('#b').onclick = () => { sfx('start'); iris(() => nav('w01')); };
-  $('#info').onclick = () => { ov.querySelector('.tinfo').hidden = false; $('#close').focus(); };
-  $('#close').onclick = () => { ov.querySelector('.tinfo').hidden = true; $('#info').focus(); };
+  $('#b').onclick = () => { sfx('start'); iris(() => nav('tutorial')); };
+}
+
+// 튜토리얼: 오늘의 시간표 설명을 한 글자씩 (클릭·Enter = 바로 다 보이기 / 다음 줄)
+const TUTORIAL = [
+  '오늘은 월요일. 지하철을 타고 안암역에 도착했어.',
+  '오늘 수업은 1교시 미디어관, 2교시 교양관, 3교시 국제관!',
+  '길을 가다 갈림길이 나오면, 어느 쪽으로 갈지 직접 골라 줘.',
+  '수업이 시작하기 전에 강의실에 도착하면 출석, 늦으면 지각이야.',
+  '오른쪽 위 시계를 잘 보면서… 자, 등교 시작!',
+];
+function tutorial(){
+  setSide('walk'); period(0); stage.classList.add('hidehud');
+  show(`<div class="tut"><div class="chr walk" style="height:180px"></div>
+    <div class="win talk"><div class="tab">TUTORIAL</div><p class="lead" id="tl"></p><span class="next" id="nx">▼</span>
+    <div class="menu" id="go" hidden><button class="btn" id="b">출발!</button></div></div></div>`, 'solid sky', 'start');
+  let i = 0, timer = null, full = false;
+  const tl = $('#tl'), nx = $('#nx');
+  const line = () => {
+    const text = TUTORIAL[i]; let k = 0; full = false; nx.hidden = true; tl.textContent = '';
+    clearInterval(timer);
+    timer = setInterval(() => {
+      tl.textContent = text.slice(0, ++k);
+      if (k % 2 && text[k - 1] !== ' ') sfx('blip');
+      if (k >= text.length){ clearInterval(timer); done(); }
+    }, 45);
+  };
+  const done = () => {
+    full = true; tl.textContent = TUTORIAL[i];
+    if (i === TUTORIAL.length - 1){ $('#go').hidden = false; $('#b').focus(); } else nx.hidden = false;
+  };
+  const step = () => {
+    if (!$('#go').hidden) return;
+    if (!full){ clearInterval(timer); return done(); }
+    i++; sfx('move'); line();
+  };
+  ov.querySelector('.talk').onclick = e => { if (!e.target.closest('#b')) step(); };
+  ov.onkeydown = e => { if ((e.code === 'Enter' || e.code === 'Space') && $('#go').hidden){ e.preventDefault(); step(); } };
+  ov.tabIndex = -1; ov.focus();
+  $('#b').onclick = () => { clearInterval(timer); ov.onkeydown = null; sfx('start'); iris(() => nav('w01')); };
+  line();
 }
 
 function toWheel(){
@@ -625,7 +653,6 @@ function toWheel(){
     <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, true)}</span></div>
     <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p><hr>
     <div class="menu"><button class="btn" id="b">다른 학생의 시점 보기</button></div></div></div>`, 'solid sky', 'end');
-  ov.prepend(document.createRange().createContextualFragment(titleArt(false)));
   // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
   $('#b').onclick = () => {
     sfx('reveal'); setSide('wheel');
@@ -659,7 +686,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'KeyM'){ muted = !muted; return; }
   // 메뉴에서 ↑↓로 커서 이동, Enter로 선택 (게임처럼)
   if (ov.classList.contains('on') && (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight')){
-    const items = [...ov.querySelectorAll('.menu button, .tmenu button')].filter(b => b.offsetParent); if (!items.length) return;
+    const items = [...ov.querySelectorAll('.menu button')].filter(b => b.offsetParent); if (!items.length) return;
     e.preventDefault();
     const i = items.indexOf(document.activeElement), d = e.code === 'ArrowDown' || e.code === 'ArrowRight' ? 1 : -1;
     items[(i + d + items.length) % items.length].focus(); sfx('move'); return;
