@@ -581,6 +581,7 @@ function drawClock(p, hurry){
 
 // 지금 재생 위치에 맞는 자막 보여주기
 let lastCue = null;
+const WALK_RATE = 1.4;   // 걷기 쪽 영상 배속
 let typeTimer = null;
 function renderSub(){
   const cues = S(cur).cues || [];
@@ -596,7 +597,7 @@ function renderSub(){
       t.data = text.slice(0, ++k);
       if (k % 2 && text[k - 1] !== ' ') sfx('blip');
       if (k >= text.length) clearInterval(typeTimer);
-    }, 32);
+    }, side === 'walk' ? 22 : 32);
     subEl.className = 'show' + (c.text.startsWith('✅') ? ' good' : c.text.startsWith('⏰') ? ' late' : '');
   }
   if (!c){ subEl.className = ''; clearInterval(typeTimer); }
@@ -676,6 +677,8 @@ function go(id){
       delete pool[n.src]; v.pause(); v.remove();
       v = ready; v.classList.remove('pre'); bindV(v); v.currentTime = 0;
     } else v.src = `videos/${n.src}.mp4`;
+    // 1부(걷기)는 빨리 감기로 후루룩, 2부(휠체어)는 원래 속도
+    v.defaultPlaybackRate = v.playbackRate = side === 'walk' ? WALK_RATE : 1;
     // 브라우저가 자동재생을 막으면 재생 버튼을 띄움
     v.play().catch(() => {
       show(`<div class="panel play"><div class="win"><div class="menu"><button class="btn" id="b">재생</button></div></div></div>`, 'choice');
