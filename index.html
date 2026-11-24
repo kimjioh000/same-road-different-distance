@@ -22,7 +22,7 @@ button:focus-visible{outline:0}
 .btn:focus-visible{filter:brightness(1.1)}
 
 /* RPG 메시지 창 */
-#clock,.ctrl button,.timeline span,.col{--win:linear-gradient(#4566e6,#1b2a8f);background:var(--win);color:#fff;
+.ctrl button,.timeline span,.col{--win:linear-gradient(#4566e6,#1b2a8f);background:var(--win);color:#fff;
   box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 0 0 3px #fff,inset 0 0 0 6px rgba(0,0,0,.25),3px 6px 0 0 rgba(0,0,0,.4)}
 /* 계단 모서리 픽셀 테두리: --bc 테두리색, --fill 채움색 */
 .px,#sub em,#sub span,.btn,#ov.sky .lead,.col h3{background:var(--fill,#fff);
@@ -77,17 +77,16 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 #loc b{font-size:18px;font-weight:700;color:#fff;text-shadow:var(--ts)}
 /* 시계: 오른쪽 위 게임 시계 박스 */
 #clock{position:absolute;right:24px;top:54px;z-index:4;pointer-events:none;text-align:right;padding:12px 16px 10px;
-  --fill:rgba(28,24,48,.88);--bc:var(--cream);--shade:rgba(0,0,0,.3);color:var(--cream);transform-origin:right top}
+  --fr:var(--cream);background:#141414;color:#fff;transform-origin:right top;
+  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 0 0 3px var(--fr),inset 0 0 0 6px #141414,3px 6px 0 0 rgba(0,0,0,.4)}
 #clock[hidden]{display:none}
 #clock .t{font-size:30px;font-weight:700;letter-spacing:.04em;line-height:1.05}
-#clock .r{font-size:13px;font-weight:700;color:#cfe0ff;margin-top:4px}
-#clock .t{text-shadow:2px 2px 0 #0b1250}
+#clock .r{font-size:13px;font-weight:700;color:var(--yellow);margin-top:4px}
 #clock.alert{animation:tick .5s steps(2) 4}
 @keyframes tick{50%{transform:scale(1.1) rotate(-2deg)}}
-#clock.warn,#clock.warn .r{color:var(--yellow)}
-#clock.panic,#clock.late{--win:linear-gradient(#ff5a4a,#a3121c)}
-#clock.panic .r,#clock.late .r{color:#ffe0dc}
-#clock.panic{animation:panic .8s steps(1) infinite}
+#clock.warn{--fr:var(--orange)}#clock.warn .t,#clock.warn .r{color:var(--orange)}
+#clock.panic,#clock.late{--fr:var(--red)}#clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:var(--red)}
+#clock.panic .t{animation:panic .8s steps(1) infinite}
 @keyframes panic{50%{opacity:.4}}
 
 /* 하단 재생바: 마우스를 움직이면 나타남 */
@@ -104,11 +103,14 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 /* 오버레이: 선택지·카드·실패·결과 */
 #ov{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:80px 20px 40px}
 #ov.on{display:flex}
-#ov.solid{background-color:#0e0b2e;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' shape-rendering='crispEdges'%3E%3Cg fill='%23140f33'%3E%3Crect x='0' y='18' width='18' height='22'/%3E%3Crect x='18' y='10' width='12' height='30'/%3E%3Crect x='30' y='22' width='22' height='18'/%3E%3Crect x='52' y='6' width='10' height='34'/%3E%3Crect x='56' y='1' width='2' height='5'/%3E%3Crect x='62' y='16' width='26' height='24'/%3E%3Crect x='88' y='12' width='14' height='28'/%3E%3Crect x='102' y='20' width='18' height='20'/%3E%3C/g%3E%3Cg fill='%23ffd23f'%3E%3Crect x='3' y='22' width='2' height='2'/%3E%3Crect x='9' y='28' width='2' height='2'/%3E%3Crect x='21' y='14' width='2' height='2'/%3E%3Crect x='25' y='24' width='2' height='2'/%3E%3Crect x='35' y='27' width='2' height='2'/%3E%3Crect x='55' y='12' width='2' height='2'/%3E%3Crect x='55' y='20' width='2' height='2'/%3E%3Crect x='66' y='20' width='2' height='2'/%3E%3Crect x='74' y='26' width='2' height='2'/%3E%3Crect x='80' y='20' width='2' height='2'/%3E%3Crect x='92' y='16' width='2' height='2'/%3E%3Crect x='97' y='30' width='2' height='2'/%3E%3Crect x='108' y='25' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='7' y='12' width='1' height='1'/%3E%3Crect x='33' y='5' width='1' height='1'/%3E%3Crect x='58' y='22' width='1' height='1'/%3E%3Crect x='81' y='9' width='1' height='1'/%3E%3Crect x='19' y='41' width='1' height='1'/%3E%3Crect x='70' y='48' width='1' height='1'/%3E%3Crect x='45' y='63' width='1' height='1'/%3E%3Crect x='92' y='70' width='1' height='1'/%3E%3Crect x='12' y='80' width='1' height='1'/%3E%3C/g%3E%3Cg fill='%23ffd23f'%3E%3Crect x='50' y='37' width='1' height='1'/%3E%3Crect x='88' y='33' width='1' height='1'/%3E%3Crect x='27' y='90' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(#0e0b2e 0 28%,#1d1552 28% 46%,#33207a 46% 62%,#5a2d8f 62% 76%,#8a3a8f 76% 87%,#c2457a 87%);
-  background-repeat:repeat-x,repeat,no-repeat;background-size:360px 120px,300px 300px,100% 100%;
-  background-position:left bottom,0 0,0 0}
+#ov.solid{background-color:#3fa9e0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' shape-rendering='crispEdges'%3E%3Cg fill='%237d8db8'%3E%3Crect x='0' y='18' width='18' height='22'/%3E%3Crect x='30' y='22' width='22' height='18'/%3E%3Crect x='62' y='16' width='26' height='24'/%3E%3Crect x='102' y='20' width='18' height='20'/%3E%3C/g%3E%3Cg fill='%23b5654a'%3E%3Crect x='18' y='10' width='12' height='30'/%3E%3Crect x='52' y='6' width='10' height='34'/%3E%3Crect x='56' y='1' width='2' height='5'/%3E%3Crect x='88' y='12' width='14' height='28'/%3E%3C/g%3E%3Cg fill='%23dff3ff'%3E%3Crect x='3' y='22' width='2' height='2'/%3E%3Crect x='9' y='28' width='2' height='2'/%3E%3Crect x='21' y='14' width='2' height='2'/%3E%3Crect x='25' y='24' width='2' height='2'/%3E%3Crect x='35' y='27' width='2' height='2'/%3E%3Crect x='55' y='12' width='2' height='2'/%3E%3Crect x='55' y='20' width='2' height='2'/%3E%3Crect x='66' y='20' width='2' height='2'/%3E%3Crect x='74' y='26' width='2' height='2'/%3E%3Crect x='80' y='20' width='2' height='2'/%3E%3Crect x='92' y='16' width='2' height='2'/%3E%3Crect x='97' y='30' width='2' height='2'/%3E%3Crect x='108' y='25' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),
+    linear-gradient(to top,#2f7d22 0 14px,#4caf32 14px 22px,transparent 22px),
+    linear-gradient(#3fa9e0 0 22%,#55bbe9 22% 42%,#70c9ef 42% 60%,#8fd6f3 60% 76%,#b0e3f7 76%);
+  background-repeat:repeat-x,no-repeat,no-repeat,no-repeat,no-repeat;
+  background-size:360px 120px,224px 84px,160px 60px,100% 100%,100% 100%;
+  background-position:left calc(100% - 22px),8% 12%,88% 22%,0 0,0 0}
+#ov.solid .lead,#ov.solid .note{text-shadow:var(--ts)}
 .panel{position:relative;z-index:1;width:min(760px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
 .kicker{font-size:14px;font-weight:700;letter-spacing:.14em;color:var(--yellow);text-shadow:var(--ts)}
@@ -240,7 +242,7 @@ let v = $('#v');   // 지금 보이는 영상 (미리 받아 둔 영상과 바�
 
 // 픽셀 필터: 영상을 세로 PXH칸으로 줄였다가 크게 늘려서 도트처럼 보이게 함
 const PXH = 240, px = $('#px'), pxc = px.getContext('2d');
-let pixelOn = true;
+let pixelOn = false;   // 기본은 끔, P 키로 켬
 (function drawPx(){
   requestAnimationFrame(drawPx);
   if (!pixelOn || v.readyState < 2 || !v.videoWidth) return;
