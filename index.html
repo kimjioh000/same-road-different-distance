@@ -22,7 +22,34 @@ b,strong,h1,h2,h3{font-weight:normal}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 button:focus-visible{outline:0}
 
-/* 메뉴 항목: 상자 없이 글씨만, 고르면 슬라임 커서 */
+/* 게임 창: 크림색 테두리 + 어두운 바깥선, 계단 모서리 */
+.win,#clock,#loc{position:relative;background:rgba(26,21,46,.92);color:#fff;text-shadow:0 2px 0 #0e0a1c;
+  box-shadow:0 -3px 0 0 #f4efe6,0 3px 0 0 #f4efe6,-3px 0 0 0 #f4efe6,3px 0 0 0 #f4efe6,
+    0 -6px 0 0 #0e0a1c,0 6px 0 0 #0e0a1c,-6px 0 0 0 #0e0a1c,6px 0 0 0 #0e0a1c,-3px -3px 0 0 #0e0a1c,3px -3px 0 0 #0e0a1c,-3px 3px 0 0 #0e0a1c,3px 3px 0 0 #0e0a1c,
+    9px 12px 0 0 rgba(0,0,0,.35)}
+.win{padding:26px 30px 22px;width:100%;display:grid;gap:16px;text-align:left}
+.win .tab{position:absolute;left:22px;top:-20px;padding:5px 14px 4px;font-size:16px;letter-spacing:.12em;background:var(--red);color:#fff;text-shadow:0 2px 0 var(--red3);
+  box-shadow:0 -3px 0 0 #0e0a1c,0 3px 0 0 #0e0a1c,-3px 0 0 0 #0e0a1c,3px 0 0 0 #0e0a1c}
+.wheelside .win .tab{background:var(--orange);color:var(--ink);text-shadow:none}
+.win h2{font-size:clamp(22px,2.6vw,32px);text-shadow:0 2px 0 #0e0a1c}
+.win .lead{font-size:clamp(16px,1.7vw,20px);text-shadow:0 2px 0 #0e0a1c;line-height:1.7}
+.win hr{border:0;height:3px;margin:2px 0;background:repeating-linear-gradient(90deg,rgba(244,239,230,.35) 0 6px,transparent 6px 12px)}
+/* 메뉴 목록: 고른 줄은 밝게 + 슬라임 커서 */
+.menu{display:grid;gap:4px}
+.menu .btn,.menu .opt{display:block;width:100%;text-align:left;padding:10px 16px 9px 52px;font-size:clamp(20px,2.2vw,26px)}
+.menu .btn::before,.menu .opt span::before{left:14px}
+.menu .opt span::before{left:-38px}
+.menu .btn:hover,.menu .btn:focus,.menu .opt:hover,.menu .opt:focus-visible{background:rgba(244,239,230,.13)}
+.menu .opt small{display:none}
+/* 아이템 목록 (교시 시간표) */
+.items{display:grid;gap:8px;font-size:clamp(17px,1.8vw,22px)}
+.items div{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.55)}
+.items div::before{content:"";width:14px;height:14px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
+.items div.ok{color:#fff}
+.items div.ok::before{background:var(--teal);box-shadow:inset 0 0 0 3px #0e0a1c}
+.wheelside .items div.ok::before{background:var(--orange)}
+.items div.now{color:var(--hi)}
+/* 메뉴 항목: 고르면 슬라임 커서 */
 .btn,.opt,.ctrl button{position:relative;color:var(--fg);text-shadow:var(--ts);transition:color .1s steps(2)}
 .btn::before,.opt span::before{content:"";position:absolute;width:1.1em;height:1.1em;left:-1.5em;top:50%;margin-top:-.6em;
   background:var(--cur) no-repeat center/contain;image-rendering:pixelated;visibility:hidden}
@@ -68,16 +95,16 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 #sub span::after{content:"▼";position:absolute;right:16px;bottom:9px;font-size:12px;animation:blink .8s steps(1) infinite}
 #sub.late span{color:#c81e2a}
 /* 위치 자막 */
-#loc{position:absolute;left:22px;top:104px;z-index:4;pointer-events:none;display:flex;gap:10px;align-items:baseline;
+#loc{position:absolute;left:28px;top:104px;padding:8px 14px 6px;z-index:4;pointer-events:none;display:flex;gap:10px;align-items:baseline;
   opacity:0;transform:translateX(-10px);transition:.3s steps(4)}
 #loc.show{opacity:1;transform:none}
-#loc i{font-style:normal;font-size:16px;color:var(--teal);text-shadow:var(--tv)}
+#loc i{font-style:normal;font-size:16px;color:var(--teal)}
 .wheelside #loc i{color:var(--orange)}
-#loc b{font-size:20px;color:#fff;text-shadow:var(--tv)}
+#loc b{font-size:20px;color:#fff}
 /* 시계: 상자 없이 큰 숫자 */
-#clock{position:absolute;right:26px;top:52px;z-index:4;pointer-events:none;text-align:right;color:#fff;text-shadow:var(--tv);transform-origin:right top}
+#clock{position:absolute;right:30px;top:56px;z-index:4;pointer-events:none;text-align:right;padding:12px 16px 10px;transform-origin:right top}
 #clock[hidden]{display:none}
-#clock .t{font-size:40px;letter-spacing:.02em;line-height:1}
+#clock .t{font-size:36px;letter-spacing:.02em;line-height:1}
 #clock .r{font-size:16px;color:var(--dim);margin-top:6px}
 #clock.alert{animation:tick .5s steps(2) 4}
 @keyframes tick{50%{transform:scale(1.1) rotate(-2deg)}}
@@ -99,26 +126,8 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 /* 오버레이 */
 #ov{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:80px 20px 40px}
 #ov.on{display:flex}
-/* 낮 하늘 + 구름 + 캠퍼스 건물 + 풀밭 */
-#ov.solid{background-color:#5cc6ec;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8' shape-rendering='crispEdges'%3E%3Cg fill='%233a3452'%3E%3Crect x='0' y='5' width='16' height='3'/%3E%3Crect x='1' y='2' width='1' height='3'/%3E%3Crect x='3' y='3' width='1' height='2'/%3E%3Crect x='5' y='1' width='1' height='4'/%3E%3Crect x='6' y='3' width='1' height='2'/%3E%3Crect x='8' y='2' width='1' height='3'/%3E%3Crect x='10' y='0' width='1' height='5'/%3E%3Crect x='11' y='3' width='1' height='2'/%3E%3Crect x='13' y='2' width='1' height='3'/%3E%3Crect x='15' y='3' width='1' height='2'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(to top,transparent 0 22px,#5d8c4f 22px 54px,#79a862 54px 60px,#9cc77a 60px 63px,transparent 63px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' shape-rendering='crispEdges'%3E%3Cg fill='%239aa3c4'%3E%3Crect x='0' y='18' width='18' height='22'/%3E%3Crect x='30' y='22' width='22' height='18'/%3E%3Crect x='62' y='16' width='26' height='24'/%3E%3Crect x='102' y='20' width='18' height='20'/%3E%3C/g%3E%3Cg fill='%23c26a4f'%3E%3Crect x='18' y='10' width='12' height='30'/%3E%3Crect x='52' y='6' width='10' height='34'/%3E%3Crect x='56' y='1' width='2' height='5'/%3E%3Crect x='88' y='12' width='14' height='28'/%3E%3C/g%3E%3Cg fill='%23dff3ff'%3E%3Crect x='3' y='22' width='2' height='2'/%3E%3Crect x='9' y='28' width='2' height='2'/%3E%3Crect x='21' y='14' width='2' height='2'/%3E%3Crect x='25' y='24' width='2' height='2'/%3E%3Crect x='35' y='27' width='2' height='2'/%3E%3Crect x='55' y='12' width='2' height='2'/%3E%3Crect x='55' y='20' width='2' height='2'/%3E%3Crect x='66' y='20' width='2' height='2'/%3E%3Crect x='74' y='26' width='2' height='2'/%3E%3Crect x='80' y='20' width='2' height='2'/%3E%3Crect x='92' y='16' width='2' height='2'/%3E%3Crect x='97' y='30' width='2' height='2'/%3E%3Crect x='108' y='25' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),
-    linear-gradient(#45b4e6 0%,#5cc6ec 45%,#9fdcf4 100%);
-  background-repeat:repeat-x,no-repeat,repeat-x,no-repeat,no-repeat,no-repeat,no-repeat;
-  background-size:64px 32px,100% 100%,360px 120px,256px 96px,192px 72px,128px 48px,100% 100%;
-  background-position:left bottom,0 0,left calc(100% - 63px),6% 12%,90% 8%,76% 40%,0 0}
-/* 타이틀 화면: 건물 없이 넓은 풀밭 */
-#ov.sky{padding:40px 20px 110px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8' shape-rendering='crispEdges'%3E%3Cg fill='%233a3452'%3E%3Crect x='0' y='5' width='16' height='3'/%3E%3Crect x='1' y='2' width='1' height='3'/%3E%3Crect x='3' y='3' width='1' height='2'/%3E%3Crect x='5' y='1' width='1' height='4'/%3E%3Crect x='6' y='3' width='1' height='2'/%3E%3Crect x='8' y='2' width='1' height='3'/%3E%3Crect x='10' y='0' width='1' height='5'/%3E%3Crect x='11' y='3' width='1' height='2'/%3E%3Crect x='13' y='2' width='1' height='3'/%3E%3Crect x='15' y='3' width='1' height='2'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(to top,transparent 0 22px,#5d8c4f 22px 96px,#6f9d58 96px 120px,#86b76a 120px 126px,#a6d283 126px 129px,transparent 129px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='10' y='0' width='7' height='2'/%3E%3Crect x='19' y='2' width='6' height='2'/%3E%3Crect x='6' y='2' width='20' height='3'/%3E%3Crect x='2' y='5' width='28' height='3'/%3E%3Crect x='0' y='7' width='32' height='3'/%3E%3C/g%3E%3Crect x='0' y='10' width='32' height='2' fill='%23cdeaf7'/%3E%3C/svg%3E"),
-    linear-gradient(#45b4e6 0%,#5cc6ec 45%,#9fdcf4 100%);
-  background-repeat:repeat-x,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat;
-  background-size:64px 32px,100% 100%,256px 96px,192px 72px,128px 48px,100% 100%;
-  background-position:left bottom,0 0,6% 12%,90% 8%,76% 40%,0 0;
-  animation:drift 40s steps(80) infinite alternate}
-@keyframes drift{to{background-position:left bottom,0 0,12% 12%,84% 8%,70% 40%,0 0}}
+/* 배경: 우리 영상 장면을 픽셀아트로 바꾼 그림 (bg/*.png) */
+#ov.solid{background:linear-gradient(rgba(14,10,28,.2),rgba(14,10,28,.5)),var(--bg,url(bg/start.png)) center/cover;image-rendering:pixelated}
 .panel{position:relative;z-index:1;width:min(780px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
 .kicker{font-size:16px;letter-spacing:.16em;color:#fff;text-shadow:var(--ts)}
@@ -132,18 +141,17 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 .press{font-size:16px;letter-spacing:.2em;color:#fff;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
 
 /* 선택지: 영상 가운데 */
-#ov.choice{align-items:center;background:radial-gradient(ellipse at center,rgba(20,14,36,.6),transparent 70%)}
+#ov.choice{align-items:center;background:rgba(14,10,28,.25)}
+#ov.choice .panel{width:min(760px,100%)}
 #ov.choice h2{font-size:clamp(24px,3vw,36px);text-shadow:var(--tv)}
 #ov.choice .kicker{text-shadow:var(--tv);color:var(--hi)}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;margin-top:10px}
-.opt{padding:14px 18px;font-size:clamp(22px,2.6vw,32px);text-shadow:var(--tv)}
+
+.opt{font-size:clamp(22px,2.6vw,32px)}
 .opt span{position:relative}
 .opt:not(:hover):not(:focus-visible){color:var(--dim)}
 .opt small{display:block;font-size:16px;opacity:.75;margin-bottom:6px;color:#fff}
 
 .spr{display:block;image-rendering:pixelated}
-.ground{position:absolute;left:0;right:0;bottom:96px;display:flex;justify-content:space-between;padding:0 10%;pointer-events:none}
-.ground .spr{animation:hop .6s steps(1) infinite}
 @keyframes hop{50%{transform:translateY(-3px)}}
 .reveal .spr{animation:flash .5s steps(2) 3}
 @keyframes flash{50%{filter:brightness(3)}}
@@ -170,9 +178,8 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 .wheelside .timeline span.ok .ic{color:var(--orange)}
 
 /* 결과 비교 */
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:26px;width:100%;text-align:left}
-.col{padding:20px;display:grid;gap:12px;align-content:start;justify-items:start;background:rgba(42,33,64,.86);
-  box-shadow:0 -3px 0 0 rgba(42,33,64,.86),0 3px 0 0 rgba(42,33,64,.86),-3px 0 0 0 rgba(42,33,64,.86),3px 0 0 0 rgba(42,33,64,.86)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;text-align:left}
+.col{align-content:start;justify-items:start;gap:12px}
 .col .spr{justify-self:center}
 .col h3{margin:0;font-size:24px;justify-self:center;color:var(--teal);text-shadow:var(--ts)}
 .col.wheel h3{color:var(--orange)}
@@ -192,8 +199,7 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:0 3px 0 v
 @keyframes irisC{from{width:220vmax;height:220vmax}to{width:0;height:0}}
 
 @media (max-width:640px){
-  .tt{display:none}.choices,.compare{grid-template-columns:1fr}
-  .ground .spr{width:36px;height:auto}
+  .tt{display:none}.compare{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -391,8 +397,9 @@ function setSide(s){
   stage.classList.toggle('wheelside', s === 'wheel');
 }
 // 오버레이 띄우기. mode: solid(검은 배경) / choice(영상 위) / failbg / scroll
-function show(html, mode){
+function show(html, mode, bg){
   ov.className = 'on ' + (mode || '');
+  ov.style.setProperty('--bg', `url(bg/${bg || 'start'}.png)`);
   ov.innerHTML = html;
   stage.classList.toggle('dim', mode !== 'solid');
   const b = ov.querySelector('button'); b && b.focus({preventScroll:true});
@@ -442,7 +449,7 @@ function go(id){
     } else v.src = `videos/${n.src}.mp4`;
     // 브라우저가 자동재생을 막으면 재생 버튼을 띄움
     v.play().catch(() => {
-      show(`<div class="panel"><button class="btn" id="b">재생</button></div>`, 'choice');
+      show(`<div class="panel" style="width:min(320px,100%)"><div class="win"><div class="menu"><button class="btn" id="b">재생</button></div></div></div>`, 'choice');
       $('#b').onclick = () => { hide(); v.play(); };
     });
     log[side].path.push(label(id));
@@ -453,8 +460,8 @@ function go(id){
   }
 
   else if (n.t === 'choice'){
-    show(`<div class="panel"><div class="kicker">CHOICE</div><h2>${S(id).q ?? n.q}</h2>
-      <div class="choices">${n.opts.map(([l], i) => `<button class="opt" data-i="${i}"><small>${'AB'[i]}</small><span>${S(id).opts?.[i] ?? l}</span></button>`).join('')}</div></div>`, 'choice');
+    show(`<div class="panel"><div class="win"><div class="tab">CHOICE</div><h2>${S(id).q ?? n.q}</h2><hr>
+      <div class="menu">${n.opts.map(([l], i) => `<button class="opt" data-i="${i}"><small>${'AB'[i]}</small><span>${S(id).opts?.[i] ?? l}</span></button>`).join('')}</div></div></div>`, 'choice');
     ov.querySelectorAll('.opt').forEach(b => b.onclick = () => {
       const [l, to] = n.opts[b.dataset.i];
       log[side].choices++;
@@ -464,9 +471,11 @@ function go(id){
 
   else if (n.t === 'card'){
     const names = ['미디어관','교양관','국제관'];
-    show(`<div class="panel"><div class="bell">STAGE ${n.p} CLEAR · 수업 종료</div><h2>${S(id).title ?? n.title}</h2>
-      <div class="timeline">${names.map((x, i) => `<span class="${i < n.p ? 'ok' : ''}">${i + 1}교시 ${x}${i < n.p ? icon('check') : ''}</span>`).join('')}</div>
-      <p class="lead">${S(id).sub ?? n.sub}</p><button class="btn" id="b">다음 수업으로</button></div>`, 'solid');
+    show(`<div class="panel" style="width:min(560px,100%)"><div class="bell">STAGE ${n.p} CLEAR</div>
+      <div class="win"><div class="tab">수업 종료</div><h2>${S(id).title ?? n.title}</h2>
+      <div class="items">${names.map((x, i) => `<div class="${i < n.p ? 'ok' : i === n.p ? 'now' : ''}">${i + 1}교시 ${x}</div>`).join('')}</div><hr>
+      <p class="lead">${S(id).sub ?? n.sub}</p>
+      <div class="menu"><button class="btn" id="b">다음 수업으로</button></div></div></div>`, 'solid', `p${n.p}`);
     $('#b').onclick = () => iris(() => nav(n.next));
     sfx('clear');
   }
@@ -507,9 +516,9 @@ function fail(back, label){
   failing = true; $('#back').hidden = false; sfx('fail');
   const hp = Math.max(0, 3 - log[side].blocked);
   show(`<div class="panel fail"><div class="hearts">${'♥'.repeat(hp)}<s>${'♥'.repeat(3 - hp)}</s></div><div class="stamp">실패!</div>
-    <h2>계단이다.<br>휠체어로는 지나갈 수 없어.</h2>
-    <p class="lead">아까는 아무 생각 없이 고를 수 있던 길이야.</p>
-    <button class="btn" id="b">다른 길 찾기</button></div>`, 'failbg');
+    <div class="win" style="width:min(560px,100%)"><div class="tab">GAME OVER</div><h2>계단이다.<br>휠체어로는 지나갈 수 없어.</h2>
+    <p class="lead">아까는 아무 생각 없이 고를 수 있던 길이야.</p><hr>
+    <div class="menu"><button class="btn" id="b">다른 길 찾기</button></div></div></div>`, 'failbg');
   $('#b').onclick = () => go(back);
 }
 
@@ -518,19 +527,20 @@ function start(){
   log = {walk:blank(), wheel:blank()};
   show(`<div class="panel"><div class="kicker">사회조사방법 8조 · TODAY'S QUEST</div>
     <h1 class="big">3교시까지<br>수업 들으러 가기</h1>
-    <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b> 수업을 들으러 가.<br>갈림길이 나오면 어느 길로 갈지 직접 골라 줘.</p>
-    <button class="btn" id="b">오늘의 시간표 시작</button>
-    </div><div class="ground">${sprite('walk')}</div>`, 'solid sky');
+    <div class="win" style="width:min(640px,100%)"><div class="tab">QUEST</div>
+    <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b><br>수업을 들으러 가. 갈림길이 나오면 어느 길로 갈지 골라 줘.</p><hr>
+    <div class="menu"><button class="btn" id="b">오늘의 시간표 시작</button></div></div>
+    </div>`, 'solid sky', 'start');
   $('#b').onclick = () => { sfx('start'); iris(() => nav('w01')); };
 }
 
 function toWheel(){
   period(4); sfx('clear');
   // 1단계: 평범한 캠퍼스 투어가 끝난 것처럼
-  show(`<div class="panel"><div class="kicker">QUEST CLEAR</div><h2>3교시까지 수업 듣기 완료!</h2>
+  show(`<div class="panel" style="width:min(620px,100%)"><div class="win"><div class="tab kicker">QUEST CLEAR</div><h2>3교시까지 수업 듣기 완료!</h2>
     <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, '#0b0a16')}</span></div>
-    <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p>
-    <button class="btn" id="b">다른 학생의 시점 보기</button></div>`, 'solid');
+    <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p><hr>
+    <div class="menu"><button class="btn" id="b">다른 학생의 시점 보기</button></div></div></div>`, 'solid', 'end');
   // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
   $('#b').onclick = () => {
     sfx('reveal'); setSide('wheel');
@@ -546,7 +556,7 @@ function toWheel(){
 
 function result(){
   period(4); stage.classList.add('hidehud');
-  const col = (k, name) => { const r = log[k]; return `<div class="col ${k}">${sprite(k, 5)}<h3>${name}</h3>
+  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 5)}<h3>${name}</h3>
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
     <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
@@ -554,13 +564,20 @@ function result(){
     <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
     <div class="compare">${col('walk','나 (비장애 학생)')}${col('wheel','휠체어 이용 학생')}</div>
     <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
-    <div class="row"><button class="btn" id="b">처음부터 다시</button></div></div>`, 'solid scroll');
+    <div class="win" style="width:min(360px,100%)"><div class="menu"><button class="btn" id="b">처음부터 다시</button></div></div></div>`, 'solid scroll', 'end');
   $('#b').onclick = () => { hist = []; go('start'); };
 }
 
 // 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로, M = 효과음 끄기/켜기, P = 픽셀 필터 끄기/켜기
 document.addEventListener('keydown', e => {
   if (e.code === 'KeyM'){ muted = !muted; return; }
+  // 메뉴에서 ↑↓로 커서 이동, Enter로 선택 (게임처럼)
+  if (ov.classList.contains('on') && (e.code === 'ArrowUp' || e.code === 'ArrowDown')){
+    const items = [...ov.querySelectorAll('.menu button')]; if (!items.length) return;
+    e.preventDefault();
+    const i = items.indexOf(document.activeElement), d = e.code === 'ArrowDown' ? 1 : -1;
+    items[(i + d + items.length) % items.length].focus(); sfx('move'); return;
+  }
   if (e.code === 'KeyP'){ pixelOn = !pixelOn; px.hidden = !pixelOn; return; }
   if (e.code === 'Backspace' && !$('#back').hidden){ e.preventDefault(); return back(); }
   if (G[cur]?.t !== 'video' || ov.classList.contains('on')) return;
