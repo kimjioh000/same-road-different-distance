@@ -188,6 +188,10 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .tut{position:absolute;inset:0;z-index:1}
 /* 튜토리얼: 까만 화면에 대화창만, 아래에 넓게 */
 #ov.tutbg{background:#000}
+.win.talk{transform:translateY(calc(100% + 8vh));transition:transform .4s steps(6)}
+.win.talk.up{transform:none}
+#fade{position:fixed;inset:0;z-index:50;background:#000;pointer-events:none;transition:opacity 1.1s steps(8)}
+#fade.go{opacity:0}
 #ov:focus{outline:0}
 .win.talk{position:absolute;left:3%;right:3%;bottom:4%;width:auto;cursor:pointer;min-height:150px;align-content:start;padding:30px 36px 24px}
 .win.talk .lead{font-size:clamp(18px,1.9vw,24px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0;word-break:keep-all}
@@ -767,8 +771,21 @@ function tutorial(){
   ov.querySelector('.talk').onclick = e => { if (!e.target.closest('#b')) step(); };
   ov.onkeydown = e => { if ((e.code === 'Enter' || e.code === 'Space') && $('#go').hidden){ e.preventDefault(); step(); } };
   ov.tabIndex = -1; ov.focus();
-  $('#b').onclick = () => { clearInterval(timer); ov.onkeydown = null; sfx('start'); iris(() => nav('w01')); };
-  line();
+  // 끝: 대화창이 아래로 내려가고 → 까만 화면에서 게임 화면이 픽셀처럼 서서히 밝아짐
+  $('#b').onclick = () => {
+    clearInterval(timer); ov.onkeydown = null; sfx('start');
+    ov.querySelector('.talk').classList.remove('up');
+    setTimeout(() => fadeIn(() => nav('w01')), 500);
+  };
+  // 처음: 까만 화면 2초 뒤 대화창이 아래에서 올라오고 글자 시작
+  const talk = ov.querySelector('.talk');
+  setTimeout(() => { if (cur !== 'tutorial') return; talk.classList.add('up'); sfx('move'); setTimeout(() => cur === 'tutorial' && line(), 450); }, 2000);
+}
+// 까만 화면에서 서서히 밝아지며 넘어가기
+function fadeIn(cb){
+  const el = document.createElement('div'); el.id = 'fade'; document.body.append(el);
+  cb(); requestAnimationFrame(() => el.classList.add('go'));
+  setTimeout(() => el.remove(), 1300);
 }
 
 function toWheel(){
