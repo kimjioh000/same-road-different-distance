@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>같은 길, 다른 거리</title>
+<title>3교시까지 수업 들으러 가기</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.39.2/dist/galmuri.css">
 <style>
 /* 픽셀 게임 스타일: 레트로 게임 타이틀·대화창·캐릭터 선택 화면 참고 (Galmuri 픽셀 폰트) */
@@ -159,16 +159,7 @@ h2{font-size:clamp(24px,4vw,40px);line-height:1.35;margin:0;font-weight:700;text
 
 #ov.sky{padding:40px 20px 76px}
 #ov.sky .panel{gap:14px}
-#ov.sky h1{font-size:clamp(40px,8vw,84px);line-height:1.1}
-/* 시작 화면 퀘스트 리본 */
-.quest{position:relative;display:grid;gap:4px;padding:10px 30px 8px;font-size:clamp(18px,2.4vw,26px);font-weight:700;
-  background:#e8590c;color:#fff;text-shadow:2px 2px 0 #7a2a00;
-  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000,inset 0 -3px 0 0 #b84400,inset 0 3px 0 0 #ff8a3d,3px 6px 0 0 rgba(0,0,0,.35)}
-.quest small{font-size:12px;letter-spacing:.2em;color:var(--yellow);text-shadow:2px 2px 0 #000}
-.quest::before,.quest::after{content:"";position:absolute;top:12px;width:18px;height:calc(100% - 12px);background:#b84400;z-index:-1;
-  box-shadow:0 -3px 0 0 #000,0 3px 0 0 #000,-3px 0 0 0 #000,3px 0 0 0 #000}
-.quest::before{left:-18px}.quest::after{right:-18px}
-
+#ov.sky h1{font-size:clamp(34px,6.6vw,76px);line-height:1.15;margin-bottom:12px}
 /* 실패 화면: GAME OVER */
 .fail{animation:shake .45s steps(6) both}
 @keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
@@ -507,9 +498,8 @@ function fail(back, label){
 function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
-  show(`<div class="panel"><div class="kicker">사회조사방법 8조</div>
-    <h1 class="big">같은 길,<br>다른 거리</h1>
-    <div class="quest"><small>TODAY'S QUEST</small>3교시까지 수업 들으러 가기</div>
+  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · TODAY'S QUEST</div>
+    <h1 class="big">3교시까지<br>수업 들으러 가기</h1>
     <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b> 수업을 들으러 가.<br>갈림길이 나오면 어느 길로 갈지 직접 골라 줘.</p>
     <div class="press">PRESS START</div>
     <button class="btn" id="b">▶ 오늘의 시간표 시작</button>
