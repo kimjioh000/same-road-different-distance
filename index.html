@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>3교시까지 수업 들으러 가기</title>
+<title>안암 RUN</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.39.2/dist/galmuri.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 <style>
 /* 레트로 게임 타이틀 화면 느낌 (모브사이코 100 타이틀 참고): 상자 없이 장면 위에 하얀 글씨, 보라 그림자, 빨간 입체 제목, 슬라임 커서 */
 :root{
@@ -138,12 +139,21 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 /* 배경: 우리 영상 장면을 픽셀아트로 바꾼 그림 (bg/*.png) */
 #ov.solid{background:linear-gradient(rgba(14,10,28,.2),rgba(14,10,28,.5)),var(--bg,url(bg/start.png)) center/cover;image-rendering:pixelated}
 /* 일러스트 배경 */
-#ov.sky{background:#5fc2ee;overflow:hidden}
-.scene{position:absolute;inset:0;z-index:0}
-.scene canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+#ov.sky{background:#3fa9e8 url(art/title_bg.png) center 60%/cover no-repeat;overflow:hidden}
+.chr{display:block;image-rendering:auto}
+.chr.sil{filter:brightness(0) opacity(.85)}
+.reveal .chr{animation:flash .5s steps(2) 3}
+.hero{position:absolute;right:16%;bottom:5%;height:38%;z-index:1;animation:hop .7s steps(1) infinite;filter:drop-shadow(0 6px 0 rgba(46,44,61,.35))}
+/* 제목 로고: 안암 + RUN */
+.logo{position:absolute;left:0;right:0;top:5%;display:grid;justify-items:center;gap:10px}
+.logo .kr{font-family:"Galmuri11",var(--font);font-weight:700;font-size:clamp(28px,4vw,52px);color:#fff;letter-spacing:.3em;padding-left:.3em;
+  text-shadow:0 4px 0 #2e2c3d,3px 4px 0 #2e2c3d,-3px 4px 0 #2e2c3d,0 -3px 0 #2e2c3d,3px 0 0 #2e2c3d,-3px 0 0 #2e2c3d}
+.logo .en{font-family:"Press Start 2P",monospace;font-size:clamp(64px,11vw,150px);line-height:1;transform:skewX(-8deg);
+  background:linear-gradient(#ff6a5c 0 48%,#e3221c 48% 78%,#b8141a 78%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(5px 0 0 #2e2c3d) drop-shadow(-5px 0 0 #2e2c3d) drop-shadow(0 -5px 0 #2e2c3d) drop-shadow(0 10px 0 #6a2246) drop-shadow(0 4px 0 #2e2c3d)}
+.logo .sub{font-family:"Galmuri11",var(--font);font-weight:700;font-size:clamp(14px,1.6vw,20px);color:#fff;background:#2e2c3d;padding:7px 16px 6px;border-radius:4px;letter-spacing:.08em}
 #ov.sky .panel{z-index:1}
 .title-screen{position:absolute;inset:0;z-index:1}
-.title-screen h1{position:absolute;left:0;right:0;top:3%;text-align:center;font-size:clamp(36px,5.8vw,74px);line-height:1.08}
 .tmenu{position:absolute;left:6%;top:69%;display:grid;gap:16px;width:min(300px,40%)}
 .tinfo[hidden]{display:none}
 .tinfo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 40px))}
@@ -345,177 +355,9 @@ function sfx(name){
 document.addEventListener('mouseover', e => { const b = e.target.closest('.opt,.btn'); if (b && !b.contains(e.relatedTarget)) sfx('move'); });
 document.addEventListener('click', e => { if (e.target.closest('.opt,.ctrl button,#back')) sfx('ok'); });
 
-// 픽셀 캐릭터: 글자 한 칸 = 픽셀 한 칸
-// 캐릭터 도트 (글자 한 칸 = 픽셀 한 칸, o = 외곽선)
-const PAL = {"o": "#2e2c3d", "h": "#38303f", "H": "#6f6c7f", "s": "#f8dcb8", "S": "#e3b99e", "e": "#2e2c3d", "w": "#ffffff", "m": "#e19b75", "c": "#4bad8b", "C": "#307963", "L": "#8fd9b6", "b": "#893b3d", "B": "#6a2246", "p": "#3f4a5a", "P": "#2e2c3d", "k": "#f6f9fa", "K": "#b9beb4", "r": "#df1a1a", "R": "#822639", "f": "#9da397", "F": "#4b5856", "t": "#2e2c3d", "g": "#cacfc5", "y": "#6a7b92", "n": "#c82828"};
-const SPR = {
-  walk:["......oooooo......", "....oohhhhhhoo....", "...ohhhhHHhhhho...", "..ohhhhHHhhhhhho..", "..ohhhhhhhhhhhho..", ".ohhhhhhhhhhhhhho.", ".ohhhshhhhhhshhho.", ".ohssssshhhssssho.", "..osssessssesssSo.", "..osssessssesssSo.", "..oSmsssssssssmSo.", "...oSssssnssssSo..", "....ooSssssSoo....", "...obbCccccCbbo...", "..oCbbccLLccbbCo..", ".oCccbbcLLcbbccCo.", ".oCcccbcccccbcccCo", ".osCccbcccccbccCso", ".osoCcbcccccbcCoso", ".oSoCcccccccccCoSo", "..ooCCcccccccCCoo.", "....oCCCCCCCCo....", "....oppppPpppo....", "....opppoPpppo....", "....opppo.oppo....", "....opppo.oppo....", "....oPppo.oPpo....", "...okkkko.okkko...", "...oKKKKo.oKKKo...", "....oooo...ooo...."],
-  wheel:[".............oooooo...........", "...........oohhhhhhoo.........", "..........ohhhhHHhhhho........", ".........ohhhhHHhhhhhho.......", ".........ohhhhhhhhhhhho.......", "........ohhhhhhhhhhhhhho......", "........ohhhshhhhhhshhho......", "........ohssssshhhssssho......", ".........osssessssesssSo......", ".........osssessssesssSo......", ".........oSmsssssssssmSo......", "...ooooo..oSssssnssssSo.......", "..oFFFFfoooooSssssSooo........", "...oooFfrrrrrrrrRRRo..........", ".....oFfrrrrrrrrRRRo..........", ".....oFfrrtrrrrRRRRo..........", ".....oFtttttttrRRRRo..........", "....otttgggggtttRRRo..........", "...otttgrryrrgtttRRoooo.......", "...ottyfrrypppyttppppppo......", "..ottgFyrryppypgttpppppo......", "..otgoFfyoyPyPPPgtPPppPo......", "..otgooooyyyoooogtooppPo......", ".ottgyyyyyFyyyyygttoppPo......", "..otgooooyyyoooogtooppPo......", "..otgo.oyoyoyo.ogtooppPo......", "..ottgoyooyooyogttooppPoo.....", "...ottyo.oyo.oytto.okkkkko....", "...otttgooyoogttto.oKKKFKo....", "....otttgggggttto.oFFFFtFto...", ".....ootttttttoo...oooottto...", ".......oootooo........ottto..."],
-};
-// ── 일러스트 배경: 고려대 본관 (레트로 게임 타이틀 화풍)
-// 320x180에 한 픽셀씩 그린 뒤 크게 늘림. 하늘(가로 붓결) / 뭉게구름(덩어리마다 그림자, 천천히 흐름) / 본관·소나무 / 잔디(가로 붓결) / 앞쪽 덤불·풀 실루엣
-function scene(who){
-  const W = 320, H = 180, wrap = document.createElement('div');
-  wrap.className = 'scene';
-  const layer = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; wrap.append(c); return c.getContext('2d'); };
-  const skyG = layer(), cloudG = layer(), landG = layer();
-  let seed = 1905;
-  const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
-  const rgb = c => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
-  let OY = 0;   // 건물·나무를 아래로 내리는 값
-  const MOB = ["#2e2c3d", "#307963", "#366b72", "#38303f", "#3f4a5a", "#453749", "#478167", "#4a886c", "#4b5856", "#4bad8b", "#524254", "#52bfe9", "#53b5e4", "#5f8863", "#68c9ed", "#69a550", "#6a2246", "#6a7b92", "#6f6c7f", "#72976f", "#75a073", "#788180", "#822639", "#868c7e", "#893b3d", "#8d9284", "#8f9c9c", "#996241", "#9da397", "#a4afae", "#b3e5f5", "#b9beb4", "#b9d029", "#c82828", "#cacfc5", "#cb3639", "#df1a1a", "#e19b75", "#e3b99e", "#e6f0fb", "#f6f9fa", "#f8dcb8", "#ffffff", "#f2c14e", "#8fc06a", "#a6cf7d", "#44a4db", "#7fd0f0"].map(rgb), near = new Map();
-  const toMob = c => { if (near.has(c)) return near.get(c); const [r, g, b] = rgb(c); let best = c, bd = 1e9;
-    for (const m of MOB){ const d = (m[0]-r)**2*.3 + (m[1]-g)**2*.59 + (m[2]-b)**2*.11; if (d < bd){ bd = d; best = '#' + m.map(v => v.toString(16).padStart(2, '0')).join(''); } }
-    near.set(c, best); return best; };
-  const buf = () => { const d = new ImageData(W, H); return {d, set(x, y, c){ c = toMob(c); x = Math.round(x); y = Math.round(y + OY); if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4, [r, g, b] = rgb(c); d.data[i] = r; d.data[i+1] = g; d.data[i+2] = b; d.data[i+3] = 255; }}; };
-
-  // 하늘: 위는 진하고 아래는 밝게, 가로로 긴 붓결
-  const S = buf(), SK = ['#3a98d4', '#44a4db', '#4eafe2', '#58b9e7', '#62c2eb', '#6ecbef', '#7cd3f2'];
-  const band = y => Math.min(SK.length - 1, Math.floor(y / 15));
-  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) S.set(x, y, SK[band(y)]);
-  for (let k = 0; k < 70; k++){
-    const y = rnd() * 100 | 0, x = rnd() * W | 0, len = 18 + rnd() * 70 | 0, c = SK[Math.min(SK.length - 1, band(y) + (rnd() < .7 ? 1 : -1 + 2 * (band(y) === 0)))];
-    for (let i = 0; i < len; i++) S.set(x + i, y, c);
-    if (rnd() < .4) for (let i = 4; i < len - 6; i++) S.set(x + i, y + 1, c);
-  }
-  skyG.putImageData(S.d, 0, 0);
-
-  // 뭉게구름: 작은 덩어리를 겹쳐 그림. 덩어리마다 왼쪽 위 밝게, 아래·오른쪽은 하늘색 그림자
-  const CL = ['#ffffff', '#f1f8fc', '#dfedf6', '#c9deec', '#b2cfe3'];
-  const clouds = [];
-  const bank = (cx, base, w, h) => {
-    const puffs = [];
-    for (let i = 0; i < w / 5; i++){
-      const t = rnd(), x = cx - w / 2 + t * w, edge = 1 - Math.abs(t - .5) * 2;
-      const r = 4 + rnd() * 5 + edge * h * .45;
-      puffs.push([x, base - r * .6 - edge * h * .35 - rnd() * 4, r]);
-    }
-    puffs.sort((a, b) => (a[1] - a[2]) - (b[1] - b[2]));   // 위쪽 덩어리부터 → 아래 덩어리가 앞
-    clouds.push({puffs, base});
-  };
-  bank(34, 126, 110, 38); bank(292, 122, 100, 34); bank(170, 132, 160, 18); bank(118, 30, 44, 10); bank(236, 22, 30, 7);
-  let off = -1;
-  const drawClouds = o => {
-    const b = buf(), span = W + 160;
-    for (const c of clouds) for (const [px, py, r] of c.puffs) for (let y = py - r | 0; y <= Math.min(c.base, py + r); y++) for (let X = px - r | 0; X <= px + r; X++){
-      const dx = X - px, dy = y - py; if (dx * dx + dy * dy > r * r) continue;
-      const lit = (dx + r * .35) ** 2 + (dy + r * .45) ** 2, sh = (dx - r * .3) ** 2 + (dy - r * .55) ** 2;
-      let col = CL[1];
-      if (lit < (r * .55) ** 2) col = CL[0];
-      else if (sh < (r * .5) ** 2) col = CL[3];
-      else if (sh < (r * .75) ** 2) col = CL[2];
-      if (dx * dx + dy * dy > (r - 1) ** 2 && dy > 0) col = CL[4];
-      const x = ((X + o) % span + span) % span - 80;
-      b.set(x, y, col);
-    }
-    cloudG.clearRect(0, 0, W, H); cloudG.putImageData(b.d, 0, 0);
-  };
-
-  const L = buf();
-  const rect = (x, y, w, h, c) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) L.set(x + i, y + j, c); };
-  // 돌벽 무늬: 밝은 돌·중간 돌·줄눈을 섞어 거친 화강암 느낌
-  const ST = ['#e2ded4', '#d3cfc4', '#c1bcb0', '#a8a397'];
-  const stone = (x, y, w, h, shade = 0) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++){
-    const X = x + i, Y = y + j, row = Y % 4 === 0, joint = (X + (Y >> 2) * 5) % 9 === 0;
-    const n = rnd();
-    L.set(X, Y, row || joint ? ST[3] : ST[Math.min(3, (n < .35 ? 0 : n < .8 ? 1 : 2) + shade)]);
-  }};
-  const roof = (x0, x1, yTop, yBot, inset) => { for (let y = yTop; y < yBot; y++){ const t = (y - yTop) / (yBot - yTop), a = x0 + inset * (1 - t), b = x1 - inset * (1 - t);
-    for (let x = a | 0; x <= b; x++) L.set(x, y, (y - yTop) % 3 === 2 ? '#4a5064' : x - a < 2 ? '#7d859a' : '#5f667b'); } };
-  const win = (x, y, w, h, arch) => {
-    rect(x - 1, y - 1, w + 2, h + 2, '#f2efe7'); rect(x, y, w, h, '#2e3850'); rect(x, y, 1, h, '#55678a'); rect(x, y + (h >> 1), w, 1, '#8b8a86');
-    if (arch){ L.set(x - 1, y - 1, ST[1]); L.set(x + w, y - 1, ST[1]); }
-  };
-  // 본관 몸체
-  OY = 14;
-  stone(70, 78, 180, 42); roof(66, 254, 66, 78, 4);
-  for (let x = 84; x < 240; x += 18) if (x < 136 || x > 186){ rect(x, 61, 8, 6, '#6e768a'); rect(x + 2, 63, 4, 3, '#2e3850'); }   // 지붕창
-  // 양쪽 박공 날개
-  for (const [x0, peak] of [[36, 58], [244, 262]]){
-    stone(x0, 70, 40, 50, 0);
-    for (let j = 0; j < 22; j++){ const half = j * 20 / 22; stone(peak - half | 0, 48 + j, half * 2 | 0, 1); L.set(peak - half - 1, 48 + j, '#5f667b'); L.set(peak - half - 2, 48 + j, '#4a5064'); L.set(peak + half, 48 + j, '#5f667b'); L.set(peak + half + 1, 48 + j, '#4a5064'); }
-    win(peak - 5, 56, 3, 5); win(peak + 2, 56, 3, 5);
-    for (const yy of [78, 92, 106]) for (let i = 0; i < 3; i++) win(x0 + 8 + i * 9, yy, 4, 7, yy === 92);
-  }
-  // 몸체 창문 (2층은 아치)
-  for (const yy of [83, 96, 108]) for (let x = 84; x < 240; x += 9) if (x < 136 || x > 182) win(x, yy, 4, yy === 108 ? 7 : 7, yy === 96);
-  // 가운데 탑 + 성벽 톱니 + 깃대
-  stone(140, 44, 40, 76, 0); rect(140, 44, 2, 76, ST[2]); rect(178, 44, 2, 76, ST[3]);
-  for (let x = 138; x < 182; x += 6) stone(x, 39, 4, 5);
-  rect(138, 44, 44, 1, ST[3]);
-  rect(150, 24, 1, 15, '#c9c6c0'); rect(170, 22, 1, 17, '#c9c6c0'); rect(171, 22, 4, 3, '#d8323a'); rect(146, 25, 4, 2, '#f2efe7');
-  // 빨간 현수막 + 금색 문양
-  for (let y = 50; y < 101; y++) for (let x = 147; x < 173; x++) L.set(x, y, x < 149 || (x - 147) % 7 === 3 ? '#8e1520' : x > 170 ? '#a3192a' : '#cc2230');
-  rect(147, 50, 26, 1, '#6e1018');
-  for (const [dx, dy] of [[0,0],[1,0],[2,0],[-1,1],[0,1],[1,1],[2,1],[3,1],[-1,2],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3],[2,3],[1,4]]) L.set(158 + dx, 60 + dy, dy === 0 ? '#ffe08a' : '#f0b840');
-  // 정문 아치
-  rect(154, 106, 12, 14, '#252c3e'); rect(155, 105, 10, 1, '#252c3e'); rect(156, 104, 8, 1, '#252c3e'); rect(154, 106, 1, 14, '#475676');
-  rect(151, 103, 18, 1, ST[3]);
-  // 앞 계단·담장
-  rect(36, 117, 248, 3, '#bdb8ab'); rect(36, 120, 248, 1, '#8f8a7e');
-  // 나무: 소나무(층층이) + 둥근 정원수
-  const BL = ['#86c060', '#5e9c4e', '#3f7547', '#2b5440'];
-  const puff = (cx, cy, r, pal = BL) => { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++){
-    const dx = x - cx, dy = y - cy; if (dx * dx + dy * dy > r * r) continue;
-    const lit = (dx + r * .4) ** 2 + (dy + r * .5) ** 2 < (r * .6) ** 2, dark = dy > r * .35 || (dx - r * .4) ** 2 + (dy - r * .2) ** 2 < (r * .5) ** 2;
-    L.set(x, y, lit ? (rnd() < .75 ? pal[0] : pal[1]) : dark ? (rnd() < .7 ? pal[2] : pal[3]) : (rnd() < .85 ? pal[1] : pal[0]));
-  }};
-  const pine = (x, base, s) => {
-    rect(x, base - 14 * s, 2, 14 * s, '#5a4334'); rect(x + 1, base - 10 * s, 6 * s, 1, '#5a4334'); rect(x - 5 * s, base - 7 * s, 5 * s, 1, '#5a4334');
-    for (const [dx, dy, w] of [[-10, -9, 9], [6, -11, 8], [-2, -15, 8], [-12, -4, 7], [10, -5, 7], [0, -6, 9]])
-      for (let i = 0; i < w; i++) puff(x + (dx + i - w / 2) * s | 0, base + dy * s, 3 * s, ['#5f9b55', '#3f7448', '#2c5a3e', '#20442f']);
-  };
-  pine(62, 118, 1.6); pine(256, 116, 1.5); pine(100, 116, .9); pine(222, 117, 1);
-  for (const [x, h] of [[120, 16], [134, 12], [188, 12], [202, 16]]){ puff(x, 118 - h, 4); puff(x, 116 - h * .55 | 0, 5); puff(x, 114, 6); }
-  for (let x = 40; x < 282; x += 9) puff(x, 118, 3 + (rnd() * 2 | 0));
-  // 잔디: 가로 붓결 (밝은 앞 잔디 + 어두운 덩어리)
-  OY = 0;
-  const GR = ['#9bc266', '#8db65c', '#7ea953', '#6f9a4d', '#5f8a49', '#4e7a48'];
-  for (let y = 134; y < H; y++){ const t = (y - 134) / 46, i = Math.min(GR.length - 1, t * 5 | 0); for (let x = 0; x < W; x++) L.set(x, y, GR[i]); }
-  rect(0, 135, W, 3, '#c9c4b5'); rect(0, 138, W, 1, '#a9a394');                  // 건물 앞 길
-  for (let k = 0; k < 520; k++){
-    const y = 140 + rnd() * 40 | 0, x = rnd() * W | 0, len = 4 + rnd() * 16 | 0, i = Math.min(GR.length - 1, ((y - 134) / 46 * 5 | 0) + (rnd() < .6 ? 1 : -1));
-    for (let j = 0; j < len; j++) if (rnd() < .85) L.set(x + j, y + (j % 5 === 4 ? -1 : 0), GR[Math.max(0, i)]);
-  }
-  for (let k = 0; k < 160; k++){ const x = rnd() * W | 0, y = 142 + rnd() * 36 | 0; L.set(x, y, '#bcd98a'); L.set(x, y - 1, '#a7cc78'); }
-  // 앞쪽 덤불: 위는 밝은 초록, 아래는 어두운 자주색
-  const bush = (cx, cy, r) => {
-    for (let y = cy - r; y <= cy + r + 4; y++) for (let x = cx - r - 2; x <= cx + r + 2; x++){
-      const dx = x - cx, dy = y - cy; if (dx * dx / 1.3 + dy * dy > r * r + rnd() * 10) continue;
-      L.set(x, y, dy > r * .25 ? (rnd() < .8 ? '#3b2c3d' : '#2e2433') : null || (dy < -r * .3 && dx < r * .2 ? (rnd() < .7 ? '#88c862' : '#6fb253') : (rnd() < .6 ? '#5ca04b' : '#3f7a45')));
-    }
-  };
-  bush(14, 166, 13); bush(40, 172, 10); bush(302, 164, 14); bush(278, 174, 9);
-  // 주인공 (2배 크기, 그림자)
-  if (who){
-    const rows = SPR[who], pal = PAL, s = 1, X0 = who === 'walk' ? 228 : 222, Y0 = 140;
-    for (let i = -2; i < rows[0].length * s + 2; i++) L.set(X0 + i, Y0 + rows.length * s, '#4e7a48');
-    rows.forEach((row, y) => [...row].forEach((c, x) => pal[c] && rect(X0 + x * s, Y0 + y * s, s, s, pal[c])));
-  }
-  // 맨 앞 풀 실루엣
-  for (let x = 0; x < W; x++){
-    const h1 = 5 + (rnd() * 3 | 0) + (rnd() < .25 ? rnd() * 10 | 0 : 0), h2 = 3 + (rnd() * 2 | 0);
-    for (let y = H - h1; y < H; y++) L.set(x + (y < H - 8 && rnd() < .3 ? 1 : 0), y, '#3d3752');
-    for (let y = H - h2; y < H; y++) L.set(x, y, '#2a2539');
-  }
-  landG.putImageData(L.d, 0, 0);
-
-  const t0 = performance.now();
-  (function tick(){
-    if (!wrap.isConnected && off >= 0) return;
-    const o = Math.floor((performance.now() - t0) / 500);
-    if (o !== off){ off = o; drawClouds(o); }
-    requestAnimationFrame(tick);
-  })();
-  return wrap;
-}
-
+// 캐릭터 그림 (art/walk.png, art/wheel.png). s = 크기 단계, mono = 실루엣(검게)
 function sprite(k, s = 5, mono){
-  const rows = SPR[k], pal = {...PAL};
-  if (mono) for (const c in pal) pal[c] = mono;   // 실루엣
-  let r = '';
-  rows.forEach((row, y) => [...row].forEach((c, x) => { if (pal[c]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[c]}"/>`; }));
-  return `<svg class="spr" viewBox="0 0 ${rows[0].length} ${rows.length}" width="${rows[0].length*s}" height="${rows.length*s}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
+  return `<img class="chr${mono ? ' sil' : ''}" src="art/${k}.png" alt="" style="height:${s * 30}px">`;
 }
 
 // ── 시계: 영상 속 시각 = 이 화면에 들어올 때 시각 + 원본 촬영 기준으로 흐른 시간
@@ -710,14 +552,14 @@ function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
   show(`<div class="title-screen">
-    <h1 class="big">3교시까지<br>수업 들으러 가기</h1>
+    <h1 class="logo"><span class="kr">안암</span><span class="en">RUN</span><span class="sub">3교시까지 수업 들으러 가기</span></h1>
+    <img class="hero" src="art/walk.png" alt="">
     <div class="tmenu"><button class="btn" id="b">게임 시작</button><button class="btn" id="info">오늘의 시간표</button></div>
     <div class="win tinfo" hidden><div class="tab orange">QUEST</div>
       <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b><br>수업을 들으러 가. 갈림길이 나오면 어느 길로 갈지 골라 줘.</p><hr>
       <div class="menu"><button class="btn" id="close">닫기</button></div></div>
     <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
-  ov.prepend(scene('walk'));
   $('#b').onclick = () => { sfx('start'); iris(() => nav('w01')); };
   $('#info').onclick = () => { ov.querySelector('.tinfo').hidden = false; $('#close').focus(); };
   $('#close').onclick = () => { ov.querySelector('.tinfo').hidden = true; $('#info').focus(); };
@@ -727,14 +569,13 @@ function toWheel(){
   period(4); sfx('clear');
   // 1단계: 평범한 캠퍼스 투어가 끝난 것처럼
   show(`<div class="panel" style="width:min(620px,100%)"><div class="win"><div class="tab kicker">QUEST CLEAR</div><h2>3교시까지 수업 듣기 완료!</h2>
-    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 4)}<span class="press">?</span><span id="who2">${sprite('wheel', 4, '#2e2c3d')}</span></div>
+    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, true)}</span></div>
     <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p><hr>
     <div class="menu"><button class="btn" id="b">다른 학생의 시점 보기</button></div></div></div>`, 'solid sky', 'end');
-  ov.prepend(scene(null));
   // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
   $('#b').onclick = () => {
     sfx('reveal'); setSide('wheel');
-    $('#who2').innerHTML = sprite('wheel', 4); $('#who2').className = 'reveal';
+    $('#who2').innerHTML = sprite('wheel', 6); $('#who2').className = 'reveal';
     ov.querySelector('.kicker').innerHTML = '<span>NEW PLAYER</span>';
     ov.querySelector('h2').textContent = '휠체어를 타는 학생';
     ov.querySelector('.press').textContent = '▶▶';
@@ -746,7 +587,7 @@ function toWheel(){
 
 function result(){
   period(4); stage.classList.add('hidehud');
-  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 3)}<h3>${name}</h3>
+  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 4)}<h3>${name}</h3>
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
     <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
