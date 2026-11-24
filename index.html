@@ -186,9 +186,9 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .tstart{position:absolute;left:50%;top:80%;transform:translateX(-50%);font-size:clamp(18px,1.8vw,24px);padding:11px 40px 13px 48px}
 .tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
 .tut{position:absolute;inset:0;z-index:1}
-/* 대화창은 화면 아래에 넓게, 캐릭터는 대화창 오른쪽 위에 작게 */
-.tut .chr::after{display:none}
-.tut .chr{position:absolute;right:6%;bottom:calc(4% + 172px);height:min(120px,17vh)!important}
+/* 튜토리얼: 까만 화면에 대화창만, 아래에 넓게 */
+#ov.tutbg{background:#000}
+#ov:focus{outline:0}
 .win.talk{position:absolute;left:3%;right:3%;bottom:4%;width:auto;cursor:pointer;min-height:150px;align-content:start;padding:30px 36px 24px}
 .win.talk .lead{font-size:clamp(18px,1.9vw,24px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0;word-break:keep-all}
 .win.talk .next{position:absolute;right:22px;bottom:18px;color:#e01b1b;animation:blink .8s steps(1) infinite}
@@ -273,8 +273,11 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 
 /* 화면 전환: 동그랗게 닫혔다 열림 */
 #iris{position:fixed;left:50%;top:50%;z-index:50;width:0;height:0;border-radius:50%;box-shadow:0 0 0 200vmax #000;transform:translate(-50%,-50%);pointer-events:all}
-#iris.close{animation:irisC .5s steps(10) forwards}
+#iris.close{animation:irisC .75s steps(14) forwards}
 #iris.open{animation:irisC .5s steps(10) reverse forwards}
+/* 캐릭터 중심: 캐릭터만 남을 만큼 줄었다가 잠깐 멈춘 뒤 닫힘 */
+#iris.close.focus{animation:irisF 1.3s steps(22) forwards}
+@keyframes irisF{0%{width:220vmax;height:220vmax}55%,80%{width:var(--hole);height:var(--hole)}100%{width:0;height:0}}
 @keyframes irisC{from{width:220vmax;height:220vmax}to{width:0;height:0}}
 
 @media (max-width:640px){
@@ -555,14 +558,18 @@ function show(html, mode, bg){
   ov.innerHTML = html;
   stage.classList.toggle('dim', mode !== 'solid');
   // 꽉 찬 화면은 타이틀과 같은 그림 배경 (구름·깃발·새·낙엽)
-  if ((mode || '').includes('solid') && !ov.querySelector('.art16')) ov.prepend(document.createRange().createContextualFragment(titleArt(false)));
+  if ((mode || '').includes('solid') && !(mode || '').includes('tutbg') && !ov.querySelector('.art16')) ov.prepend(document.createRange().createContextualFragment(titleArt(false)));
   const b = ov.querySelector('button'); b && b.focus({preventScroll:true});
 }
 // 화면 전환: 검은 동그라미가 닫혔다가 다음 화면에서 열림
-function iris(cb){
+// focus: 동그라미가 줄어들 중심 (캐릭터). 없으면 화면 가운데. 열릴 때는 화면 가운데에서
+function iris(cb, focus){
   if ($('#iris')) return;
-  const el = document.createElement('div'); el.id = 'iris'; el.className = 'close'; document.body.append(el);
-  setTimeout(() => { cb(); el.className = 'open'; setTimeout(() => el.remove(), 520); }, 520);
+  const el = document.createElement('div'); el.id = 'iris'; el.className = 'close';
+  const r = focus && focus.getBoundingClientRect();
+  if (r && r.width){ el.style.left = r.left + r.width / 2 + 'px'; el.style.top = r.top + r.height / 2 + 'px'; el.style.setProperty('--hole', Math.max(r.width, r.height) * 1.3 + 'px'); el.classList.add('focus'); }
+  document.body.append(el);
+  setTimeout(() => { cb(); el.style.left = el.style.top = ''; el.className = 'open'; setTimeout(() => el.remove(), 520); }, r && r.width ? 1320 : 760);
 }
 function hide(){ ov.className = ''; ov.innerHTML = ''; stage.classList.remove('dim'); }
 const fmt = s => `${Math.floor(s/60)}:${String(Math.round(s%60)).padStart(2,'0')}`;
@@ -687,7 +694,7 @@ function start(){
     <button class="btn tstart" id="b">등교 시작!</button>
     <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
-  $('#b').onclick = () => { sfx('start'); iris(() => nav('tutorial')); };
+  $('#b').onclick = () => { sfx('start'); iris(() => nav('tutorial'), ov.querySelector('.runner')); };
 }
 
 // 튜토리얼: 오늘의 시간표 설명을 한 글자씩 (클릭·Enter = 바로 다 보이기 / 다음 줄)
@@ -700,9 +707,9 @@ const TUTORIAL = [
 ];
 function tutorial(){
   setSide('walk'); period(0); stage.classList.add('hidehud');
-  show(`<div class="tut"><div class="chr walk" style="height:180px"></div>
+  show(`<div class="tut">
     <div class="win talk"><div class="tab">TUTORIAL</div><p class="lead" id="tl"></p><span class="next" id="nx">▼</span>
-    <div class="menu" id="go" hidden><button class="btn" id="b">출발!</button></div></div></div>`, 'solid sky', 'start');
+    <div class="menu" id="go" hidden><button class="btn" id="b">출발!</button></div></div></div>`, 'solid tutbg');
   let i = 0, timer = null, full = false;
   const tl = $('#tl'), nx = $('#nx');
   const line = () => {
@@ -747,7 +754,7 @@ function toWheel(){
     ov.querySelector('.press').textContent = '▶▶';
     $('#msg').innerHTML = '<b>똑같은 시간표</b>, 똑같은 강의실.<br>이번엔 휠체어를 타고 같은 길을 다시 가 볼게.';
     $('#b').innerHTML = '<span>출발</span>';
-    $('#b').onclick = () => iris(() => { hist.push(entry); clk = toSec(CLOCK.depart[1]); go('h01'); });
+    $('#b').onclick = () => iris(() => { hist.push(entry); clk = toSec(CLOCK.depart[1]); go('h01'); }, ov.querySelector('.runner.wheel'));
   };
 }
 
