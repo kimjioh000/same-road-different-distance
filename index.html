@@ -110,7 +110,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
   background-repeat:repeat-x,no-repeat,no-repeat,no-repeat,no-repeat;
   background-size:360px 120px,224px 84px,160px 60px,100% 100%,100% 100%;
   background-position:left calc(100% - 22px),8% 12%,88% 22%,0 0,0 0}
-#ov.solid .lead,#ov.solid .note{text-shadow:var(--ts)}
+#ov.solid:not(.sky) .lead,#ov.solid .note{text-shadow:var(--ts)}
 .panel{position:relative;z-index:1;width:min(760px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
 .kicker{font-size:14px;font-weight:700;letter-spacing:.14em;color:var(--yellow);text-shadow:var(--ts)}
