@@ -401,37 +401,49 @@ function sfx(name){
 // 8비트 배경음악: 타이틀·튜토리얼에서 반복, 게임이 시작되면 멈춤 (M 키로 효과음과 같이 끔)
 const BGM = (() => {
   const N = n => 440 * 2 ** ((n - 69) / 12);   // MIDI 번호 → 주파수
-  // 멜로디 (8분음표 단위, 0 = 쉼), 4마디 × 2
-  const lead = [72,0,76,79, 81,79,76,74, 72,0,74,76, 74,0,0,0, 72,0,76,79, 81,83,84,81, 79,76,74,76, 72,0,0,0,
-                77,0,77,76, 74,76,77,79, 76,0,76,74, 72,74,76,0, 74,0,74,72, 71,72,74,76, 74,72,71,67, 72,0,0,0];
-  const bass = [48,48,55,55, 53,53,55,55, 48,48,55,55, 43,43,50,50, 48,48,55,55, 53,53,57,57, 55,55,50,50, 48,48,55,48,
-                53,53,60,60, 55,55,59,59, 52,52,57,57, 45,45,52,52, 50,50,57,57, 55,55,50,50, 55,55,47,47, 48,48,55,48];
-  const step = 60 / 150 / 2;   // 150 BPM, 8분음표
-  let timer = null, i = 0, t = 0, gain = null;
+  const roots = (rs) => rs.flatMap(r => Array(8).fill(r));
+  const TRACKS = {
+    // 타이틀: 밝은 장조, 150 BPM
+    title: {bpm:150, leadType:'square', leadVol:.035, leadLen:.9, bassEvery:2, bassLen:1.8, bassVol:.07,
+      lead:[72,0,76,79, 81,79,76,74, 72,0,74,76, 74,0,0,0, 72,0,76,79, 81,83,84,81, 79,76,74,76, 72,0,0,0,
+            77,0,77,76, 74,76,77,79, 76,0,76,74, 72,74,76,0, 74,0,74,72, 71,72,74,76, 74,72,71,67, 72,0,0,0],
+      bass:[48,48,55,55, 53,53,55,55, 48,48,55,55, 43,43,50,50, 48,48,55,55, 53,53,57,57, 55,55,50,50, 48,48,55,48,
+            53,53,60,60, 55,55,59,59, 52,52,57,57, 45,45,52,52, 50,50,57,57, 55,55,50,50, 55,55,47,47, 48,48,55,48]},
+    // 반전: 느린 단조 (가단조), 84 BPM, 부드러운 삼각파
+    reveal: {bpm:84, leadType:'triangle', leadVol:.08, leadLen:1.9, bassEvery:4, bassLen:3.8, bassVol:.08,
+      lead:[69,0,72,0,76,0,74,72, 72,0,0,0,0,0,0,0, 65,0,69,0,72,0,71,69, 67,0,0,0,0,0,0,0,
+            69,0,72,0,76,0,77,76, 74,0,72,0,71,0,72,0, 69,0,71,0,72,0,68,0, 69,0,0,0,0,0,0,0],
+      bass:roots([45,41,48,43,45,50,40,45])},
+  };
+  let timer = null, playing = null, i = 0, t = 0, gain = null;
   const tone = (f, at, d, type, vol) => {
     const o = AC.createOscillator(), g = AC.createGain();
     o.type = type; o.frequency.setValueAtTime(f, at);
     g.gain.setValueAtTime(vol, at); g.gain.exponentialRampToValueAtTime(.0001, at + d);
     o.connect(g).connect(gain); o.start(at); o.stop(at + d);
   };
-  return {
-    on(){
-      if (timer){ try { AC.resume(); } catch {} return; }
+  const api = {
+    on(name = 'title'){
+      if (timer && playing === name){ try { AC.resume(); } catch {} return; }
+      api.off();
       if (muted) return;
       try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); AC.resume(); } catch { return; }
-      gain = AC.createGain(); gain.gain.value = .6; gain.connect(AC.destination);
+      const T = TRACKS[name], step = 60 / T.bpm / 2;   // 8분음표 길이
+      playing = name; gain = AC.createGain(); gain.gain.value = .6; gain.connect(AC.destination);
       t = AC.currentTime + .05; i = 0;
       timer = setInterval(() => {   // 앞으로 0.3초 분량을 미리 예약
         while (t < AC.currentTime + .3){
-          const k = i % lead.length;
-          if (lead[k]) tone(N(lead[k]), t, step * .9, 'square', .035);
-          if (k % 2 === 0) tone(N(bass[k]), t, step * 1.8, 'triangle', .07);
+          const k = i % T.lead.length;
+          if (T.lead[k]) tone(N(T.lead[k]), t, step * T.leadLen, T.leadType, T.leadVol);
+          if (k % T.bassEvery === 0) tone(N(T.bass[k]), t, step * T.bassLen, 'triangle', T.bassVol);
           t += step; i++;
         }
       }, 60);
     },
-    off(){ clearInterval(timer); timer = null; if (gain){ gain.gain.setTargetAtTime(0, AC.currentTime, .05); gain = null; } },
+    off(){ clearInterval(timer); timer = null; playing = null; if (gain){ gain.gain.setTargetAtTime(0, AC.currentTime, .05); gain = null; } },
+    get playing(){ return playing; },
   };
+  return api;
 })();
 // 타이틀·튜토리얼에서 첫 클릭·키 입력 때 음악 시작 (브라우저가 소리 자동재생을 막아서)
 document.addEventListener('pointerdown', () => { if (cur === 'start' || cur === 'tutorial') BGM.on(); });
@@ -722,7 +734,7 @@ function toWheel(){
     <div class="menu"><button class="btn" id="b">다른 학생의 시점 보기</button></div></div></div>`, 'solid sky', 'end');
   // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
   $('#b').onclick = () => {
-    sfx('reveal'); setSide('wheel');
+    sfx('reveal'); setSide('wheel'); setTimeout(() => cur === 'switch' && BGM.on('reveal'), 900);   // 효과음 뒤에 반전 음악
     $('#who2').innerHTML = sprite('wheel', 6); $('#who2').className = 'reveal';
     ov.querySelector('.art16')?.insertAdjacentHTML('beforeend', '<div class="runner wheel"></div>');   // 건물 오른쪽에서 제자리로 바퀴 굴리기
     ov.querySelector('.kicker').innerHTML = '<span>NEW PLAYER</span>';
@@ -755,7 +767,7 @@ function result(){
 
 // 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로, M = 효과음 끄기/켜기, P = 픽셀 필터 끄기/켜기
 document.addEventListener('keydown', e => {
-  if (e.code === 'KeyM'){ muted = !muted; if (muted) BGM.off(); else if (cur === 'start' || cur === 'tutorial') BGM.on(); return; }
+  if (e.code === 'KeyM'){ const was = BGM.playing; muted = !muted; if (muted){ BGM.off(); BGM.last = was; } else if (BGM.last) BGM.on(BGM.last); else if (cur === 'start' || cur === 'tutorial') BGM.on(); return; }
   // 메뉴에서 ↑↓로 커서 이동, Enter로 선택 (게임처럼)
   if (ov.classList.contains('on') && (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight')){
     const items = [...ov.querySelectorAll('.menu button')].filter(b => b.offsetParent); if (!items.length) return;
