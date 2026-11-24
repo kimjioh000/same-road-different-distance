@@ -29,18 +29,19 @@ button:focus-visible{outline:var(--u) dashed var(--yellow);outline-offset:4px}
 
 #stage{position:fixed;inset:0}
 video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;transition:filter .5s}
+video.pre{visibility:hidden}
 #stage.dim video{filter:brightness(.35) saturate(.7)}
 
 /* HUD: 위쪽 띠 */
 .hud{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:14px 20px;
   background:linear-gradient(rgba(0,0,0,.55),transparent);z-index:3;pointer-events:none}
-.rec{font-size:12px;font-weight:700;letter-spacing:.1em;display:flex;align-items:center;gap:6px;text-shadow:var(--ts)}
+.rec{font-size:14px;font-weight:700;letter-spacing:.1em;display:flex;align-items:center;gap:6px;text-shadow:var(--ts)}
 .rec::before{content:"";width:8px;height:8px;background:var(--red);box-shadow:0 0 0 2px #000;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-.who{font-size:12px;font-weight:700;color:var(--teal);text-shadow:var(--ts)}
+.who{font-size:14px;font-weight:700;color:var(--teal);text-shadow:var(--ts)}
 .who.wheel{color:var(--orange)}
 .tt{display:flex;gap:16px;margin-left:auto}
-.tt div{font-size:12px;color:rgba(255,255,255,.6);white-space:nowrap;text-shadow:var(--ts)}
+.tt div{font-size:14px;color:rgba(255,255,255,.6);white-space:nowrap;text-shadow:var(--ts)}
 .tt div b{font-weight:700;margin-right:4px}
 .tt div.now{color:var(--yellow)}
 .tt div.now::before{content:"▶ ";animation:blink 1s steps(1) infinite}
@@ -49,29 +50,29 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 
 /* 자막: 게임 대화창 (하얀 박스 + 이름표) */
 #sub{position:absolute;left:50%;bottom:12%;transform:translate(-50%,6px);opacity:0;z-index:4;pointer-events:none;
-  max-width:min(860px,calc(100% - 40px));text-align:left;transition:opacity .15s steps(3),transform .15s steps(3)}
+  max-width:min(1000px,calc(100% - 48px));text-align:left;transition:opacity .15s steps(3),transform .15s steps(3)}
 #sub.show{opacity:1;transform:translate(-50%,0)}
-#sub em{position:relative;display:inline-block;font-style:normal;font-size:12px;font-weight:700;padding:3px 10px 2px;margin:0 0 calc(2*var(--u)) var(--u);
+#sub em{position:relative;display:inline-block;font-style:normal;font-size:15px;font-weight:700;padding:4px 12px 3px;margin:0 0 calc(2*var(--u)) var(--u);
   --fill:var(--teal);--bc:#000;color:#062523}
 .wheelside #sub em{--fill:var(--orange);color:#2a1203}
 #sub.late em{--fill:var(--red);color:#fff}
-#sub span{position:relative;display:block;font-size:clamp(14px,1.35vw,17px);font-weight:700;line-height:1.6;padding:9px 34px 9px 16px;
+#sub span{position:relative;display:block;font-size:clamp(17px,1.75vw,23px);font-weight:700;line-height:1.6;padding:14px 44px 14px 22px;
   --fill:#fff;--bc:#000;--shade:#d8d8d8;color:var(--ink)}
-#sub span::after{content:"▼";position:absolute;right:12px;bottom:6px;font-size:10px;animation:blink .8s steps(1) infinite}
+#sub span::after{content:"▼";position:absolute;right:16px;bottom:9px;font-size:12px;animation:blink .8s steps(1) infinite}
 #sub.late span{color:#d42020}
 /* 위치 자막: 왼쪽 위 장소 표시 */
 #loc{position:absolute;left:20px;top:104px;z-index:4;pointer-events:none;display:flex;gap:8px;align-items:baseline;
   opacity:0;transform:translateX(-10px);transition:.3s steps(4)}
 #loc.show{opacity:1;transform:none}
-#loc i{font-style:normal;font-size:12px;font-weight:700;color:var(--teal);text-shadow:var(--ts)}
+#loc i{font-style:normal;font-size:15px;font-weight:700;color:var(--teal);text-shadow:var(--ts)}
 .wheelside #loc i{color:var(--orange)}
-#loc b{font-size:14px;font-weight:700;color:#fff;text-shadow:var(--ts)}
+#loc b{font-size:18px;font-weight:700;color:#fff;text-shadow:var(--ts)}
 /* 시계: 오른쪽 위 게임 시계 박스 */
-#clock{position:absolute;right:24px;top:54px;z-index:4;pointer-events:none;text-align:right;padding:8px 12px 6px;
+#clock{position:absolute;right:24px;top:54px;z-index:4;pointer-events:none;text-align:right;padding:10px 14px 8px;
   --fill:rgba(28,24,48,.88);--bc:var(--cream);--shade:rgba(0,0,0,.3);color:var(--cream);transform-origin:right top}
 #clock[hidden]{display:none}
-#clock .t{font-size:24px;font-weight:700;letter-spacing:.04em;line-height:1.05}
-#clock .r{font-size:11px;font-weight:700;color:rgba(246,231,200,.85);margin-top:4px}
+#clock .t{font-size:30px;font-weight:700;letter-spacing:.04em;line-height:1.05}
+#clock .r{font-size:13px;font-weight:700;color:rgba(246,231,200,.85);margin-top:4px}
 #clock.alert{animation:tick .5s steps(2) 4}
 @keyframes tick{50%{transform:scale(1.1) rotate(-2deg)}}
 #clock.warn,#clock.warn .r{color:var(--orange);--bc:var(--orange)}
@@ -80,22 +81,14 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
 @keyframes panic{50%{opacity:.4}}
 
 /* 하단 재생바: 마우스를 움직이면 나타남 */
-.ctrl{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:40px 24px 18px;display:grid;gap:14px;
-  background:linear-gradient(transparent,rgba(0,0,0,.75));opacity:0;transition:opacity .2s steps(3);pointer-events:none}
+.ctrl{position:absolute;right:24px;bottom:22px;z-index:3;display:flex;gap:16px;opacity:0;transition:opacity .2s steps(3);pointer-events:none}
 #stage.showctl .ctrl{opacity:1;pointer-events:auto}
-.ctrl .row2{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--muted);text-shadow:var(--ts)}
-.ctrl .row2 b{color:var(--fg);margin-right:6px}
-.ctrl .sp{flex:1}
-.ctrl button{font-size:12px;font-weight:700;padding:5px 11px 4px;--fill:rgba(28,24,48,.9);--bc:var(--cream);color:var(--cream);text-shadow:none}
+.ctrl[hidden]{display:none}
+.ctrl button{font-size:14px;font-weight:700;padding:6px 12px 5px;--fill:rgba(28,24,48,.9);--bc:var(--cream);color:var(--cream)}
 .ctrl button:hover{--fill:var(--yellow);color:var(--ink)}
-#seek{-webkit-appearance:none;appearance:none;width:100%;height:9px;cursor:pointer;margin:0;
-  background:linear-gradient(to right,var(--teal) var(--p,0%),#2c2846 var(--p,0%));box-shadow:0 0 0 var(--u) #000}
-.wheelside #seek{background:linear-gradient(to right,var(--orange) var(--p,0%),#2c2846 var(--p,0%))}
-#seek::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;background:var(--fg);border:0;box-shadow:0 0 0 var(--u) #000}
-#seek::-moz-range-thumb{width:15px;height:15px;border-radius:0;background:var(--fg);border:var(--u) solid #000}
 
 /* 뒤로가기 */
-#back{position:absolute;left:20px;top:58px;z-index:6;font-size:12px;font-weight:700;padding:4px 0;color:#fff;text-shadow:var(--ts)}
+#back{position:absolute;left:20px;top:58px;z-index:6;font-size:14px;font-weight:700;padding:4px 0;color:#fff;text-shadow:var(--ts)}
 #back:hover{color:var(--yellow)}
 
 /* 오버레이: 선택지·카드·실패·결과 */
@@ -106,31 +99,31 @@ video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backgr
   background-size:48px 48px,48px 48px;background-position:0 0,24px 24px}
 .panel{position:relative;z-index:1;width:min(760px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
-.kicker{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--yellow);text-shadow:var(--ts)}
+.kicker{font-size:14px;font-weight:700;letter-spacing:.14em;color:var(--yellow);text-shadow:var(--ts)}
 .wheelside .kicker{color:var(--orange)}
 /* 타이틀 글자: 노랑 + 주황 외곽선 + 파란 그림자 (GAME OVER 느낌) */
 .big{font-weight:700;color:var(--yellow);letter-spacing:.02em;
   text-shadow:4px 0 0 #e8590c,-4px 0 0 #e8590c,0 4px 0 #e8590c,0 -4px 0 #e8590c,4px 4px 0 #e8590c,-4px -4px 0 #e8590c,4px -4px 0 #e8590c,-4px 4px 0 #e8590c,
     8px 8px 0 var(--blue),4px 8px 0 var(--blue),8px 4px 0 var(--blue),0 8px 0 var(--blue)}
 h1{font-size:clamp(44px,9vw,96px);line-height:1.15;margin:0;font-weight:700}
-h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;text-shadow:3px 3px 0 #000}
-.lead{margin:0;color:var(--fg);font-size:clamp(13px,1.6vw,16px);line-height:1.9}
+h2{font-size:clamp(24px,4vw,40px);line-height:1.35;margin:0;font-weight:700;text-shadow:3px 3px 0 #000}
+.lead{margin:0;color:var(--fg);font-size:clamp(15px,1.9vw,19px);line-height:1.9}
 .lead b{color:var(--yellow)}
-.press{font-size:14px;font-weight:700;letter-spacing:.2em;color:#fff;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
+.press{font-size:16px;font-weight:700;letter-spacing:.2em;color:#fff;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
 
 /* 선택지: 영상 아래쪽 하얀 픽셀 글자 + ▶ 커서 */
-#ov.choice{align-items:flex-end;background:linear-gradient(transparent 40%,rgba(0,0,0,.6))}
-#ov.choice h2{font-size:clamp(17px,2.2vw,24px);text-shadow:var(--ts)}
-#ov.choice .kicker{font-size:11px}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
-.opt{padding:12px 18px;color:#fff;font-size:clamp(15px,1.9vw,21px);font-weight:700;text-shadow:var(--ts)}
+#ov.choice{align-items:center;background:radial-gradient(ellipse at center,rgba(0,0,0,.55),transparent 70%)}
+#ov.choice h2{font-size:clamp(22px,3vw,34px);text-shadow:var(--ts)}
+#ov.choice .kicker{font-size:14px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;margin-top:10px}
+.opt{padding:14px 18px;color:#fff;font-size:clamp(19px,2.5vw,28px);font-weight:700;text-shadow:var(--ts)}
 .opt span::before{content:"▶";margin-right:10px;color:var(--yellow);visibility:hidden}
 .opt:hover,.opt:focus-visible{outline:0;color:var(--yellow)}
 .opt:hover span::before,.opt:focus-visible span::before{visibility:visible;animation:blink .7s steps(1) infinite}
-.opt small{display:block;font-size:12px;font-weight:700;opacity:.75;margin-bottom:6px;color:#fff}
+.opt small{display:block;font-size:14px;font-weight:700;opacity:.75;margin-bottom:6px;color:#fff}
 
 /* 버튼: 게임 메뉴 버튼 */
-.btn{padding:13px 26px 11px;font-size:16px;font-weight:700;--fill:var(--yellow);--bc:#000;--shade:#d9a400;color:var(--ink);transition:transform .1s steps(2)}
+.btn{padding:15px 30px 13px;font-size:19px;font-weight:700;--fill:var(--yellow);--bc:#000;--shade:#d9a400;color:var(--ink);transition:transform .1s steps(2)}
 .btn:hover{transform:translateY(-3px)}
 .btn:active{transform:translateY(2px)}
 .btn.orange{--fill:var(--orange);--shade:#c4581a;color:#1a0d03}
@@ -148,13 +141,20 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
   background-position:6% 14%,92% 9%,78% 46%,0 0,0 0;
   animation:drift 40s steps(80) infinite alternate}
 @keyframes drift{to{background-position:14% 14%,84% 9%,70% 46%,0 0,0 0}}
-#ov.sky .lead{padding:14px 22px;--fill:#fff;--bc:#000;--shade:#d8d8d8;color:var(--ink)}
+#ov.sky .lead{padding:18px 28px;--fill:#fff;--bc:#000;--shade:#d8d8d8;color:var(--ink)}
 #ov.sky .lead b{color:#d9480f}
 #ov.sky .kicker{color:#fff}
 .ground{position:absolute;left:0;right:0;bottom:55px;display:flex;justify-content:space-between;padding:0 8%;pointer-events:none}
 .spr{display:block;image-rendering:pixelated}
 .ground .spr{animation:hop .6s steps(1) infinite}
 .ground .spr:last-child{animation-delay:.3s}
+.reveal .spr{animation:flash .5s steps(2) 3}
+@keyframes flash{50%{filter:brightness(3)}}
+/* 픽셀 아이콘 (이모지 대신) */
+.ic{display:inline-block;width:1em;height:1em;vertical-align:-.12em;margin-right:.45em}
+#sub .ic.check{color:#1f9e93} #sub .ic.clock{color:#d42020} #sub .ic.pin{color:#d9480f}
+.timeline .ic{margin:0 0 0 .4em}
+.col ol .ic{width:.85em;height:.85em}
 @keyframes hop{50%{transform:translateY(-3px)}}
 
 /* 실패 화면: GAME OVER */
@@ -167,8 +167,8 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
 #ov.failbg{background:#1a0b12;background-image:repeating-linear-gradient(#0000 0 3px,#00000055 3px 6px)}
 
 /* 교시 종료 카드 */
-.bell{font-size:14px;font-weight:700;color:var(--yellow);letter-spacing:.12em;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
-.timeline{display:flex;gap:16px;align-items:center;font-size:13px;flex-wrap:wrap;justify-content:center}
+.bell{font-size:16px;font-weight:700;color:var(--yellow);letter-spacing:.12em;text-shadow:var(--ts);animation:blink 1.1s steps(1) infinite}
+.timeline{display:flex;gap:16px;align-items:center;font-size:15px;flex-wrap:wrap;justify-content:center}
 .timeline span{padding:7px 12px 5px;--fill:#2c2846;--bc:#000;color:var(--muted)}
 .timeline span.ok{--fill:var(--teal);color:#062523}
 .wheelside .timeline span.ok{--fill:var(--orange);color:#2a1203}
@@ -177,20 +177,19 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:100%;text-align:left}
 .col{padding:18px;display:grid;gap:12px;align-content:start;justify-items:start;--fill:#24203d;--bc:var(--cream)}
 .col .spr{justify-self:center}
-.col h3{margin:0;font-size:16px;justify-self:center;padding:5px 12px 3px;--fill:var(--teal);--bc:#000;color:#062523}
+.col h3{margin:0;font-size:18px;justify-self:center;padding:5px 12px 3px;--fill:var(--teal);--bc:#000;color:#062523}
 .col.wheel h3{--fill:var(--orange);color:#2a1203}
 .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
-.nums div{font-size:11px;color:var(--muted)}
-.nums b{display:block;font-size:24px;color:var(--yellow);text-shadow:2px 2px 0 #000}
-.col ol{margin:0;padding-left:20px;font-size:12px;line-height:1.5;color:var(--muted);display:grid;gap:4px;max-height:26vh;overflow:auto;width:100%}
+.nums div{font-size:13px;color:var(--muted)}
+.nums b{display:block;font-size:28px;color:var(--yellow);text-shadow:2px 2px 0 #000}
+.col ol{margin:0;padding-left:20px;font-size:14px;line-height:1.5;color:var(--muted);display:grid;gap:4px;max-height:26vh;overflow:auto;width:100%}
 .col ol li.x{color:var(--red)}
-.note{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.note{font-size:14px;line-height:1.6;color:var(--muted);margin:0}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 #ov.scroll{overflow:auto;align-items:flex-start}
 
 @media (max-width:640px){
   .tt{display:none}.choices,.compare{grid-template-columns:1fr}
-  .ctrl .cap{display:none}
   .ground .spr{width:36px;height:auto}
 }
 </style>
@@ -200,7 +199,7 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
   <video id="v" playsinline muted preload="auto"></video>
   <div class="hud">
     <span class="rec">POV</span>
-    <span class="who" id="who">비장애 학생</span>
+    <span class="who" id="who">나</span>
     <div class="tt" id="tt">
       <div data-p="1"><b>1교시</b>미디어관</div>
       <div data-p="2"><b>2교시</b>교양관</div>
@@ -208,17 +207,11 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
     </div>
   </div>
   <div id="loc"><i></i><b></b></div>
-  <div id="sub"><em>비장애 학생</em><span></span></div>
+  <div id="sub"><em>나</em><span></span></div>
   <div id="clock" hidden><div class="t">09:21</div><div class="r"></div></div>
   <div class="ctrl" id="ctrl" hidden>
-    <input type="range" id="seek" min="0" max="1000" value="0" aria-label="재생 위치">
-    <div class="row2">
-      <button id="pp" aria-label="재생/정지">❚❚</button>
-      <span class="time" id="time">0:00 / 0:00</span>
-      <span class="cap" id="cap"></span>
-      <span class="sp"></span>
-      <button id="skip">건너뛰기 ▶▶</button>
-    </div>
+    <button id="pp" aria-label="재생/정지"></button>
+    <button id="skip">건너뛰기 ▶▶</button>
   </div>
   <div id="ov"></div>
   <button id="back" hidden>◀ 뒤로</button>
@@ -227,12 +220,86 @@ h2{font-size:clamp(22px,3.6vw,36px);line-height:1.35;margin:0;font-weight:700;te
 <script src="flow.js"></script>
 <script>
 const $ = s => document.querySelector(s);
-const stage = $('#stage'), v = $('#v'), ov = $('#ov'), subEl = $('#sub'), locEl = $('#loc'), skip = $('#skip'), cap = $('#cap'), ctrl = $('#ctrl'), seek = $('#seek');
+const stage = $('#stage'), ov = $('#ov'), subEl = $('#sub'), locEl = $('#loc'), skip = $('#skip'), ctrl = $('#ctrl');
+let v = $('#v');   // 지금 보이는 영상 (미리 받아 둔 영상과 바꿔치기됨)
+
+// 검은 화면 방지: 다음에 나올 수 있는 영상을 숨겨 둔 video에 미리 불러 두고, 차례가 오면 바로 바꿔 끼움
+const pool = {};   // src → 미리 불러 둔 video
+function nextSrcs(id){
+  const n = G[id]; if (!n) return [];
+  const to = n.t === 'choice' ? n.opts.map(o => o[1]) : [n.next];
+  return to.flatMap(k => { const m = G[k]; if (!m) return [];
+    return m.t === 'video' ? [m.src] : m.t === 'choice' ? m.opts.map(o => G[o[1]]?.src).filter(Boolean) : []; });
+}
+function warm(srcs){
+  const want = new Set(srcs);
+  for (const s in pool) if (!want.has(s)){ pool[s].removeAttribute('src'); pool[s].load(); pool[s].remove(); delete pool[s]; }
+  want.forEach(s => {
+    if (pool[s]) return;
+    const el = document.createElement('video');
+    el.muted = true; el.playsInline = true; el.preload = 'auto'; el.className = 'pre';
+    el.src = `videos/${s}.mp4`; stage.insertBefore(el, v); pool[s] = el;
+  });
+}
+function bindV(el){
+  el.ontimeupdate = onTime; el.onended = finish;
+  el.onplay = () => $('#pp').innerHTML = icon('pause');
+  el.onpause = () => $('#pp').innerHTML = '▶';
+}
+
 const blank = () => ({path:[], secs:0, blocked:0, choices:0, arrived:{}});
 let log = {walk:blank(), wheel:blank()}, side = 'walk', cur = null;
 let SUBS = {};  // subs.json: 영상별 자막(cues)·위치 자막(loc), 선택지·카드 문구
 const S = id => SUBS[id] || {};
 const label = id => S(id).loc ?? G[id].label;
+
+// 픽셀 아이콘 8x8 (x = 칠하는 칸, 글자색을 따라감)
+const ICON = {
+  check:['........','.......x','......xx','x....xx.','xx..xx..','.xxxx...','..xx....','........'],
+  x:['xx....xx','xxx..xxx','.xxxxxx.','..xxxx..','..xxxx..','.xxxxxx.','xxx..xxx','xx....xx'],
+  clock:['..xxxx..','.x....x.','x...x..x','x...x..x','x...xx.x','x......x','.x....x.','..xxxx..'],
+  pin:['..xxxx..','.xxxxxx.','xxx..xxx','xxx..xxx','.xxxxxx.','..xxxx..','...xx...','...xx...'],
+  pause:['........','.xx..xx.','.xx..xx.','.xx..xx.','.xx..xx.','.xx..xx.','.xx..xx.','........'],
+};
+function icon(k){
+  let r = '';
+  ICON[k].forEach((row, y) => [...row].forEach((c, x) => { if (c === 'x') r += `<rect x="${x}" y="${y}" width="1" height="1"/>`; }));
+  return `<svg class="ic ${k}" viewBox="0 0 8 8" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
+}
+const EMOJI = {'✅':'check', '⏰':'clock', '📍':'pin'};   // 자막 맨 앞 이모지 → 픽셀 아이콘
+
+// 8비트 효과음: [주파수, 길이(초), 파형, 볼륨]. M 키로 끄고 켬
+let AC, muted = false;
+const SFX = {
+  move:[[880,.04,'square',.04]],
+  ok:[[660,.06],[990,.12]],
+  sub:[[1320,.03,'square',.025],[1760,.03,'square',.02]],
+  tick:[[1760,.04,'square',.05],[0,.08],[1760,.04,'square',.05]],
+  start:[[523,.08],[659,.08],[784,.08],[1047,.28]],
+  clear:[[784,.1],[659,.1],[784,.1],[1047,.12],[0,.05],[1047,.3]],
+  fail:[[392,.16],[349,.16],[311,.16],[262,.5,'triangle',.14]],
+  reveal:[[262,.07],[330,.07],[392,.07],[523,.07],[659,.07],[784,.07],[1047,.35,'triangle',.12]],
+};
+function sfx(name){
+  if (muted) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    let t = AC.currentTime;
+    for (const [f, d, type = 'square', vol = .07] of SFX[name]){
+      if (f){
+        const o = AC.createOscillator(), g = AC.createGain();
+        o.type = type; o.frequency.setValueAtTime(f, t);
+        g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+        o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d);
+      }
+      t += d;
+    }
+  } catch {}
+}
+// 버튼·선택지: 올리면 '삑', 누르면 '띠링'
+document.addEventListener('mouseover', e => { const b = e.target.closest('.opt,.btn'); if (b && !b.contains(e.relatedTarget)) sfx('move'); });
+document.addEventListener('click', e => { if (e.target.closest('.opt,.ctrl button,#back')) sfx('ok'); });
 
 // 픽셀 캐릭터: 글자 한 칸 = 픽셀 한 칸
 const PAL = {k:'#1b1b1b', h:'#3b2a22', s:'#f5c9a0', e:'#1b1b1b', p:'#3a4a7a', w:'#2a2a2a', g:'#b8c2c8'};
@@ -240,8 +307,9 @@ const SPR = {
   walk:['..kkkkkk..','.khhhhhhk.','khhhhhhhhk','khsssssshk','kssessessk','kssssssssk','.kssssssk.','..kttttk..','.kttttttk.','ksttttttsk','ksttttttsk','.kppppppk.','.kppkkppk.','.kpk..kpk.','.kpk..kpk.','kkkk..kkkk'],
   wheel:['....kkkkkk....','...khhhhhhk...','..khhhhhhhhk..','..khsssssshk..','..kssessessk..','..kssssssssk..','...kssssssk...','w...kttttk...w','wg.kttttttk.gw','wgksttttttskgw','wgksttttttskgw','wgkkppppppkkgw','wg.kppppppk.gw','wg..kpk.kpk.gw','wg..kpk.kpk.gw','.w..kkk.kkk.w.'],
 };
-function sprite(k, s = 5){
+function sprite(k, s = 5, mono){
   const rows = SPR[k], pal = {...PAL, t: k === 'walk' ? '#3fd1c4' : '#ff8a3d'};
+  if (mono) for (const c in pal) pal[c] = mono;   // 실루엣
   let r = '';
   rows.forEach((row, y) => [...row].forEach((c, x) => { if (pal[c]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[c]}"/>`; }));
   return `<svg class="spr" viewBox="0 0 ${rows[0].length} ${rows.length}" width="${rows[0].length*s}" height="${rows.length*s}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
@@ -274,16 +342,23 @@ function drawClock(p, hurry){
   const m = Math.floor(s / 60);
   if ((hurry || (side === 'wheel' && arrived == null && m !== lastMin && lastMin >= 0)) && !el.classList.contains('alert')){
     cls += ' alert'; setTimeout(() => el.classList.remove('alert'), 2000);
+    if (side === 'wheel') sfx('tick');
   } else if (el.classList.contains('alert')) cls += ' alert';
   lastMin = m;
   el.className = cls.trim();
 }
 
 // 지금 재생 위치에 맞는 자막 보여주기
+let lastCue = null;
 function renderSub(){
   const cues = S(cur).cues || [];
   const c = cues.find(c => v.currentTime >= c.t && v.currentTime < c.t + c.d);
-  if (c){ subEl.querySelector('span').textContent = c.text; subEl.className = 'show' + (c.text.startsWith('✅') ? ' good' : c.text.startsWith('⏰') ? ' late' : ''); }
+  if (c && c !== lastCue) sfx(c.text.startsWith('⏰') ? 'fail' : 'sub');
+  lastCue = c;
+  if (c){
+    const sp = subEl.querySelector('span'), m = c.text.match(/^(✅|⏰|📍)\s*/u);
+    sp.innerHTML = m ? icon(EMOJI[m[1]]) : '';
+    sp.append(m ? c.text.slice(m[0].length) : c.text); subEl.className = 'show' + (c.text.startsWith('✅') ? ' good' : c.text.startsWith('⏰') ? ' late' : ''); }
   else subEl.className = '';
   return c;
 }
@@ -295,7 +370,7 @@ function period(p, ended){
 }
 function setSide(s){
   side = s;
-  $('#who').textContent = s === 'walk' ? '비장애 학생' : '휠체어 이용 학생';
+  $('#who').textContent = s === 'walk' ? '나' : '휠체어 이용 학생';
   $('#who').className = 'who' + (s === 'wheel' ? ' wheel' : '');
   $('#sub em').textContent = $('#who').textContent;
   stage.classList.toggle('wheelside', s === 'wheel');
@@ -325,27 +400,31 @@ $('#back').onclick = back;
 function go(id){
   entry = {id, side, log:clone(log), clk};
   const n = G[id]; cur = id; failing = false;
-  ctrl.hidden = true; cap.innerHTML = ''; subEl.className = ''; locEl.className = '';
+  ctrl.hidden = true; subEl.className = ''; locEl.className = '';
   $('#back').hidden = id === 'start' || !hist.length;
   if (n && n.p) period(n.p, n.t === 'card');
   if (n && n.t === 'card') clk = Math.max(clk, toSec(CLOCK.cls[n.p][1]));   // 수업 끝나는 시각
   clkBase = clk; lastMin = -1;
   drawClock(n && n.p);
 
+  setTimeout(() => cur === id && warm(id === 'start' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
   if (id === 'start') return start();
   if (id === 'switch') return toWheel();
   if (id === 'result') return result();
 
   if (n.t === 'video'){
     hide(); stage.classList.remove('hidehud');
-    v.src = `videos/${n.src}.mp4`;
+    const ready = pool[n.src];
+    if (ready){   // 미리 받아 둔 영상으로 바꿔 끼움
+      delete pool[n.src]; v.pause(); v.remove();
+      v = ready; v.classList.remove('pre'); bindV(v); v.currentTime = 0;
+    } else v.src = `videos/${n.src}.mp4`;
     // 브라우저가 자동재생을 막으면 재생 버튼을 띄움
     v.play().catch(() => {
       show(`<div class="panel"><button class="btn" id="b">▶ 재생</button></div>`, 'choice');
       $('#b').onclick = () => { hide(); v.play(); };
     });
     log[side].path.push(label(id));
-    cap.innerHTML = `<b>${n.p}교시</b>${label(id)}`;
     locEl.querySelector('i').textContent = `${n.p}교시`;
     locEl.querySelector('b').textContent = label(id);
     setTimeout(() => cur === id && (locEl.className = 'show'), 300);
@@ -365,23 +444,20 @@ function go(id){
   else if (n.t === 'card'){
     const names = ['미디어관','교양관','국제관'];
     show(`<div class="panel"><div class="bell">STAGE ${n.p} CLEAR · 수업 종료</div><h2>${S(id).title ?? n.title}</h2>
-      <div class="timeline">${names.map((x, i) => `<span class="${i < n.p ? 'ok' : ''}">${i + 1}교시 ${x}${i < n.p ? ' ✓' : ''}</span>`).join('')}</div>
+      <div class="timeline">${names.map((x, i) => `<span class="${i < n.p ? 'ok' : ''}">${i + 1}교시 ${x}${i < n.p ? icon('check') : ''}</span>`).join('')}</div>
       <p class="lead">${S(id).sub ?? n.sub}</p><button class="btn" id="b">다음 수업으로 →</button></div>`, 'solid');
     $('#b').onclick = () => nav(n.next);
+    sfx('clear');
   }
 }
 
 // 영상 끝나기 3초 전 도착 멘트, 끝나면 다음으로
-v.ontimeupdate = () => {
+const onTime = () => {
   const n = G[cur];
   if (!n || n.t !== 'video' || !v.duration) return;
-  const end = n.stop || v.duration;
   const c = renderSub();
   clk = clkBase + origAt(cur, v.currentTime);
   drawClock(n.p, c && /커피|늦/.test(c.text));
-  if (!dragging){ seek.value = v.currentTime / end * 1000; }
-  seek.style.setProperty('--p', seek.value / 10 + '%');
-  $('#time').textContent = `${fmt(v.currentTime)} / ${fmt(end)}`;
   if (n.stop && v.currentTime >= n.stop) finish();
 };
 function finish(){
@@ -390,22 +466,13 @@ function finish(){
   if (G[n.next]?.t === 'card') log[side].arrived[n.p] = Math.floor(clk);   // 강의실 도착 시각
   nav(n.next);
 }
-v.onended = finish;
 skip.onclick = finish;
 
-// 재생바 조작
-let dragging = false, ctlTimer;
-seek.oninput = () => {
-  dragging = true;
-  const end = G[cur]?.stop || v.duration || 0;
-  v.currentTime = seek.value / 1000 * end;
-  seek.style.setProperty('--p', seek.value / 10 + '%');
-};
-seek.onchange = () => { dragging = false; };
+// 재생/건너뛰기 버튼
+let ctlTimer;
 $('#pp').onclick = () => v.paused ? v.play() : v.pause();
-v.onplay = () => $('#pp').textContent = '❚❚';
-v.onpause = () => $('#pp').textContent = '▶';
-// 마우스를 움직이면 재생바가 나오고, 2.5초 가만히 있으면 숨김
+bindV(v);
+// 마우스를 움직이면 버튼이 나오고, 2.5초 가만히 있으면 숨김
 stage.addEventListener('mousemove', () => {
   stage.classList.add('showctl');
   clearTimeout(ctlTimer);
@@ -416,34 +483,45 @@ stage.addEventListener('mouseleave', () => stage.classList.remove('showctl'));
 function fail(back, label){
   log[side].blocked++;
   log[side].path.push(`✕ ${label} — 이동 불가`);
-  failing = true; $('#back').hidden = false;
+  failing = true; $('#back').hidden = false; sfx('fail');
   const hp = Math.max(0, 3 - log[side].blocked);
   show(`<div class="panel fail"><div class="hearts">${'♥'.repeat(hp)}<s>${'♥'.repeat(3 - hp)}</s></div><div class="stamp">실패!</div>
     <h2>계단이다.<br>휠체어로는 지나갈 수 없어.</h2>
     <p class="lead">아까는 아무 생각 없이 고를 수 있던 길이야.</p>
-    <button class="btn orange" id="b">↺ 다른 길 찾기</button></div>`, 'failbg');
+    <button class="btn orange" id="b">◀ 다른 길 찾기</button></div>`, 'failbg');
   $('#b').onclick = () => go(back);
 }
 
 function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
-  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · 인터랙티브 다큐멘터리</div>
+  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · 캠퍼스 투어</div>
     <h1 class="big">같은 길,<br>다른 거리</h1>
     <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b> 수업을 들으러 가.<br>갈림길이 나오면 어느 길로 갈지 직접 골라 줘.</p>
     <div class="press">PRESS START</div>
     <button class="btn" id="b">▶ 오늘의 시간표 시작</button>
-    </div><div class="ground">${sprite('walk')}${sprite('wheel')}</div>`, 'solid sky');
-  $('#b').onclick = () => nav('w01');
+    </div><div class="ground">${sprite('walk')}</div>`, 'solid sky');
+  $('#b').onclick = () => { sfx('start'); nav('w01'); };
 }
 
 function toWheel(){
-  period(4);
-  show(`<div class="panel"><div class="kicker">MISSION COMPLETE</div><h2>오늘의 시간표 완료!</h2>
-    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">▶▶</span>${sprite('wheel', 6)}</div>
-    <p class="lead">고민한 건 엘리베이터냐 계단이냐 정도였어.<br>이번엔 <b>똑같은 시간표</b>를 <b>휠체어를 타고</b> 다시 가 볼게.</p>
-    <button class="btn orange" id="b">휠체어 이용 학생의 시점으로 이동하기 →</button></div>`, 'solid');
-  $('#b').onclick = () => { hist.push(entry); setSide('wheel'); clk = toSec(CLOCK.depart[1]); go('h01'); };
+  period(4); sfx('clear');
+  // 1단계: 평범한 캠퍼스 투어가 끝난 것처럼
+  show(`<div class="panel"><div class="kicker">TOUR COMPLETE</div><h2>캠퍼스 투어 끝!</h2>
+    <div class="row" style="gap:40px;align-items:flex-end">${sprite('walk', 6)}<span class="press">?</span><span id="who2">${sprite('wheel', 6, '#0b0a16')}</span></div>
+    <p class="lead" id="msg">수업 세 개, 강의실 세 곳. 고민한 건 엘리베이터냐 계단이냐 정도였어.<br>그럼 이제 <b>다른 학생의 시점</b>을 한번 알아볼까?</p>
+    <button class="btn" id="b">다른 학생의 시점 보기 ▶</button></div>`, 'solid');
+  // 2단계: 실루엣이 휠체어 이용 학생으로 바뀜
+  $('#b').onclick = () => {
+    sfx('reveal'); setSide('wheel');
+    $('#who2').innerHTML = sprite('wheel', 6); $('#who2').className = 'reveal';
+    ov.querySelector('.kicker').textContent = 'NEW PLAYER';
+    ov.querySelector('h2').textContent = '휠체어를 타는 학생';
+    ov.querySelector('.press').textContent = '▶▶';
+    $('#msg').innerHTML = '<b>똑같은 시간표</b>, 똑같은 강의실.<br>이번엔 휠체어를 타고 같은 길을 다시 가 볼게.';
+    $('#b').textContent = '출발 ▶'; $('#b').classList.add('orange');
+    $('#b').onclick = () => { hist.push(entry); clk = toSec(CLOCK.depart[1]); go('h01'); };
+  };
 }
 
 function result(){
@@ -451,17 +529,18 @@ function result(){
   const col = (k, name) => { const r = log[k]; return `<div class="col ${k}">${sprite(k, 5)}<h3>${name}</h3>
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
-    <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p}</li>`).join('')}</ol></div>`; };
+    <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
   show(`<div class="panel"><div class="kicker" style="color:var(--fg)">MISSION CLEAR · 두 이동 비교</div>
     <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
-    <div class="compare">${col('walk','비장애 학생')}${col('wheel','휠체어 이용 학생')}</div>
+    <div class="compare">${col('walk','나 (비장애 학생)')}${col('wheel','휠체어 이용 학생')}</div>
     <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
     <div class="row"><button class="btn" id="b">처음부터 다시</button></div></div>`, 'solid scroll');
   $('#b').onclick = () => { hist = []; go('start'); };
 }
 
-// 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로
+// 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로, M = 효과음 끄기/켜기
 document.addEventListener('keydown', e => {
+  if (e.code === 'KeyM'){ muted = !muted; return; }
   if (e.code === 'Backspace' && !$('#back').hidden){ e.preventDefault(); return back(); }
   if (G[cur]?.t !== 'video' || ov.classList.contains('on')) return;
   if (e.code === 'Space'){ e.preventDefault(); v.paused ? v.play() : v.pause(); }
