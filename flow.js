@@ -3,7 +3,7 @@
 // label: 위치 자막 / q·opts: 선택지 / title·sub: 교시 종료 카드 / stop: 이 초에서 멈추고 다음으로
 const G = {
   // ── 1부: 비장애 학생 ──
-  w01:{t:'video', src:'walk/01', p:1, label:'안암역 → 갈림길', next:'wQ1'},
+  w01:{t:'video', src:'walk/01', p:1, label:'안암역 → 갈림길', next:'wQ1', stop:21.9},   // 갈림길 자막 뒤 3초 일찍 끊고 바로 선택지
   wQ1:{t:'choice', p:1, q:'미디어관으로 가는 길, 어디로 갈까?', opts:[['1층 입구 쪽','w02'],['정후 쪽','w03']]},
   w02:{t:'video', src:'walk/02', p:1, label:'1층 입구 → 4층 시네마트랩', next:'wE1'},
   w03:{t:'video', src:'walk/03', p:1, label:'정후 → 미디어관 2층', next:'wQ2'},
