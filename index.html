@@ -271,6 +271,16 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 .panel.result .compare{margin-top:14px}
 .col{padding-top:30px}
 .atts{display:grid;gap:6px;width:100%}
+/* 결과: 교시별 이동 시간 막대 */
+.trips{display:grid;gap:14px;width:100%;padding-top:26px!important}
+.trip h3{margin:0 0 6px;font-size:18px;font-weight:normal;color:#2e2c3d;text-align:left}
+.trip h3 em{font-style:normal;color:#fff;background:#d1251f;padding:1px 8px;margin-left:6px;font-size:15px}
+.bar{display:grid;grid-template-columns:4em 1fr 4.2em;align-items:center;gap:10px;font-size:15px;margin:4px 0}
+.bar span{text-align:left;color:#4a4f63}.bar b{text-align:right;font-weight:normal;color:#2e2c3d}
+.bar .track{height:18px;background:#eaf6fc;box-shadow:0 0 0 2px #2e2c3d}
+.bar .fill{height:100%;transition:width 1.2s steps(12)}
+.bar.walk .fill{background:#2f8bc9;box-shadow:inset 0 -4px 0 #226b9c}
+.bar.wheel .fill{background:#d1251f;box-shadow:inset 0 -4px 0 #95232c}
 .att{display:grid;grid-template-columns:4.5em 1fr auto;align-items:center;gap:10px;font-size:17px;padding:6px 10px;background:#eaf6fc}
 .att span{color:#6a7b92}.att b{font-size:20px;color:#2e2c3d}
 .att i{font-style:normal;font-weight:700;font-size:14px;padding:3px 8px 2px;background:#3f9a4a;color:#fff}
@@ -895,8 +905,17 @@ function result(){
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="atts">${att || '<div class="att none">도착 기록 없음</div>'}</div>
     <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
+  // 교시별 이동 시간 비교 막대 (출발 → 도착, 시계 기준)
+  const trip = (k, p) => log[k].arrived[p] == null ? null : log[k].arrived[p] - toSec(CLOCK.depart[p]);
+  const mx = Math.max(1, ...[1,2,3].flatMap(p => [trip('walk', p), trip('wheel', p)]).filter(x => x != null));
+  const bar = (k, p) => { const s = trip(k, p);
+    return `<div class="bar ${k}"><span>${k === 'walk' ? '나' : '휠체어'}</span><div class="track"><div class="fill" style="width:${s == null ? 0 : Math.max(3, s / mx * 100)}%"></div></div><b>${s == null ? '-' : fmt(s)}</b></div>`; };
+  const bars = [1,2,3].map(p => { const a = trip('walk', p), b = trip('wheel', p);
+    const ratio = a && b ? `<em>${(b / a).toFixed(1)}배</em>` : '';
+    return `<div class="trip"><h3>${p}교시 · ${['미디어관','교양관','국제관'][p-1]} ${ratio}</h3>${bar('walk', p)}${bar('wheel', p)}</div>`; }).join('');
   show(`<div class="panel result"><div class="bell">RESULT</div>
     <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
+    <div class="win trips"><div class="tab">이동 시간 비교</div>${bars}</div>
     <div class="compare">${col('walk','나 (비장애 학생)')}${col('wheel','휠체어 이용 학생')}</div>
     <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
     <button class="btn" id="b">처음부터 다시</button></div>`, 'solid scroll', 'end');
