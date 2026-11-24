@@ -183,6 +183,9 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 #ov.sky .panel{z-index:1}
 .title-screen{position:absolute;inset:0;z-index:1}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sndhint{position:absolute;left:50%;bottom:2.4%;transform:translateX(-50%);font-size:clamp(13px,1.2vw,16px);color:#fff;font-weight:700;
+  text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d;animation:blink 1.2s steps(1) infinite}
+.sound-on .sndhint{display:none}
 .tstart{position:absolute;left:50%;top:80%;transform:translateX(-50%);font-size:clamp(18px,1.8vw,24px);padding:11px 40px 13px 48px}
 .tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
 .tut{position:absolute;inset:0;z-index:1}
@@ -485,7 +488,7 @@ const BGM = (() => {
       if (muted) return;
       try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); AC.resume(); } catch { return; }
       const T = TRACKS[name], step = 60 / T.bpm / 2;   // 8분음표 길이
-      playing = name; gain = AC.createGain(); gain.gain.value = .6; gain.connect(AC.destination);
+      playing = name; gain = AC.createGain(); gain.gain.value = 1.6; gain.connect(AC.destination);
       t = AC.currentTime + .05; i = 0;
       timer = setInterval(() => {   // 앞으로 0.3초 분량을 미리 예약
         while (t < AC.currentTime + .3){
@@ -502,8 +505,13 @@ const BGM = (() => {
   return api;
 })();
 // 타이틀·튜토리얼에서 첫 클릭·키 입력 때 음악 시작 (브라우저가 소리 자동재생을 막아서)
-document.addEventListener('pointerdown', () => { if (cur === 'start' || cur === 'tutorial') BGM.on(); });
-document.addEventListener('keydown', () => { if (cur === 'start' || cur === 'tutorial') BGM.on(); });
+// 브라우저는 첫 클릭·터치·키 입력 전에는 소리를 막아 둠 → 아무 입력이나 들어오면 소리 잠금 해제
+const unlock = () => {
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); AC.resume(); } catch {}
+  if (cur === 'start' || cur === 'tutorial') BGM.on();
+  document.body.classList.add('sound-on');
+};
+['pointerdown', 'click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, unlock, true));
 
 // 버튼·선택지: 올리면 '삑', 누르면 '띠링'
 document.addEventListener('mouseover', e => { const b = e.target.closest('.opt,.btn'); if (b && !b.contains(e.relatedTarget)) sfx('move'); });
@@ -740,6 +748,7 @@ function start(){
     <div class="title-screen">
     <h1 class="sr">ANAM RUN!</h1>
     <button class="btn tstart" id="b">등교 시작!</button>
+    <div class="sndhint">🔊 화면을 한 번 누르면 소리가 나와요</div>
     <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
   $('#b').onclick = () => { sfx('start'); iris(() => nav('tutorial'), ov.querySelector('.runner')); };
