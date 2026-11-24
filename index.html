@@ -167,6 +167,11 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .art16 .runner{width:8.4%;aspect-ratio:170/176;bottom:3.5%;background:url(art/run_sheet.png) 0 0/800% 100% no-repeat;
   right:17%;bottom:6%;animation:runf .64s steps(8,jump-none) infinite}
 @keyframes runf{to{background-position:100% 0}}
+/* 발밑 그림자: 계단 모양 픽셀 타원 */
+.art16 .runner::after,.chr::after{content:"";position:absolute;left:18%;right:22%;bottom:0;height:6%;background:rgba(46,44,61,.5);z-index:-1;
+  clip-path:polygon(12% 0,88% 0,88% 30%,100% 30%,100% 70%,88% 70%,88% 100%,12% 100%,12% 70%,0 70%,0 30%,12% 30%)}
+.chr,.art16 .runner{z-index:1}
+.chr{position:relative}
 /* 떨어지는 잎 */
 .art16 .leaf{width:.6%;aspect-ratio:1;top:-3%;animation:fall var(--d) linear var(--dl) infinite}
 @keyframes fall{0%{top:-3%;transform:translateX(0) rotate(0)}25%{transform:translateX(160%) rotate(90deg)}50%{transform:translateX(-80%) rotate(180deg)}75%{transform:translateX(140%) rotate(270deg)}100%{top:100%;transform:translateX(0) rotate(360deg)}}
