@@ -505,10 +505,16 @@ const BGM = (() => {
   return api;
 })();
 // 타이틀·튜토리얼에서 첫 클릭·키 입력 때 음악 시작 (브라우저가 소리 자동재생을 막아서)
+function trackFor(id){
+  if (id === 'result') return 'result';
+  if (id === 'start' || id === 'tutorial') return 'title';
+  if (id === 'switch') return BGM.playing === 'reveal' ? 'reveal' : null;
+  return side === 'wheel' ? 'reveal' : 'title';
+}
 // 브라우저는 첫 클릭·터치·키 입력 전에는 소리를 막아 둠 → 아무 입력이나 들어오면 소리 잠금 해제
 const unlock = () => {
   try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); AC.resume(); } catch {}
-  if (cur === 'start' || cur === 'tutorial') BGM.on();
+  const t = trackFor(cur); if (t) BGM.on(t);
   document.body.classList.add('sound-on');
 };
 ['pointerdown', 'click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, unlock, true));
@@ -653,7 +659,9 @@ function go(id){
   drawClock(n && n.p);
 
   setTimeout(() => cur === id && warm(id === 'start' || id === 'tutorial' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
-  if (id === 'start' || id === 'tutorial') BGM.on(); else BGM.off();
+  // 음악: 걷기 쪽은 타이틀 곡이 영상 내내 이어지고, 반전 화면은 조용히 → 공개 순간부터 휠체어 쪽 내내 반전 곡
+  const track = trackFor(id);
+  if (track) BGM.on(track); else BGM.off();
   if (id === 'start') return start();
   if (id === 'tutorial') return tutorial();
   if (id === 'switch') return toWheel();
@@ -857,7 +865,7 @@ function result(){
 
 // 발표용 단축키: 스페이스 = 재생/정지, → = 건너뛰기, Backspace = 뒤로, M = 효과음 끄기/켜기, P = 픽셀 필터 끄기/켜기
 document.addEventListener('keydown', e => {
-  if (e.code === 'KeyM'){ const was = BGM.playing; muted = !muted; if (muted){ BGM.off(); BGM.last = was; } else if (BGM.last) BGM.on(BGM.last); else if (cur === 'start' || cur === 'tutorial') BGM.on(); return; }
+  if (e.code === 'KeyM'){ const was = BGM.playing; muted = !muted; if (muted){ BGM.off(); BGM.last = was; } else if (trackFor(cur)) BGM.on(trackFor(cur)); return; }
   // 메뉴에서 ↑↓로 커서 이동, Enter로 선택 (게임처럼)
   if (ov.classList.contains('on') && (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight')){
     const items = [...ov.querySelectorAll('.menu button')].filter(b => b.offsetParent); if (!items.length) return;
