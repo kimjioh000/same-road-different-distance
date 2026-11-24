@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>자막 수정실</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.39.2/dist/galmuri.css">
 <style>
 /* 자막 수정용 화면: 왼쪽 장면 목록 / 가운데 영상+타임라인 / 오른쪽 자막 편집 */
 :root{
@@ -47,7 +47,7 @@ video{width:100%;height:100%;object-fit:contain;display:block}
 /* 본편과 같은 자막·위치 자막 모양(미리보기) */
 #sub{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);text-align:center;max-width:calc(100% - 32px);pointer-events:none;display:none}
 /* 미리보기: 본편과 같은 픽셀 대화창 */
-#sub,#loc{font-family:"NeoDunggeunmo",var(--font)}
+#sub,#loc{font-family:"Galmuri11",var(--font);font-weight:700}
 #sub{text-align:left}
 #sub span{position:relative;display:block;font-size:clamp(12px,1.05vw,15px);font-weight:700;line-height:1.6;padding:7px 30px 7px 14px;background:#fff;color:#2a2140;
   box-shadow:0 -3px 0 0 #2a2140,0 3px 0 0 #2a2140,-3px 0 0 0 #2a2140,3px 0 0 0 #2a2140,inset 0 -3px 0 0 rgba(42,33,64,.15),3px 6px 0 0 rgba(0,0,0,.35)}
@@ -110,7 +110,8 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 
 // 고친 내용은 이 브라우저에 임시 저장(창을 닫아도 남음)
 const DRAFT = 'subs_draft';
-function keepDraft(){ try { localStorage.setItem(DRAFT, JSON.stringify(SUBS)); } catch {} }
+let BASE = '';   // 불러온 subs.json 원본 (임시저장이 이 버전에서 만든 건지 확인용)
+function keepDraft(){ try { localStorage.setItem(DRAFT, JSON.stringify({base: BASE, subs: SUBS})); } catch {} }
 function setDirty(d){ dirty = d; if (d) keepDraft(); $('#status').textContent = d ? '● 저장 안 됨' : '저장됨'; $('#status').className = d ? 'dirty' : ''; }
 
 // 흐름 순서대로 장면 목록 만들기
@@ -292,9 +293,10 @@ document.addEventListener('keydown', e => {
 });
 window.onbeforeunload = () => dirty ? '' : undefined;
 
-fetch('subs.json', {cache:'no-store'}).then(r => r.json()).then(d => SUBS = d).catch(() => {}).finally(() => {
+fetch('subs.json', {cache:'no-store'}).then(r => r.json()).then(d => { SUBS = d; BASE = JSON.stringify(d); }).catch(() => {}).finally(() => {
+  // 임시저장은 지금 subs.json과 같은 버전에서 만든 것만 불러옴 (옛날 버전으로 덮어쓰기 방지)
   let draft = null; try { draft = JSON.parse(localStorage.getItem(DRAFT)); } catch {}
-  if (draft){ SUBS = draft; }
+  if (draft && draft.base === BASE && draft.subs){ SUBS = draft.subs; } else { draft = null; try { localStorage.removeItem(DRAFT); } catch {} }
   open('w01');
   if (draft){ setDirty(true); $('#status').textContent = '● 전에 고치던 내용 불러옴 (아직 저장 안 됨)'; }
 });
