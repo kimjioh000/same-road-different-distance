@@ -414,6 +414,11 @@ const BGM = (() => {
       lead:[69,0,72,0,76,0,74,72, 72,0,0,0,0,0,0,0, 65,0,69,0,72,0,71,69, 67,0,0,0,0,0,0,0,
             69,0,72,0,76,0,77,76, 74,0,72,0,71,0,72,0, 69,0,71,0,72,0,68,0, 69,0,0,0,0,0,0,0],
       bass:roots([45,41,48,43,45,50,40,45])},
+    // 결과: 잔잔한 오르골 느낌 (다장조 C-G-Am-F), 72 BPM
+    result: {bpm:72, leadType:'triangle', leadVol:.07, leadLen:1.8, bassEvery:4, bassLen:3.8, bassVol:.07,
+      lead:[72,0,76,0,79,0,76,0, 74,0,79,0,83,0,79,0, 72,0,76,0,81,0,76,0, 72,0,77,0,81,0,77,0,
+            84,0,83,0,81,0,79,0, 79,0,77,0,76,0,74,0, 76,0,74,0,72,0,71,0, 72,0,0,0,0,0,0,0],
+      bass:roots([48,43,45,41,48,43,41,48])},
   };
   let timer = null, playing = null, i = 0, t = 0, gain = null;
   const tone = (f, at, d, type, vol) => {
@@ -747,7 +752,7 @@ function toWheel(){
 }
 
 function result(){
-  period(4); stage.classList.add('hidehud');
+  period(4); stage.classList.add('hidehud'); BGM.on('result');
   const hm = s => `${p2(Math.floor(s / 3600))}:${p2(Math.floor(s % 3600 / 60))}`;
   const col = (k, name) => { const r = log[k];
     const att = [1,2,3].map(p => r.arrived[p] == null ? '' : r.arrived[p] > toSec(CLOCK.cls[p][0])
