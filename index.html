@@ -180,7 +180,13 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 /* 제목 로고: 안암 + RUN */
 #ov.sky .panel{z-index:1}
 .title-screen{position:absolute;inset:0;z-index:1}
-.tmenu{position:absolute;left:6%;top:66%;display:grid;gap:18px;width:min(300px,40%)}
+.tmenu{position:absolute;left:7%;top:64%;display:grid;gap:6px;justify-items:start}
+/* 타이틀 메뉴: 버튼 판 없이 하얀 글씨 (레퍼런스처럼), 고른 줄엔 슬라임 커서 */
+.tmenu .btn{background:none;box-shadow:none;transform:none;text-align:left;padding:4px 0 4px 50px;font-size:clamp(26px,2.8vw,36px);color:#ffffff;
+  text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.6)}
+.tmenu .btn:not(:hover):not(:focus){color:#d6d1e6}
+.tmenu .btn:hover,.tmenu .btn:focus{transform:translateX(4px)}
+.tmenu .btn:hover::after,.tmenu .btn:focus::after{left:6px;width:30px;height:30px;margin-top:-16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .tinfo[hidden]{display:none}
 .tinfo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 40px))}
