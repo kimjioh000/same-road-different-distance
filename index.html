@@ -11,14 +11,14 @@
 :root{
   --ink:#2a2140; --fg:#fff; --dim:#cdc6e0; --hi:#ffe066;
   --teal:#7ed957; --orange:#ff9f3a; --red:#e8262c; --red2:#a81c34; --red3:#5a1530;
-  --font:"NeoDunggeunmo","Galmuri11",-apple-system,"Apple SD Gothic Neo",sans-serif;
-  --ts:0 2px 0 #2a2140,2px 2px 0 #2a2140;                                   /* 장면 위 글씨 그림자 */
+  --font:"Galmuri11","NeoDunggeunmo",-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --ts:2px 2px 0 rgba(36,32,52,.75);                                   /* 장면 위 글씨 그림자 */
   --tv:0 2px 0 #1d1730,2px 2px 0 #1d1730,0 0 10px rgba(0,0,0,.55);           /* 영상 위 글씨 그림자 */
   --cur:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cg fill='%232a2140'%3E%3Crect x='3' y='0' width='3' height='1'/%3E%3Crect x='2' y='1' width='1' height='1'/%3E%3Crect x='6' y='1' width='1' height='1'/%3E%3Crect x='1' y='2' width='1' height='2'/%3E%3Crect x='7' y='2' width='1' height='2'/%3E%3Crect x='0' y='4' width='1' height='4'/%3E%3Crect x='8' y='4' width='1' height='4'/%3E%3Crect x='1' y='8' width='7' height='1'/%3E%3C/g%3E%3Cg fill='%237ed957'%3E%3Crect x='3' y='1' width='3' height='1'/%3E%3Crect x='2' y='2' width='5' height='2'/%3E%3Crect x='1' y='4' width='7' height='4'/%3E%3C/g%3E%3Cg fill='%23c9f5a8'%3E%3Crect x='3' y='2' width='1' height='1'/%3E%3C/g%3E%3Cg fill='%232a2140'%3E%3Crect x='3' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#000;color:var(--fg);font-family:var(--font);font-weight:normal;overflow:hidden}
-b,strong,h1,h2,h3{font-weight:normal}
+b,strong,h1,h2,h3,.btn,.opt,.win h2,.tab,#clock .t,#loc b,#sub span,#sub em{font-weight:700}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 button:focus-visible{outline:0}
 
@@ -133,6 +133,14 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .scene{position:absolute;inset:0;z-index:0}
 .scene canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
 #ov.sky .panel{z-index:1}
+.title-screen{position:absolute;inset:0;z-index:1}
+.title-screen h1{position:absolute;left:0;right:0;top:3%;text-align:center;font-size:clamp(36px,5.8vw,74px);line-height:1.08}
+.tmenu{position:absolute;left:12%;top:77%;display:grid;gap:6px;justify-items:start}
+.tmenu .btn{font-size:clamp(22px,2.4vw,30px);padding:2px 4px}
+.tinfo[hidden]{display:none}
+.tinfo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 40px))}
+.copy{position:absolute;bottom:2.2%;font-size:clamp(11px,1.1vw,14px);color:#8a84ad;font-weight:700}
+.copy.l{left:2.5%}.copy.r{right:2.5%}
 .panel{position:relative;z-index:1;width:min(780px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
 .kicker{font-size:16px;letter-spacing:.16em;color:#fff;text-shadow:var(--ts)}
@@ -334,131 +342,154 @@ const SPR = {
   walk:['..kkkkkk..','.khhhhhhk.','khhhhhhhhk','khsssssshk','kssessessk','kssssssssk','.kssssssk.','..kttttk..','.kttttttk.','ksttttttsk','ksttttttsk','.kppppppk.','.kppkkppk.','.kpk..kpk.','.kpk..kpk.','kkkk..kkkk'],
   wheel:['....kkkkkk....','...khhhhhhk...','..khhhhhhhhk..','..khsssssshk..','..kssessessk..','..kssssssssk..','...kssssssk...','w...kttttk...w','wg.kttttttk.gw','wgksttttttskgw','wgksttttttskgw','wgkkppppppkkgw','wg.kppppppk.gw','wg..kpk.kpk.gw','wg..kpk.kpk.gw','.w..kkk.kkk.w.'],
 };
-// ── 일러스트 배경 (레트로 게임 타이틀 느낌): 320x180으로 한 픽셀씩 그린 뒤 크게 늘림
-// 하늘(디더링) / 구름(빛·그림자, 천천히 흐름) / 캠퍼스 건물·단풍 / 풀밭·덤불·길·돌계단 / 앞쪽 풀 실루엣
+// ── 일러스트 배경: 고려대 본관 (레트로 게임 타이틀 화풍)
+// 320x180에 한 픽셀씩 그린 뒤 크게 늘림. 하늘(가로 붓결) / 뭉게구름(덩어리마다 그림자, 천천히 흐름) / 본관·소나무 / 잔디(가로 붓결) / 앞쪽 덤불·풀 실루엣
 function scene(who){
   const W = 320, H = 180, wrap = document.createElement('div');
   wrap.className = 'scene';
   const layer = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; wrap.append(c); return c.getContext('2d'); };
   const skyG = layer(), cloudG = layer(), landG = layer();
-  let seed = 20261124;
+  let seed = 1905;
   const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
-  const BAY = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
   const rgb = c => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
-  const buf = () => { const d = new ImageData(W, H); return {d, set(x, y, c){ x |= 0; y |= 0; if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4, [r, g, b] = rgb(c); d.data[i] = r; d.data[i+1] = g; d.data[i+2] = b; d.data[i+3] = 255; }}; };
-  const dith = (x, y, f) => f * 16 > BAY[y & 3][x & 3];   // 두 색 사이를 점무늬로 섞기
+  let OY = 0;   // 건물·나무를 아래로 내리는 값
+  const buf = () => { const d = new ImageData(W, H); return {d, set(x, y, c){ x = Math.round(x); y = Math.round(y + OY); if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4, [r, g, b] = rgb(c); d.data[i] = r; d.data[i+1] = g; d.data[i+2] = b; d.data[i+3] = 255; }}; };
 
-  // 하늘
-  const sky = buf(), SK = ['#2f8fd6', '#3b9fde', '#4cb2e8', '#5fc2ee', '#7ccdf1', '#9bdaf5', '#bde8f8'];
-  for (let y = 0; y < H; y++){
-    const t = Math.min(1, y / 118) * (SK.length - 1), i = Math.floor(t), f = t - i;
-    for (let x = 0; x < W; x++) sky.set(x, y, SK[Math.min(SK.length - 1, i + (dith(x, y, f) ? 1 : 0))]);
+  // 하늘: 위는 진하고 아래는 밝게, 가로로 긴 붓결
+  const S = buf(), SK = ['#3a98d4', '#44a4db', '#4eafe2', '#58b9e7', '#62c2eb', '#6ecbef', '#7cd3f2'];
+  const band = y => Math.min(SK.length - 1, Math.floor(y / 15));
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) S.set(x, y, SK[band(y)]);
+  for (let k = 0; k < 70; k++){
+    const y = rnd() * 100 | 0, x = rnd() * W | 0, len = 18 + rnd() * 70 | 0, c = SK[Math.min(SK.length - 1, band(y) + (rnd() < .7 ? 1 : -1 + 2 * (band(y) === 0)))];
+    for (let i = 0; i < len; i++) S.set(x + i, y, c);
+    if (rnd() < .4) for (let i = 4; i < len - 6; i++) S.set(x + i, y + 1, c);
   }
-  skyG.putImageData(sky.d, 0, 0);
+  skyG.putImageData(S.d, 0, 0);
 
-  // 구름: 동그라미 여러 개를 뭉쳐서, 왼쪽 위는 밝게 오른쪽 아래는 그림자
+  // 뭉게구름: 작은 덩어리를 겹쳐 그림. 덩어리마다 왼쪽 위 밝게, 아래·오른쪽은 하늘색 그림자
+  const CL = ['#ffffff', '#f1f8fc', '#dfedf6', '#c9deec', '#b2cfe3'];
   const clouds = [];
-  const addCloud = (cx, base, w, rmax) => {
-    const cs = [];
-    for (let i = 0; i < Math.round(w / 7); i++){ const r = rmax * (.45 + rnd() * .55); cs.push([cx - w / 2 + rnd() * w, base - r * (.35 + rnd() * .5), r]); }
-    cs.push([cx, base - rmax * .9, rmax]);
-    clouds.push({cs, base, x0: cx - w / 2 - rmax, x1: cx + w / 2 + rmax, y0: base - rmax * 2.2});
+  const bank = (cx, base, w, h) => {
+    const puffs = [];
+    for (let i = 0; i < w / 5; i++){
+      const t = rnd(), x = cx - w / 2 + t * w, edge = 1 - Math.abs(t - .5) * 2;
+      const r = 4 + rnd() * 5 + edge * h * .45;
+      puffs.push([x, base - r * .6 - edge * h * .35 - rnd() * 4, r]);
+    }
+    puffs.sort((a, b) => (a[1] - a[2]) - (b[1] - b[2]));   // 위쪽 덩어리부터 → 아래 덩어리가 앞
+    clouds.push({puffs, base});
   };
-  addCloud(40, 74, 90, 18); addCloud(150, 34, 60, 12); addCloud(255, 58, 80, 16); addCloud(330, 88, 70, 14); addCloud(95, 104, 120, 13); addCloud(220, 100, 110, 12);
-  const inC = (c, x, y) => y <= c.base && c.cs.some(([a, b, r]) => (x - a) ** 2 + (y - b) ** 2 <= r * r);
+  bank(34, 126, 110, 38); bank(292, 122, 100, 34); bank(170, 132, 160, 18); bank(118, 30, 44, 10); bank(236, 22, 30, 7);
   let off = -1;
   const drawClouds = o => {
-    const b = buf(), span = W + 120;
-    for (const c of clouds) for (let y = Math.max(0, c.y0 | 0); y <= c.base; y++) for (let X = c.x0 | 0; X <= c.x1; X++){
-      if (!inC(c, X, y)) continue;
-      const x = ((X + o) % span + span) % span - 60;
-      let col = '#f4fbfe';
-      if (!inC(c, X - 1, y - 2)) col = '#ffffff';
-      else if (!inC(c, X + 2, y + 3) || y > c.base - 2) col = dith(x, y, .5) ? '#c6e1f1' : '#d9ecf7';
-      if (!inC(c, X + 1, y + 1) && !inC(c, X, y + 1)) col = '#a9cde6';
+    const b = buf(), span = W + 160;
+    for (const c of clouds) for (const [px, py, r] of c.puffs) for (let y = py - r | 0; y <= Math.min(c.base, py + r); y++) for (let X = px - r | 0; X <= px + r; X++){
+      const dx = X - px, dy = y - py; if (dx * dx + dy * dy > r * r) continue;
+      const lit = (dx + r * .35) ** 2 + (dy + r * .45) ** 2, sh = (dx - r * .3) ** 2 + (dy - r * .55) ** 2;
+      let col = CL[1];
+      if (lit < (r * .55) ** 2) col = CL[0];
+      else if (sh < (r * .5) ** 2) col = CL[3];
+      else if (sh < (r * .75) ** 2) col = CL[2];
+      if (dx * dx + dy * dy > (r - 1) ** 2 && dy > 0) col = CL[4];
+      const x = ((X + o) % span + span) % span - 80;
       b.set(x, y, col);
     }
     cloudG.clearRect(0, 0, W, H); cloudG.putImageData(b.d, 0, 0);
   };
 
-  // 땅·건물·나무
   const L = buf();
   const rect = (x, y, w, h, c) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) L.set(x + i, y + j, c); };
-  // 돌 건물 (탑 있는 본관 느낌)
-  const stone = (x, y, w, h) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) L.set(x + i, y + j, (j % 4 === 3) || ((i + (j >> 2) * 3) % 7 === 0 && j % 4) ? '#a8a190' : dith(x + i, y + j, .3) ? '#c9c2b0' : '#d6cfbd'); };
-  stone(36, 66, 112, 42);
-  for (let i = 36; i < 148; i += 6) rect(i, 63, 3, 3, '#c9c2b0');              // 성벽 톱니
-  stone(84, 38, 18, 30);                                                       // 탑
-  for (let j = 0; j < 14; j++) rect(93 - (j >> 1), 24 + j, 1 + (j >> 1) * 2, 1, j < 3 ? '#4a4f6e' : '#5c6285');  // 뾰족 지붕
-  rect(92, 20, 2, 5, '#4a4f6e');
-  for (let r = 0; r < 3; r++) for (let i = 42; i < 144; i += 9){ if (i > 80 && i < 104 && r < 1) continue; rect(i, 72 + r * 11, 4, 6, '#3f4f70'); rect(i, 71 + r * 11, 4, 1, '#8d8676'); rect(i, 72 + r * 11, 1, 6, '#5d6f94'); }
-  rect(89, 46, 8, 10, '#3f4f70'); rect(91, 44, 4, 2, '#3f4f70'); rect(89, 46, 1, 10, '#5d6f94');
-  rect(86, 96, 14, 12, '#5a4632'); rect(87, 97, 12, 11, '#6e5840');           // 문
-  // 현대식 건물
-  for (let j = 0; j < 40; j++) for (let i = 0; i < 74; i++) L.set(204 + i, 68 + j, i < 4 ? '#8f9cb3' : dith(204 + i, 68 + j, .25) ? '#b3bfd1' : '#c3cede');
-  for (let r = 0; r < 4; r++) for (let i = 212; i < 274; i += 7){ rect(i, 73 + r * 9, 5, 5, r % 2 ? '#6d86a8' : '#7b95b8'); rect(i, 73 + r * 9, 5, 1, '#e9f2fb'); }
-  rect(204, 66, 74, 2, '#8f9cb3'); rect(160, 80, 40, 28, '#c26a4f');            // 벽돌 건물
-  for (let j = 80; j < 108; j += 3) rect(160, j, 40, 1, '#a75a42');
-  for (let i = 165; i < 198; i += 8) rect(i, 85, 4, 6, '#3f4f70');
-  // 나무 줄 (초록 + 은행나무 노랑 + 단풍 주황)
-  const TREE = [['#7ab866', '#4f8d4f', '#2f6542'], ['#ffd65a', '#e9a92f', '#b7731f'], ['#f59a4a', '#d9622b', '#94401f']];
-  const blob = (cx, cy, r, pal) => {
-    for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++){
-      const d = (x - cx) ** 2 + (y - cy) ** 2; if (d > r * r) continue;
-      const lit = (x - cx + r * .4) ** 2 + (y - cy + r * .4) ** 2 < (r * .75) ** 2, dark = (x - cx - r * .35) ** 2 + (y - cy - r * .45) ** 2 < (r * .6) ** 2 && !lit;
-      L.set(x, y, lit ? (dith(x, y, .7) ? pal[0] : pal[1]) : dark ? (dith(x, y, .6) ? pal[2] : pal[1]) : pal[1]);
+  // 돌벽 무늬: 밝은 돌·중간 돌·줄눈을 섞어 거친 화강암 느낌
+  const ST = ['#e2ded4', '#d3cfc4', '#c1bcb0', '#a8a397'];
+  const stone = (x, y, w, h, shade = 0) => { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++){
+    const X = x + i, Y = y + j, row = Y % 4 === 0, joint = (X + (Y >> 2) * 5) % 9 === 0;
+    const n = rnd();
+    L.set(X, Y, row || joint ? ST[3] : ST[Math.min(3, (n < .35 ? 0 : n < .8 ? 1 : 2) + shade)]);
+  }};
+  const roof = (x0, x1, yTop, yBot, inset) => { for (let y = yTop; y < yBot; y++){ const t = (y - yTop) / (yBot - yTop), a = x0 + inset * (1 - t), b = x1 - inset * (1 - t);
+    for (let x = a | 0; x <= b; x++) L.set(x, y, (y - yTop) % 3 === 2 ? '#4a5064' : x - a < 2 ? '#7d859a' : '#5f667b'); } };
+  const win = (x, y, w, h, arch) => {
+    rect(x - 1, y - 1, w + 2, h + 2, '#f2efe7'); rect(x, y, w, h, '#2e3850'); rect(x, y, 1, h, '#55678a'); rect(x, y + (h >> 1), w, 1, '#8b8a86');
+    if (arch){ L.set(x - 1, y - 1, ST[1]); L.set(x + w, y - 1, ST[1]); }
+  };
+  // 본관 몸체
+  OY = 14;
+  stone(70, 78, 180, 42); roof(66, 254, 66, 78, 4);
+  for (let x = 84; x < 240; x += 18) if (x < 136 || x > 186){ rect(x, 61, 8, 6, '#6e768a'); rect(x + 2, 63, 4, 3, '#2e3850'); }   // 지붕창
+  // 양쪽 박공 날개
+  for (const [x0, peak] of [[36, 58], [244, 262]]){
+    stone(x0, 70, 40, 50, 0);
+    for (let j = 0; j < 22; j++){ const half = j * 20 / 22; stone(peak - half | 0, 48 + j, half * 2 | 0, 1); L.set(peak - half - 1, 48 + j, '#5f667b'); L.set(peak - half - 2, 48 + j, '#4a5064'); L.set(peak + half, 48 + j, '#5f667b'); L.set(peak + half + 1, 48 + j, '#4a5064'); }
+    win(peak - 5, 56, 3, 5); win(peak + 2, 56, 3, 5);
+    for (const yy of [78, 92, 106]) for (let i = 0; i < 3; i++) win(x0 + 8 + i * 9, yy, 4, 7, yy === 92);
+  }
+  // 몸체 창문 (2층은 아치)
+  for (const yy of [83, 96, 108]) for (let x = 84; x < 240; x += 9) if (x < 136 || x > 182) win(x, yy, 4, yy === 108 ? 7 : 7, yy === 96);
+  // 가운데 탑 + 성벽 톱니 + 깃대
+  stone(140, 44, 40, 76, 0); rect(140, 44, 2, 76, ST[2]); rect(178, 44, 2, 76, ST[3]);
+  for (let x = 138; x < 182; x += 6) stone(x, 39, 4, 5);
+  rect(138, 44, 44, 1, ST[3]);
+  rect(150, 24, 1, 15, '#c9c6c0'); rect(170, 22, 1, 17, '#c9c6c0'); rect(171, 22, 4, 3, '#d8323a'); rect(146, 25, 4, 2, '#f2efe7');
+  // 빨간 현수막 + 금색 문양
+  for (let y = 50; y < 101; y++) for (let x = 147; x < 173; x++) L.set(x, y, x < 149 || (x - 147) % 7 === 3 ? '#8e1520' : x > 170 ? '#a3192a' : '#cc2230');
+  rect(147, 50, 26, 1, '#6e1018');
+  for (const [dx, dy] of [[0,0],[1,0],[2,0],[-1,1],[0,1],[1,1],[2,1],[3,1],[-1,2],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3],[2,3],[1,4]]) L.set(158 + dx, 60 + dy, dy === 0 ? '#ffe08a' : '#f0b840');
+  // 정문 아치
+  rect(154, 106, 12, 14, '#252c3e'); rect(155, 105, 10, 1, '#252c3e'); rect(156, 104, 8, 1, '#252c3e'); rect(154, 106, 1, 14, '#475676');
+  rect(151, 103, 18, 1, ST[3]);
+  // 앞 계단·담장
+  rect(36, 117, 248, 3, '#bdb8ab'); rect(36, 120, 248, 1, '#8f8a7e');
+  // 나무: 소나무(층층이) + 둥근 정원수
+  const BL = ['#86c060', '#5e9c4e', '#3f7547', '#2b5440'];
+  const puff = (cx, cy, r, pal = BL) => { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++){
+    const dx = x - cx, dy = y - cy; if (dx * dx + dy * dy > r * r) continue;
+    const lit = (dx + r * .4) ** 2 + (dy + r * .5) ** 2 < (r * .6) ** 2, dark = dy > r * .35 || (dx - r * .4) ** 2 + (dy - r * .2) ** 2 < (r * .5) ** 2;
+    L.set(x, y, lit ? (rnd() < .75 ? pal[0] : pal[1]) : dark ? (rnd() < .7 ? pal[2] : pal[3]) : (rnd() < .85 ? pal[1] : pal[0]));
+  }};
+  const pine = (x, base, s) => {
+    rect(x, base - 14 * s, 2, 14 * s, '#5a4334'); rect(x + 1, base - 10 * s, 6 * s, 1, '#5a4334'); rect(x - 5 * s, base - 7 * s, 5 * s, 1, '#5a4334');
+    for (const [dx, dy, w] of [[-10, -9, 9], [6, -11, 8], [-2, -15, 8], [-12, -4, 7], [10, -5, 7], [0, -6, 9]])
+      for (let i = 0; i < w; i++) puff(x + (dx + i - w / 2) * s | 0, base + dy * s, 3 * s, ['#5f9b55', '#3f7448', '#2c5a3e', '#20442f']);
+  };
+  pine(62, 118, 1.6); pine(256, 116, 1.5); pine(100, 116, .9); pine(222, 117, 1);
+  for (const [x, h] of [[120, 16], [134, 12], [188, 12], [202, 16]]){ puff(x, 118 - h, 4); puff(x, 116 - h * .55 | 0, 5); puff(x, 114, 6); }
+  for (let x = 40; x < 282; x += 9) puff(x, 118, 3 + (rnd() * 2 | 0));
+  // 잔디: 가로 붓결 (밝은 앞 잔디 + 어두운 덩어리)
+  OY = 0;
+  const GR = ['#9bc266', '#8db65c', '#7ea953', '#6f9a4d', '#5f8a49', '#4e7a48'];
+  for (let y = 134; y < H; y++){ const t = (y - 134) / 46, i = Math.min(GR.length - 1, t * 5 | 0); for (let x = 0; x < W; x++) L.set(x, y, GR[i]); }
+  rect(0, 135, W, 3, '#c9c4b5'); rect(0, 138, W, 1, '#a9a394');                  // 건물 앞 길
+  for (let k = 0; k < 520; k++){
+    const y = 140 + rnd() * 40 | 0, x = rnd() * W | 0, len = 4 + rnd() * 16 | 0, i = Math.min(GR.length - 1, ((y - 134) / 46 * 5 | 0) + (rnd() < .6 ? 1 : -1));
+    for (let j = 0; j < len; j++) if (rnd() < .85) L.set(x + j, y + (j % 5 === 4 ? -1 : 0), GR[Math.max(0, i)]);
+  }
+  for (let k = 0; k < 160; k++){ const x = rnd() * W | 0, y = 142 + rnd() * 36 | 0; L.set(x, y, '#bcd98a'); L.set(x, y - 1, '#a7cc78'); }
+  // 앞쪽 덤불: 위는 밝은 초록, 아래는 어두운 자주색
+  const bush = (cx, cy, r) => {
+    for (let y = cy - r; y <= cy + r + 4; y++) for (let x = cx - r - 2; x <= cx + r + 2; x++){
+      const dx = x - cx, dy = y - cy; if (dx * dx / 1.3 + dy * dy > r * r + rnd() * 10) continue;
+      L.set(x, y, dy > r * .25 ? (rnd() < .8 ? '#3b2c3d' : '#2e2433') : null || (dy < -r * .3 && dx < r * .2 ? (rnd() < .7 ? '#88c862' : '#6fb253') : (rnd() < .6 ? '#5ca04b' : '#3f7a45')));
     }
   };
-  for (let x = -4; x < W + 8; x += 7 + (rnd() * 5 | 0)){
-    if (x > 150 && x < 168) continue;
-    const pal = TREE[rnd() < .45 ? 0 : rnd() < .6 ? 1 : 2], r = 6 + (rnd() * 5 | 0);
-    rect(x, 104 - 2, 2, 8, '#5a3f2a'); blob(x, 100 - (rnd() * 6 | 0), r, pal);
-  }
-  // 풀밭: 위쪽 밝게 → 아래 어둡게, 풀잎 무늬
-  const GR = ['#9ccf73', '#86bf66', '#74ad5a', '#649c50', '#578c48'];
-  for (let y = 106; y < H; y++){
-    const t = (y - 106) / (H - 106) * (GR.length - 1), i = Math.floor(t), f = t - i;
-    for (let x = 0; x < W; x++) L.set(x, y, GR[Math.min(GR.length - 1, i + (dith(x, y, f) ? 1 : 0))]);
-  }
-  rect(0, 106, W, 1, '#b4de86');
-  for (let k = 0; k < 900; k++){ const x = rnd() * W | 0, y = 108 + rnd() * 72 | 0; L.set(x, y, rnd() < .5 ? '#4c7d40' : '#a8d97e'); if (rnd() < .5) L.set(x, y - 1, '#4c7d40'); }
-  // 돌길 (건물 문 쪽으로 좁아짐)
-  for (let y = 108; y < H; y++){
-    const t = (y - 108) / (H - 108), cx = 93 + t * 40, hw = 4 + t * 26;
-    for (let x = cx - hw | 0; x <= cx + hw; x++) L.set(x, y, (x < cx - hw + 2 || x > cx + hw - 2) ? '#b9a885' : ((y + (x >> 3)) % 6 === 0 || (x + (y >> 2) * 4) % 13 === 0) ? '#cbbd9b' : dith(x, y, .3) ? '#dccfae' : '#e6dbbf');
-  }
-  // 오른쪽 돌계단 + 난간
-  for (let s = 0; s < 15; s++){
-    const y = 176 - s * 5, x0 = 246 + s * 5;
-    rect(x0, y, W - x0, 2, '#ddd8cb'); rect(x0, y + 2, W - x0, 3, '#aaa496'); rect(x0, y + 4, W - x0, 1, '#8f897b');
-    rect(x0 - 3, y, 3, 8, '#7d7768');
-  }
-  for (let s = 0; s < 72; s++) L.set(250 + s, 150 - s * 1, '#e9e6df');
-  for (let s = 0; s < 72; s += 9) rect(250 + s, 150 - s, 1, 10, '#b9b4a8');
-  // 덤불 + 꽃
-  const BUSH = ['#6fb35c', '#3f8a49', '#2a5e3a'];
-  for (const [x, y, n] of [[24, 140, 4], [210, 132, 3], [58, 122, 2], [176, 118, 2], [292, 128, 2]])
-    for (let i = 0; i < n; i++) blob(x + i * 7 - n * 3, y - (i % 2) * 3, 6 + (i % 2) * 2, BUSH);
-  for (let k = 0; k < 40; k++){ const x = rnd() * W | 0, y = 120 + rnd() * 50 | 0; L.set(x, y, ['#ffffff', '#ffe066', '#ff8fb1'][k % 3]); }
-  // 주인공 (땅 위에 1배로)
+  bush(14, 166, 13); bush(40, 172, 10); bush(302, 164, 14); bush(278, 174, 9);
+  // 주인공 (2배 크기, 그림자)
   if (who){
-    const rows = SPR[who], pal = {...PAL, t: who === 'walk' ? '#7ed957' : '#ff9f3a'};
-    rows.forEach((row, y) => [...row].forEach((c, x) => pal[c] && L.set(54 + x, 146 + y, pal[c])));
-    rect(53, 162, rows[0].length + 2, 1, '#4c7d40');
+    const rows = SPR[who], pal = {...PAL, t: who === 'walk' ? '#7ed957' : '#ff9f3a'}, s = 2, X0 = 226, Y0 = 136;
+    for (let i = -2; i < rows[0].length * s + 2; i++) L.set(X0 + i, Y0 + rows.length * s, '#4e7a48');
+    rows.forEach((row, y) => [...row].forEach((c, x) => pal[c] && rect(X0 + x * s, Y0 + y * s, s, s, pal[c])));
   }
-  // 앞쪽 풀 실루엣
+  // 맨 앞 풀 실루엣
   for (let x = 0; x < W; x++){
-    const h1 = 4 + (rnd() * 3 | 0) + ((x % 5 === 0) ? rnd() * 9 | 0 : 0), h2 = 2 + (rnd() * 2 | 0) + ((x % 7 === 3) ? rnd() * 6 | 0 : 0);
-    for (let y = H - h1; y < H; y++) L.set(x, y, '#3a3452');
-    for (let y = H - h2; y < H; y++) L.set(x, y, '#251f38');
+    const h1 = 5 + (rnd() * 3 | 0) + (rnd() < .25 ? rnd() * 10 | 0 : 0), h2 = 3 + (rnd() * 2 | 0);
+    for (let y = H - h1; y < H; y++) L.set(x + (y < H - 8 && rnd() < .3 ? 1 : 0), y, '#3d3752');
+    for (let y = H - h2; y < H; y++) L.set(x, y, '#2a2539');
   }
   landG.putImageData(L.d, 0, 0);
 
-  // 구름 천천히 흐르기 (보이는 동안만)
-  let t0 = performance.now();
+  const t0 = performance.now();
   (function tick(){
     if (!wrap.isConnected && off >= 0) return;
-    const o = Math.floor((performance.now() - t0) / 400);
+    const o = Math.floor((performance.now() - t0) / 500);
     if (o !== off){ off = o; drawClouds(o); }
     requestAnimationFrame(tick);
   })();
@@ -662,14 +693,18 @@ function fail(back, label){
 function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
-  show(`<div class="panel"><div class="kicker">사회조사방법 8조 · TODAY'S QUEST</div>
+  show(`<div class="title-screen">
     <h1 class="big">3교시까지<br>수업 들으러 가기</h1>
-    <div class="win" style="width:min(640px,100%)"><div class="tab">QUEST</div>
-    <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b><br>수업을 들으러 가. 갈림길이 나오면 어느 길로 갈지 골라 줘.</p><hr>
-    <div class="menu"><button class="btn" id="b">오늘의 시간표 시작</button></div></div>
+    <div class="tmenu"><button class="btn" id="b">게임 시작</button><button class="btn" id="info">오늘의 시간표</button></div>
+    <div class="win tinfo" hidden><div class="tab">QUEST</div>
+      <p class="lead">오늘은 월요일. 안암역에서 출발해서<br><b>1교시 미디어관 → 2교시 교양관 → 3교시 국제관</b><br>수업을 들으러 가. 갈림길이 나오면 어느 길로 갈지 골라 줘.</p><hr>
+      <div class="menu"><button class="btn" id="close">닫기</button></div></div>
+    <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
   ov.prepend(scene('walk'));
   $('#b').onclick = () => { sfx('start'); iris(() => nav('w01')); };
+  $('#info').onclick = () => { ov.querySelector('.tinfo').hidden = false; $('#close').focus(); };
+  $('#close').onclick = () => { ov.querySelector('.tinfo').hidden = true; $('#info').focus(); };
 }
 
 function toWheel(){
@@ -712,7 +747,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'KeyM'){ muted = !muted; return; }
   // 메뉴에서 ↑↓로 커서 이동, Enter로 선택 (게임처럼)
   if (ov.classList.contains('on') && (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight')){
-    const items = [...ov.querySelectorAll('.menu button')]; if (!items.length) return;
+    const items = [...ov.querySelectorAll('.menu button, .tmenu button')].filter(b => b.offsetParent); if (!items.length) return;
     e.preventDefault();
     const i = items.indexOf(document.activeElement), d = e.code === 'ArrowDown' || e.code === 'ArrowRight' ? 1 : -1;
     items[(i + d + items.length) % items.length].focus(); sfx('move'); return;
