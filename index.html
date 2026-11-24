@@ -474,7 +474,7 @@ const BGM = (() => {
             84,0,83,0,81,0,79,0, 79,0,77,0,76,0,74,0, 76,0,74,0,72,0,71,0, 72,0,0,0,0,0,0,0],
       bass:roots([48,43,45,41,48,43,41,48])},
   };
-  let timer = null, playing = null, i = 0, t = 0, gain = null;
+  let timer = null, playing = null, i = 0, t = 0, gain = null, level = 1.6;   // level: 지금 음량 (영상 중엔 낮춤)
   const tone = (f, at, d, type, vol) => {
     const o = AC.createOscillator(), g = AC.createGain();
     o.type = type; o.frequency.setValueAtTime(f, at);
@@ -488,7 +488,7 @@ const BGM = (() => {
       if (muted) return;
       try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); AC.resume(); } catch { return; }
       const T = TRACKS[name], step = 60 / T.bpm / 2;   // 8분음표 길이
-      playing = name; gain = AC.createGain(); gain.gain.value = 1.6; gain.connect(AC.destination);
+      playing = name; gain = AC.createGain(); gain.gain.value = level; gain.connect(AC.destination);
       t = AC.currentTime + .05; i = 0;
       timer = setInterval(() => {   // 앞으로 0.3초 분량을 미리 예약
         while (t < AC.currentTime + .3){
@@ -501,6 +501,8 @@ const BGM = (() => {
     },
     off(){ clearInterval(timer); timer = null; playing = null; if (gain){ gain.gain.setTargetAtTime(0, AC.currentTime, .05); gain = null; } },
     get playing(){ return playing; },
+    // 영상 나올 때는 음악을 40%로, 아닐 땐 원래대로 (0.4초에 걸쳐 부드럽게)
+    duck(on){ level = on ? .65 : 1.6; if (gain) gain.gain.setTargetAtTime(level, AC.currentTime, .15); },
   };
   return api;
 })();
@@ -661,6 +663,7 @@ function go(id){
   setTimeout(() => cur === id && warm(id === 'start' || id === 'tutorial' ? [G.w01.src] : id === 'switch' ? [G.h01.src] : nextSrcs(id)), n && n.t === 'video' ? 1500 : 0);
   // 음악: 걷기 쪽은 타이틀 곡이 영상 내내 이어지고, 반전 화면은 조용히 → 공개 순간부터 휠체어 쪽 내내 반전 곡
   const track = trackFor(id);
+  BGM.duck(n && n.t === 'video');
   if (track) BGM.on(track); else BGM.off();
   if (id === 'start') return start();
   if (id === 'tutorial') return tutorial();
