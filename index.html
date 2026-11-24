@@ -151,7 +151,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .art16 .flag.f2{animation-delay:-.25s}
 @keyframes flap{50%{transform:scaleX(.8) skewY(6deg)}}
 /* 로고: 합본과 같은 자리·크기 */
-.art16 .logo{left:30.36%;top:10.9%;width:40.5%;animation:logo 2.4s steps(2) infinite}
+.art16 .logo{left:30.36%;top:15.5%;width:40.5%;animation:logo 2.4s steps(2) infinite}
 @keyframes logo{50%{transform:translateY(-.6%)}}
 /* 반짝이 */
 .art16 .spark{width:1.4%;aspect-ratio:1;animation:spark 1.6s steps(1) infinite}
@@ -163,12 +163,12 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 @keyframes wing{50%{opacity:0}}
 @keyframes bird{from{left:-5%}to{left:105%}}
 /* 달리는 캐릭터: 8프레임 스프라이트 시트, 오른쪽 아래 제자리에서 달리기 */
-.art16 .runner.wheel{width:9%;aspect-ratio:184/186;background-image:url(art/wheel_sheet.png);animation:runf .8s steps(8,jump-none) infinite;right:22%}
+.art16 .runner.wheel{width:9%;aspect-ratio:184/186;background-image:url(art/wheel_sheet.png);animation:runf .8s steps(8,jump-none) infinite;right:3%;bottom:17%}
 .art16 .runner{width:8.4%;aspect-ratio:170/176;bottom:3.5%;background:url(art/run_sheet.png) 0 0/800% 100% no-repeat;
-  right:17%;bottom:6%;animation:runf .64s steps(8,jump-none) infinite}
+  right:3.5%;bottom:17%;animation:runf .64s steps(8,jump-none) infinite}
 @keyframes runf{to{background-position:100% 0}}
 /* 발밑 그림자: 계단 모양 픽셀 타원 */
-.art16 .runner::after,.chr::after{content:"";position:absolute;left:18%;right:22%;bottom:0;height:6%;background:rgba(46,44,61,.5);z-index:-1;
+.chr::after{content:"";position:absolute;left:18%;right:22%;bottom:0;height:6%;background:rgba(46,44,61,.5);z-index:-1;
   clip-path:polygon(12% 0,88% 0,88% 30%,100% 30%,100% 70%,88% 70%,88% 100%,12% 100%,12% 70%,0 70%,0 30%,12% 30%)}
 .chr,.art16 .runner{z-index:1}
 .chr{position:relative}
@@ -630,7 +630,7 @@ function toWheel(){
   $('#b').onclick = () => {
     sfx('reveal'); setSide('wheel');
     $('#who2').innerHTML = sprite('wheel', 6); $('#who2').className = 'reveal';
-    ov.querySelector('.art16')?.insertAdjacentHTML('beforeend', '<div class="runner wheel"></div>');   // 잔디 위로 굴러가기
+    ov.querySelector('.art16')?.insertAdjacentHTML('beforeend', '<div class="runner wheel"></div>');   // 건물 오른쪽에서 제자리로 바퀴 굴리기
     ov.querySelector('.kicker').innerHTML = '<span>NEW PLAYER</span>';
     ov.querySelector('h2').textContent = '휠체어를 타는 학생';
     ov.querySelector('.press').textContent = '▶▶';
