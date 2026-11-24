@@ -143,20 +143,14 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .chr{display:block;image-rendering:pixelated}
 .chr.sil{filter:brightness(0) opacity(.85)}
 .reveal .chr{animation:flash .5s steps(2) 3}
-.hero{position:absolute;right:21%;bottom:5.5%;height:24.4%;z-index:1;image-rendering:pixelated;animation:hop .7s steps(1) infinite}
+.hero{position:absolute;right:17%;bottom:4%;height:min(252px,35vh);z-index:1;image-rendering:pixelated;animation:hop .7s steps(1) infinite}
 /* 제목 로고: 안암 + RUN */
-.logo{position:absolute;left:0;right:0;top:5%;display:grid;justify-items:center;gap:10px}
-.logo .kr,.logo .en{color:#df1a1a;text-shadow:0 4px 0 #6a2246,0 8px 0 #6a2246,0 10px 0 rgba(46,44,61,.35)}
-.logo .kr{font-family:"Galmuri11",var(--font);font-weight:700;font-size:clamp(32px,4.4vw,56px);letter-spacing:.2em;padding-left:.2em}
-.logo .en{font-family:"Press Start 2P",monospace;font-size:clamp(64px,11vw,150px);line-height:1;transform:skewX(-10deg);text-shadow:-2px 6px 0 #6a2246,-4px 12px 0 #6a2246,-4px 14px 0 rgba(46,44,61,.35)}
-.logo .sub{font-family:"Galmuri11",var(--font);font-weight:700;font-size:clamp(14px,1.6vw,20px);color:#fff;text-shadow:2px 2px 0 rgba(46,44,61,.7);letter-spacing:.08em;margin-top:6px}
-/* 타이틀 메뉴: 판 없이 흰 글씨 + 슬라임 커서 (레퍼런스처럼) */
-.tmenu .btn{background:none;box-shadow:none;transform:none;text-align:left;padding:4px 0 4px 48px;color:#cfcbdc;text-shadow:2px 2px 0 rgba(46,44,61,.7);font-size:clamp(22px,2.4vw,30px)}
-.tmenu .btn:hover,.tmenu .btn:focus{color:#fff;transform:none}
-.tmenu .btn:hover::after,.tmenu .btn:focus::after{left:4px}
+.logo{position:absolute;left:0;right:0;top:3%;margin:0;display:grid;justify-items:center;gap:6px}
+.logo img{display:block;width:min(44vw,500px);height:auto;image-rendering:pixelated}
+.logo .sub{font-family:"Galmuri11",var(--font);font-weight:700;font-size:clamp(14px,1.6vw,20px);color:#fff;background:#2e2c3d;padding:7px 16px 6px;letter-spacing:.08em;margin-top:2px}
 #ov.sky .panel{z-index:1}
 .title-screen{position:absolute;inset:0;z-index:1}
-.tmenu{position:absolute;left:24%;top:72%;display:grid;gap:4px;width:min(320px,40%)}
+.tmenu{position:absolute;left:6%;top:66%;display:grid;gap:18px;width:min(300px,40%)}
 .tinfo[hidden]{display:none}
 .tinfo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100% - 40px))}
 .copy{position:absolute;bottom:2.2%;font-size:clamp(11px,1.1vw,14px);color:#8a84ad;font-weight:700}
@@ -359,7 +353,7 @@ document.addEventListener('click', e => { if (e.target.closest('.opt,.ctrl butto
 
 // 캐릭터 그림 (art/walk.png, art/wheel.png). s = 크기 단계, mono = 실루엣(검게)
 function sprite(k, s = 5, mono){
-  return `<img class="chr${mono ? ' sil' : ''}" src="art/${k}_lo.png" alt="" style="height:${Math.max(2, Math.round(s * 30 / 44)) * 44}px">`;
+  return `<img class="chr${mono ? ' sil' : ''}" src="art/${k}_lo.png" alt="" style="height:${Math.max(1, Math.round(s * 30 / 84)) * 84}px">`;
 }
 
 // ── 시계: 영상 속 시각 = 이 화면에 들어올 때 시각 + 원본 촬영 기준으로 흐른 시간
@@ -554,7 +548,7 @@ function start(){
   setSide('walk'); period(0); stage.classList.add('hidehud'); clk = toSec(CLOCK.depart[1]);
   log = {walk:blank(), wheel:blank()};
   show(`<div class="title-screen">
-    <h1 class="logo"><span class="kr">안암</span><span class="en">RUN</span><span class="sub">3교시까지 수업 들으러 가기</span></h1>
+    <h1 class="logo"><img src="art/logo.png" alt="안암 RUN"><span class="sub">3교시까지 수업 들으러 가기</span></h1>
     <img class="hero" src="art/walk_lo.png" alt="">
     <div class="tmenu"><button class="btn" id="b">게임 시작</button><button class="btn" id="info">오늘의 시간표</button></div>
     <div class="win tinfo" hidden><div class="tab orange">QUEST</div>
@@ -589,7 +583,7 @@ function toWheel(){
 
 function result(){
   period(4); stage.classList.add('hidehud');
-  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 4)}<h3>${name}</h3>
+  const col = (k, name) => { const r = log[k]; return `<div class="win col ${k}">${sprite(k, 6)}<h3>${name}</h3>
     <div class="nums"><div><b>${r.choices}</b>선택</div><div><b>${r.blocked}</b>막힌 길</div><div><b>${fmt(r.secs)}</b>영상 길이</div></div>
     <div class="note">${[1,2,3].map(p => r.arrived[p] == null ? '' : `${p}교시 도착 ${p2(Math.floor(r.arrived[p]/3600))}:${p2(Math.floor(r.arrived[p]%3600/60))}${r.arrived[p] > toSec(CLOCK.cls[p][0]) ? ' <b style="color:var(--red)">지각</b>' : ''}`).filter(Boolean).join(' · ')}</div>
     <ol>${r.path.map(p => `<li${p.startsWith('✕') ? ' class="x"' : ''}>${p.startsWith('✕') ? icon('x') + p.slice(2) : p}</li>`).join('')}</ol></div>`; };
