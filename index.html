@@ -180,14 +180,15 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .tstart{position:absolute;left:50%;top:80%;transform:translateX(-50%);font-size:clamp(18px,1.8vw,24px);padding:11px 40px 13px 48px}
 .tstart:hover,.tstart:focus{transform:translate(-50%,-3px)}
-.tut{position:relative;z-index:1;display:flex;align-items:flex-end;gap:24px;width:min(980px,100%);margin-top:auto}
-.tut .chr{flex:none}
-.win.talk{cursor:pointer;min-height:180px;align-content:start}
-.win.talk .lead{font-size:clamp(20px,2.2vw,28px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0}
+.tut{position:absolute;inset:0;z-index:1}
+/* 캐릭터는 본관 위쪽 가운데, 대화창은 화면 아래에 넓게 */
+.tut .chr::after{display:none}
+.tut .chr{position:absolute;left:50%;top:18%;transform:translateX(-50%);height:min(180px,24vh)!important}
+.win.talk{position:absolute;left:3%;right:3%;bottom:4%;width:auto;cursor:pointer;min-height:150px;align-content:start;padding:30px 36px 24px}
+.win.talk .lead{font-size:clamp(18px,1.9vw,24px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0;word-break:keep-all}
 .win.talk .next{position:absolute;right:22px;bottom:18px;color:#e01b1b;animation:blink .8s steps(1) infinite}
 .win.talk .next[hidden]{display:none}
 .menu[hidden]{display:none}
-#ov.sky:has(.tut){align-items:flex-end;padding-bottom:6vh}
 .copy{position:absolute;bottom:2.2%;font-size:clamp(11px,1.1vw,14px);color:#8a84ad;font-weight:700}
 .copy.l{left:2.5%}.copy.r{right:2.5%}
 .panel{position:relative;z-index:1;width:min(780px,100%);display:grid;gap:22px;justify-items:center;text-align:center;animation:up .4s steps(5) both}
