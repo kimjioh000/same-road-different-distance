@@ -8,11 +8,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.39.2/dist/galmuri.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 <style>
+@font-face{font-family:DungGeunMo;src:url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff) format('woff');font-weight:normal;font-display:swap}
+/* 둥근모꼴은 굵은 글꼴이 없어서, 가짜로 굵게 만들지 않음 (뭉개져 보이던 원인) */
+*{font-synthesis:none}
 /* 레트로 게임 타이틀 화면 느낌 (모브사이코 100 타이틀 참고): 상자 없이 장면 위에 하얀 글씨, 보라 그림자, 빨간 입체 제목, 슬라임 커서 */
 :root{
   --ink:#2a2140; --fg:#fff; --dim:#cdc6e0; --hi:#ffe066;
   --teal:#7ed957; --orange:#ff9f3a; --red:#e8262c; --red2:#a81c34; --red3:#5a1530;
-  --font:"Galmuri11","NeoDunggeunmo",-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --font:"DungGeunMo","Galmuri11",-apple-system,"Apple SD Gothic Neo",sans-serif;
   --ts:2px 2px 0 rgba(36,32,52,.75);                                   /* 장면 위 글씨 그림자 */
   --tv:0 2px 0 #1d1730,2px 2px 0 #1d1730,0 0 10px rgba(0,0,0,.55);           /* 영상 위 글씨 그림자 */
   --cur:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cg fill='%232a2140'%3E%3Crect x='3' y='0' width='3' height='1'/%3E%3Crect x='2' y='1' width='1' height='1'/%3E%3Crect x='6' y='1' width='1' height='1'/%3E%3Crect x='1' y='2' width='1' height='2'/%3E%3Crect x='7' y='2' width='1' height='2'/%3E%3Crect x='0' y='4' width='1' height='4'/%3E%3Crect x='8' y='4' width='1' height='4'/%3E%3Crect x='1' y='8' width='7' height='1'/%3E%3C/g%3E%3Cg fill='%237ed957'%3E%3Crect x='3' y='1' width='3' height='1'/%3E%3Crect x='2' y='2' width='5' height='2'/%3E%3Crect x='1' y='4' width='7' height='4'/%3E%3C/g%3E%3Cg fill='%23c9f5a8'%3E%3Crect x='3' y='2' width='1' height='1'/%3E%3C/g%3E%3Cg fill='%232a2140'%3E%3Crect x='3' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E");
@@ -210,7 +213,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
 .kicker{font-size:16px;letter-spacing:.16em;color:#fff;text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.5)}
 /* 빨간 입체 제목 */
-.big,.stamp{font-family:"Galmuri11",var(--font);font-weight:700}
+.big,.stamp{font-family:var(--font);font-weight:700}
 .big{--c1:#ff6a5c;--c2:#e3221c;letter-spacing:-.01em;background:linear-gradient(var(--c1) 0 50%,var(--c2) 50%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 4px 0 #a51a2c) drop-shadow(0 5px 0 #4a1026)}
 h1{font-size:clamp(48px,8vw,96px);line-height:1.1;margin:0 0 16px}
 h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #2e2c3d,-2px 0 0 #2e2c3d,0 2px 0 #2e2c3d,0 -2px 0 #2e2c3d,2px 2px 0 #2e2c3d,-2px 2px 0 #2e2c3d,2px -2px 0 #2e2c3d,-2px -2px 0 #2e2c3d,3px 5px 0 rgba(46,44,61,.5)}
@@ -314,14 +317,14 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
   filter:drop-shadow(0 4px 0 rgba(30,45,70,.35))}
 #clock{top:calc(var(--fy) + var(--fh) * var(--it) + 26px);right:calc(var(--fx) + var(--fw) * (1 - var(--il) - var(--iw)) + 28px);padding:1px 4px 0}
 #loc{top:calc(var(--fy) + var(--fh) * var(--it) + 26px);left:calc(var(--fx) + var(--fw) * var(--il) + 28px);padding:1px 6px 0;align-items:center}
-#clock .t{font-size:clamp(18px,1.9vw,25px)}
+#clock .t{font-size:clamp(22px,2.5vw,32px);letter-spacing:0}
 #clock .t{color:#2b3f55;text-align:center}
-#clock .r{color:#2b3f55;font-size:11px;margin-top:1px}
+#clock .r{color:#2b3f55;font-size:13px;margin-top:1px}
 #clock{text-align:center}
 #clock.warn .t,#clock.warn .r{color:#b8621b}
 #clock.panic .t,#clock.panic .r,#clock.late .t,#clock.late .r{color:#c62828}
-#loc b{color:#2b3f55;border-left:2px solid #4b6a87;padding-left:9px;font-size:clamp(13px,1.3vw,16px)}
-#loc i{font-size:clamp(12px,1.2vw,14px)!important}#loc i{color:#2f7a3a}.wheelside #loc i{color:#b3261e}
+#loc b{color:#2b3f55;border-left:2px solid #4b6a87;padding-left:9px;font-size:clamp(15px,1.5vw,18px)}
+#loc i{font-size:clamp(14px,1.4vw,17px)!important}#loc i{color:#2f7a3a}.wheelside #loc i{color:#b3261e}
 /* 대화창: 튜토리얼과 같은 하얀 창, 틀 아래쪽에 살짝 겹쳐서 */
 #sub{left:calc(var(--fx) + var(--fw) * .06);width:calc(var(--fw) * .88);max-width:none;top:calc(var(--fy) + var(--fh) * .885);bottom:auto;
   transform:translateY(30px);transition:opacity .2s steps(3),transform .25s steps(4)}
