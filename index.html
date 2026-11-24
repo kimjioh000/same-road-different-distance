@@ -192,6 +192,7 @@ video,#px{filter:saturate(1.6) contrast(1.15) brightness(1.04)}
 .win.talk.up{transform:none}
 #fade{position:fixed;inset:0;z-index:50;background:#000;pointer-events:none;transition:opacity 1.1s steps(8)}
 #fade.go{opacity:0}
+#fade.in{transition-duration:.6s}
 #ov:focus{outline:0}
 .win.talk{position:absolute;left:3%;right:3%;bottom:4%;width:auto;cursor:pointer;min-height:150px;align-content:start;padding:30px 36px 24px}
 .win.talk .lead{font-size:clamp(18px,1.9vw,24px);color:#2e2c3d;line-height:1.6;min-height:3.2em;margin:0;word-break:keep-all}
@@ -677,7 +678,7 @@ function go(id){
       <div class="items">${names.map((x, i) => `<div class="${i < n.p ? 'ok' : i === n.p ? 'now' : ''}">${i + 1}교시 ${x}</div>`).join('')}</div><hr>
       <p class="lead">${S(id).sub ?? n.sub}</p>
       <div class="menu"><button class="btn" id="b">다음 수업으로</button></div></div></div>`, 'solid', `p${n.p}`);
-    $('#b').onclick = () => iris(() => nav(n.next));
+    $('#b').onclick = () => fadeThrough(() => nav(n.next));
     sfx('clear');
   }
 }
@@ -786,6 +787,13 @@ function fadeIn(cb){
   const el = document.createElement('div'); el.id = 'fade'; document.body.append(el);
   cb(); requestAnimationFrame(() => el.classList.add('go'));
   setTimeout(() => el.remove(), 1300);
+}
+// 밝은 화면에서: 서서히 까맣게 → 넘어가고 → 서서히 밝아짐
+function fadeThrough(cb){
+  if ($('#fade')) return;
+  const el = document.createElement('div'); el.id = 'fade'; el.className = 'go in'; document.body.append(el);
+  requestAnimationFrame(() => el.classList.remove('go'));
+  setTimeout(() => { cb(); el.classList.remove('in'); requestAnimationFrame(() => el.classList.add('go')); setTimeout(() => el.remove(), 1300); }, 700);
 }
 
 function toWheel(){
