@@ -570,11 +570,22 @@ function sprite(k, s = 5, mono){   // 제자리에서 달리기 / 바퀴 굴리�
 let TM = {}, clk = 0, clkBase = 0;
 const toSec = s => { const [h, m, x] = s.split(':').map(Number); return h*3600 + m*60 + (x || 0); };
 const p2 = n => String(n).padStart(2, '0');
-function origAt(id, t){  // 영상 t초 → 원본에서 흐른 초 (timemap 꺾은선 보간)
-  const f = id[0] === 'h' ? SELF_PUSH : 1;   // 휠체어: 촬영 땐 뒤에서 밀어줌 → 혼자 밀면 더 걸림
-  const k = TM[id]; if (!k) return t * f;
-  for (let i = 1; i < k.length; i++) if (t <= k[i][0]){ const [a0, b0] = k[i-1], [a1, b1] = k[i]; return (b0 + (b1-b0) * (t-a0) / ((a1-a0) || 1)) * f; }
-  return k[k.length-1][1] * f;
+function rawAt(id, t){  // 영상 t초 → 원본에서 흐른 초 (timemap 꺾은선 보간)
+  const k = TM[id]; if (!k) return t;
+  for (let i = 1; i < k.length; i++) if (t <= k[i][0]){ const [a0, b0] = k[i-1], [a1, b1] = k[i]; return b0 + (b1-b0) * (t-a0) / ((a1-a0) || 1); }
+  return k[k.length-1][1];
+}
+function origAt(id, t){  // 휠체어는 혼자 미는 속도로: 구간마다 원본 시간 × 배율
+  if (id[0] !== 'h') return rawAt(id, t);
+  const segs = PUSH[id] || [], cuts = new Set([0, t]);
+  segs.forEach(([a, b]) => { if (a < t) cuts.add(a); if (b < t) cuts.add(b); });
+  const xs = [...cuts].sort((p, q) => p - q);
+  let s = 0;
+  for (let i = 1; i < xs.length; i++){
+    const m = (xs[i-1] + xs[i]) / 2, seg = segs.find(([a, b]) => m >= a && m < b);
+    s += (rawAt(id, xs[i]) - rawAt(id, xs[i-1])) * (seg ? seg[2] : PUSH_FLAT);
+  }
+  return s;
 }
 let lastMin = -1;
 function drawClock(p, hurry){
