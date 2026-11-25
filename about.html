@@ -72,7 +72,9 @@ footer{text-align:center;margin-top:40px}
 .spare .bars{display:grid;gap:4px}
 .spare .b{display:grid;grid-template-columns:5.5em 1fr 6.5em;align-items:center;gap:8px;font-size:14px}
 .spare .tr{height:16px;background:#eaf6fc;box-shadow:0 0 0 2px #2e2c3d}
-.spare .f{height:100%}.spare .w .f{background:#2f8bc9}.spare .h .f{background:#2b3f55}.spare .h.over .f{background:#d1251f}.spare .over em{color:#d1251f}
+.spare .f{height:100%}.spare .w .f{background:#2f8bc9}.spare .h .f{background:linear-gradient(90deg,#2b3f55 62%,transparent 62%),repeating-linear-gradient(45deg,#2b3f55 0 3px,#c3cfdc 3px 7px)}.spare .h.over .f{background:#d1251f}
+.spare .over .fill{position:relative;overflow:visible}
+.spare .over .fill::after{content:"";position:absolute;left:100%;top:0;height:100%;width:70%;background:repeating-linear-gradient(45deg,#d1251f 0 3px,transparent 3px 7px)}.spare .over em{color:#d1251f}
 .spare .b em{font-style:normal;text-align:right}
 .sens td,.sens th{text-align:center}.sens .lt{color:#d1251f}
 .quote{margin:14px 0;padding:12px 16px;background:#fff;box-shadow:inset 4px 0 0 #d1251f,0 0 0 2px #2e2c3d;font-size:18px}
@@ -147,7 +149,7 @@ footer{text-align:center;margin-top:40px}
       <li><a href="https://mro.massey.ac.nz/bitstreams/c1e4714c-9aef-47e0-a50b-8114c107f916/download" target="_blank">휠체어 이동 속도 관련 논문 (Massey University)</a></li>
     </ul>
     <h3>엘리베이터를 기다리는 시간</h3>
-    <p>엘리베이터 대기 시간은 이동 속도와 별도로 계산했다. 이 구간에는 휠체어 이동 배율을 적용하지 않았다.</p>
+    <p>엘리베이터 대기 시간도 촬영된 시간을 그대로 썼다. 기다리는 동안은 누가 밀어 주든 혼자 밀든 걸리는 시간이 같다.</p>
     <p>촬영 과정에서 특히 눈에 띈 것은 미디어관 엘리베이터였다. 엘리베이터에 사람이 많아 두 차례 탑승하지 못했고, 대기와 탑승을 포함해 5분 20초가 소요됐다. 계단을 이용할 수 있다면 다른 경로를 선택할 수 있지만, 계단을 이용할 수 없는 경우에는 기다리는 것 외에 마땅한 대안이 없었다.</p>
     <p>게임에서는 이 구간의 영상 재생 속도를 낮추고, 대기 시간을 별도로 표시했다. 이동 장면과 마찬가지로 짧게 편집하면 기다림이 이동 시간에 포함된다는 사실을 관객이 알아차리기 어렵다고 판단했기 때문이다.</p>
     <div class="tbl"><table>
@@ -173,7 +175,7 @@ footer{text-align:center;margin-top:40px}
     <p>지각 여부만 보면 두 학생의 차이는 1교시 한 번뿐이다. 하지만 수업 시작 전에 남는 시간을 비교하면 다르게 보인다.</p>
     <div class="warn"><b>휠체어 기록은 촬영 때 뒤에서 사람이 밀어 준 시간이다.</b> 혼자 밀었다면 이동은 더 오래 걸리고, 아래 휠체어 쪽 여유 시간은 <b>이보다 더 짧아진다.</b> (참고: 앞의 "혼자 밀었다면" 표에서 배율 1.3·2·3을 넣으면 3교시 여유는 8분에서 2분 39초로 줄어든다.)</div>
     <div class="spare"><div class="row"><span>1교시 · 미디어관</span><div class="bars"><div class="b w"><span>비장애</span><div class="tr"><div class="f" style="width:31.4%"></div></div><em>4분 26초</em></div><div class="b h over"><span>휠체어</span><div class="tr"><div class="f" style="width:11.4%"></div></div><em>지각 1분 37초</em></div></div></div><div class="row"><span>2교시 · 교양관</span><div class="bars"><div class="b w"><span>비장애</span><div class="tr"><div class="f" style="width:100.0%"></div></div><em>14분 8초</em></div><div class="b h"><span>휠체어</span><div class="tr"><div class="f" style="width:62.0%"></div></div><em>8분 46초</em></div></div></div><div class="row"><span>3교시 · 국제관</span><div class="bars"><div class="b w"><span>비장애</span><div class="tr"><div class="f" style="width:82.7%"></div></div><em>11분 41초</em></div><div class="b h"><span>휠체어</span><div class="tr"><div class="f" style="width:56.7%"></div></div><em>8분 1초</em></div></div></div></div>
-    <p class="small">예시 플레이 기준. 1교시 휠체어의 붉은 막대는 남은 시간이 아니라 지각한 시간이다.</p>
+    <p class="small">예시 플레이 기준. 빗금은 밀어 준 덕분에 생겼을 수 있는 여유(혼자 밀면 줄어드는 쪽), 빨간 빗금은 혼자 밀면 더 늦어지는 쪽이다. 빗금 길이는 계산한 값이 아니라 방향만 보여 준다. 1교시 휠체어의 붉은 막대는 남은 시간이 아니라 지각한 시간이다.</p>
     <p>비장애 학생은 일찍 도착해서 커피를 사거나, 화장실에 들르거나, 친구와 이야기를 나눌 수 있다. 휠체어 이용 학생은 같은 시간표를 소화하더라도 그러한 여유가 줄어들 가능성이 있다.</p>
     <div class="quote">같은 수업에 출석했다는 결과가 같은 학교생활을 의미하지는 않는다.</div>
     <p>다만 여유 시간에 실제로 무엇을 하는지는 이번에 조사한 내용이 아니다. 이동 방식에 따라 수업 사이 시간을 쓰는 자율성이 달라지는지는 후속 연구 질문으로 남긴다.</p>
