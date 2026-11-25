@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>안암런 제작 노트</title>
+<style>
+@font-face{font-family:DungGeunMo;src:url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff) format('woff');font-weight:normal;font-display:swap}
+*{box-sizing:border-box;font-synthesis:none}
+:root{--ink:#2e2c3d;--navy:#2b3f55;--red:#d1251f;--plate:#a2c1d5;--sky:#41bdf5;--pale:#eaf6fc;--blue:#2f8bc9}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"DungGeunMo","Galmuri11",-apple-system,"Apple SD Gothic Neo",sans-serif;font-size:16px;line-height:1.75;color:var(--ink);
+  background:var(--sky) url(art/bg_title.png) center bottom/cover no-repeat fixed;overflow-x:hidden;word-break:keep-all;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.back,.plate{display:inline-block;background:var(--plate);color:var(--navy);text-decoration:none;padding:6px 14px;
+  box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 -4px 0 0 #6f93ad,0 5px 0 0 rgba(46,44,61,.35)}
+.back:hover{background:var(--red);color:#fff;box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 -4px 0 0 #95232c,0 5px 0 0 rgba(46,44,61,.35)}
+h1{margin:6px 0 2px;font-size:32px;font-weight:normal;color:#fff;text-shadow:3px 0 0 var(--ink),-3px 0 0 var(--ink),0 3px 0 var(--ink),0 -3px 0 var(--ink),0 6px 0 #6a1b2c}
+.sub{color:#fff;text-shadow:2px 0 0 var(--ink),-2px 0 0 var(--ink),0 2px 0 var(--ink),0 -2px 0 var(--ink);margin:0 0 22px}
+.win{position:relative;background:#fff;padding:30px 22px 20px;margin:40px 0 0;
+  box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 0 0 2px #8fd3f0,inset 0 -4px 0 0 #d4ecf7,0 6px 0 0 rgba(46,44,61,.3)}
+.tab{position:absolute;left:18px;top:-20px;background:var(--red);color:#fff;padding:4px 14px;font-size:16px;
+  box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 -3px 0 0 #95232c}
+.tab.navy{background:var(--navy);box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 -3px 0 0 #1b2a3a}
+h2{font-size:24px;font-weight:normal;margin:0 0 10px;color:var(--navy)}
+h3{font-size:18px;font-weight:normal;margin:18px 0 6px;color:var(--red)}
+p{margin:8px 0}
+ul,ol{margin:8px 0;padding-left:22px}li{margin:3px 0}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;list-style:none;padding:0;margin:0}
+.toc a{display:block;background:var(--pale);color:var(--navy);text-decoration:none;padding:6px 10px;box-shadow:inset 0 -3px 0 #c9e3f0}
+.toc a:hover{background:var(--red);color:#fff}
+.note{background:#fff4d6;padding:10px 14px;margin:12px 0;box-shadow:inset 4px 0 0 #e8a317}
+.warn{background:#fde8e7;padding:10px 14px;margin:12px 0;box-shadow:inset 4px 0 0 var(--red)}
+.tbl{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:15px}
+th,td{padding:6px 8px;text-align:left;border-bottom:2px solid #d4ecf7;vertical-align:top}
+th{background:var(--navy);color:#fff;font-weight:normal}
+td:first-child{min-width:5.5em;overflow-wrap:normal}
+td.w{color:var(--blue)}td.h{color:var(--red)}
+.late{background:var(--red);color:#fff;padding:0 6px;font-size:14px}
+kbd{display:inline-block;min-width:1.8em;text-align:center;font-family:inherit;background:var(--plate);color:var(--navy);padding:0 6px;
+  box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),inset 0 -3px 0 0 #6f93ad;margin:2px 3px}
+.prompt{background:var(--pale);padding:8px 12px;margin:6px 0;box-shadow:inset 4px 0 0 var(--blue)}
+.prompt b{color:var(--navy);font-weight:normal}
+.small{font-size:14px;color:#5b6478}
+footer{text-align:center;margin-top:40px}
+.evo{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:10px 0}
+.small-evo{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.evo figure{margin:0;background:var(--pale);padding:8px;box-shadow:inset 0 -3px 0 #c9e3f0}
+.evo figure.now{box-shadow:0 0 0 3px var(--red)}
+.evo img{display:block;width:100%;height:auto;box-shadow:0 0 0 2px var(--ink);image-rendering:auto}
+.evo figcaption{font-size:15px;margin-top:6px;line-height:1.5}
+.evo figcaption b{display:inline-block;background:var(--red);color:#fff;font-weight:normal;padding:0 6px;margin-right:4px}
+.evo figcaption span{display:block;font-size:13px;color:#5b6478;margin-top:2px}
+.evo .assets{display:flex;gap:6px;margin-top:6px}.evo .assets img{width:50%;box-shadow:0 0 0 1px #8a93a6}
+@media (max-width:520px){h1{font-size:24px}h2{font-size:20px}.win{padding:28px 14px 16px}table{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="back" href="index.html">← 게임으로</a><span class="plate">ANAM RUN! 제작 노트</span></div>
+  <h1>왜 이렇게 만들었나</h1>
+  <p class="sub">사회조사방법 8조 · 발표자가 함께 설명하면 좋은 것들</p>
+
+  <div class="win"><div class="tab navy">목차</div>
+    <ul class="toc">
+      <li><a href="#game">1. 왜 '게임'인가</a></li>
+      <li><a href="#clock">2. 시계와 배율의 근거</a></li>
+      <li><a href="#ai">3. AI 사용 기록 · 화면 발전 경과</a></li>
+      <li><a href="#limit">4. 한계</a></li>
+      <li><a href="#keys">5. 조작법·단축키</a></li>
+      <li><a href="#tips">6. 발표 팁</a></li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <section class="win" id="game"><div class="tab">1</div>
+    <h2>왜 '게임' 연출인가</h2>
+    <h3>평범한 퀘스트 → 반전</h3>
+    <p>1부는 아무 설명 없이 <b>"3교시까지 수업 들으러 가기"</b>라는 평범한 등교 퀘스트로 시작한다. 관객은 그냥 길을 고르고, 시간 안에 강의실에 도착한다. 1부가 끝나면 같은 하루를 <b>휠체어 이용 학생의 시점</b>으로 다시 하게 된다는 사실이 공개된다.</p>
+    <p>처음부터 "장애인 이동권 다큐"라고 밝히면 관객은 결론을 예상하고 본다. 먼저 아무 생각 없이 같은 길을 지나 보게 한 뒤 다시 보여 주면, 1부에서 당연했던 계단·지름길·빠른 엘리베이터가 2부에서 하나씩 사라지는 것이 더 크게 느껴진다.</p>
+    <h3>선택지가 줄어드는 경험</h3>
+    <p>영상만 보여 주면 관객은 구경꾼이 된다. 갈림길마다 관객이 직접 길을 고르게 했다. 1부에서는 어느 길을 골라도 갈 수 있지만, 2부에서 <b>계단 쪽을 고르면 GAME OVER</b>가 된다. "선택지가 줄어든다"는 것을 말로 설명하는 대신 직접 겪게 하려는 장치다.</p>
+    <h3>공정한 비교</h3>
+    <p>두 사람은 <b>같은 출발 시각, 같은 시간표, 같은 강의실</b>로 움직인다. 출발: 1교시 9:21 · 2교시 10:15 · 3교시 11:45. 수업 시작: 9:30 · 10:30 · 12:00. 차이는 오직 길과 이동 방식에서만 나온다. 수업 시작보다 늦게 도착하면 교시 끝 화면에 <b>STAGE LATE</b>가 뜨고, 결과 화면에서는 교시별 이동 시간을 막대로 나란히 비교한다.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="win" id="clock"><div class="tab">2</div>
+    <h2>시계와 배율의 근거</h2>
+    <h3>시계 = 원본 촬영 시간</h3>
+    <p>화면 속 영상은 구간마다 빨리감기된 편집본이다. 그래서 시계는 편집본 재생 시간이 아니라 <b>원본 촬영 파일에서 실제로 흐른 시간</b>을 따라간다. 편집본 영상과 원본 촬영 파일을 <b>0.5초 단위로 장면 대조</b>해서 "편집본 몇 초 = 원본 몇 초" 시간표를 만들었다. 걷기 영상은 이 시간표 그대로(1배), 영상을 빠르게 틀어도 시계는 원본 시간을 따른다.</p>
+    <h3>휠체어: 혼자 미는 속도로 환산</h3>
+    <p>휠체어 촬영은 <b>뒤에서 사람이 밀어 준 상태</b>로 진행했다. 게임 속 학생은 혼자 휠체어를 민다고 설정했기 때문에, 원본 시간에 아래 배율을 곱했다.</p>
+    <div class="tbl"><table>
+      <tr><th>구간</th><th>배율</th><th>이유</th></tr>
+      <tr><td>평지</td><td>1.3배</td><td>밀어 준 속도는 걷는 속도에 가깝고, 혼자 손으로 밀면 평지에서도 느려진다</td></tr>
+      <tr><td>오르막·경사로</td><td>2배</td><td>오르막에선 손으로 미는 힘이 훨씬 많이 들어 속도가 크게 떨어진다</td></tr>
+      <tr><td>국제관 가는 급경사</td><td>3배</td><td>혼자서는 중간중간 멈춰 쉬어야 하는 구간으로 봤다</td></tr>
+      <tr><td>엘리베이터 대기·탑승</td><td>1배 (실제 시간)</td><td>미는 속도와 상관없다. 원본에서 실제로 기다린 시간 그대로</td></tr>
+    </table></div>
+    <div class="warn"><b>주의:</b> 배율은 아래 문헌을 참고해 정한 <b>추정치</b>이며 실측값이 아니다. 특히 경사 구간 배율과 국제관 급경사 3배는 경사도를 재지 않고 영상 장면을 보고 판단했다.</div>
+    <p class="small">참고한 자료:</p>
+    <ul class="small">
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3058839" target="_blank" rel="noopener">휠체어 자가 추진 속도 관련 연구 (PMC3058839)</a></li>
+      <li><a href="https://researchexperts.utmb.edu/en/publications/wheelchair-propulsion-demands-during-outdoor-community-ambulation/" target="_blank" rel="noopener">야외 보도에서의 휠체어 추진 부담 (UTMB)</a></li>
+      <li><a href="https://scireproject.com/evidence/wheeled-mobility-and-seating-equipment/manual-wheelchairs/wheelchair-propulsion/kinetics-and-kinematics-of-wheelchair-propulsion-on-non-level-surfaces/" target="_blank" rel="noopener">경사면 휠체어 추진 근거 정리 (SCIRE)</a></li>
+      <li><a href="https://mro.massey.ac.nz/bitstreams/c1e4714c-9aef-47e0-a50b-8114c107f916/download" target="_blank" rel="noopener">휠체어 이동 속도 관련 논문 (Massey University)</a></li>
+    </ul>
+    <h3>엘리베이터 대기</h3>
+    <p>엘리베이터를 기다리는 구간은 영상 <b>배속을 풀어 천천히</b> 보여 주고, 화면 위쪽에 <b>"엘리베이터 기다리는 중 m:ss"</b>로 실제로 기다린 시간을 표시한다. 기다림이 끝나면 "띵" 소리가 난다. 원본에서 실제로 기다린 시간은 다음과 같다.</p>
+    <div class="tbl"><table>
+      <tr><th>장면</th><th>실제 대기·탑승</th></tr>
+      <tr><td>1교시 · 미디어관 2층 → 4층 (사람이 많아 두 번 놓침)</td><td><b>5분 20초</b></td></tr>
+      <tr><td>2교시 출발 · 미디어관 내려가기</td><td>1분 18초</td></tr>
+      <tr><td>3교시 출발 · 교양관 내려가기</td><td>1분 10초</td></tr>
+      <tr><td>1교시 · 미디어관 1층 길</td><td>51초</td></tr>
+      <tr><td>2교시 · 교양관</td><td>37초</td></tr>
+    </table></div>
+    <h3>엔딩 (예시 경로 기준)</h3>
+    <p class="small">나는 정후 → 엘리베이터 길, 휠체어는 정후 → 2층 입구 길을 골랐을 때. 실제 플레이에선 고른 길에 따라 달라진다.</p>
+    <div class="tbl"><table>
+      <tr><th>교시</th><th>나 (비장애)</th><th>휠체어 (혼자 밀기)</th><th>차이</th></tr>
+      <tr><td>1교시 미디어관</td><td class="w">4:34 · 출석</td><td class="h">13:26 · <span class="late">4분 26초 지각</span></td><td>2.9배</td></tr>
+      <tr><td>2교시 교양관</td><td class="w">0:52 · 출석</td><td class="h">7:39 · 출석</td><td>8.8배</td></tr>
+      <tr><td>3교시 국제관</td><td class="w">3:19 · 출석</td><td class="h">12:20 · 출석 (2분 40초 전)</td><td>3.7배</td></tr>
+    </table></div>
+    <p>지각은 1교시 한 번뿐이지만, 휠체어 학생은 <b>매 교시 아슬아슬하게</b> 도착한다. 바로 옆 건물인 교양관도 돌아가야 해서 8.8배가 걸린다.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="win" id="ai"><div class="tab">3</div>
+    <h2>AI 사용 기록</h2>
+    <h3>어디에 어떤 도구를 썼나</h3>
+    <div class="tbl"><table>
+      <tr><th>도구</th><th>쓴 곳</th></tr>
+      <tr><td>Claude Code</td><td>사이트 코드 전체(화면 흐름·선택지·연출·전환 효과), 자막 타이핑 효과, 효과음·배경음(브라우저 WebAudio로 직접 합성), 지나가는 사람 얼굴 모자이크(macOS Vision 얼굴·자세 인식 + 프레임 간 추적·보간), 편집본↔원본 장면 대조 시간표, 휠체어 속도 배율 자료 조사</td></tr>
+      <tr><td>GPT 이미지 생성</td><td>조원이 만든 게임 그림 에셋: 타이틀 로고, 배경, 인게임 돌 틀·배경, 장소·시계 판, 달리기·휠체어 스프라이트</td></tr>
+      <tr><td>Higgsfield</td><td>초기 시안 이미지 일부를 생성했지만, 최종본에서는 조원이 만든 에셋으로 교체했다</td></tr>
+    </table></div>
+    <p>촬영(영상)과 자막 문구, 길 선택 구조는 조원들이 직접 정했다. AI는 그것을 게임 형태로 구현하고 다듬는 데 썼다.</p>
+    <h3>주요 프롬프트 (요청을 짧게 다듬음)</h3>
+    <div class="prompt"><b>"</b>1부는 평범한 수업 들으러 가기 퀘스트처럼 보이게 하고, 끝나고 나서 휠체어 시점이라는 걸 반전으로 공개해 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>지나가는 사람들 얼굴 모자이크해 줄 수 있어? 더 정확하게<b>"</b></div>
+    <div class="prompt"><b>"</b>레퍼런스 GIF 같은 레트로 픽셀 게임 스타일로, 글씨체도 맞춰 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>조원이 만든 안암런 에셋으로 타이틀·인게임 화면을 바꾸고 배경이 움직이게 해 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>지각했는데 STAGE CLEAR가 뜨면 안 되지<b>"</b></div>
+    <div class="prompt"><b>"</b>시계를 리얼타임으로, 원본 영상 시간을 반영해서 흐르게 해 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>촬영 땐 뒤에서 휠체어를 밀어 준 걸 감안해서 계산해 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>오르막 2배, 평지 1.3배로 나눠서 해 줘<b>"</b></div>
+    <div class="prompt"><b>"</b>국제관 올라가는 데 10분은 말이 안 돼, 엘리베이터 대기도 리얼타임으로<b>"</b></div>
+    <div class="prompt"><b>"</b>결과 화면에 나랑 휠체어 이동 시간을 비교 막대로 보여 줘<b>"</b></div>
+
+    <h3 id="evo">메인 화면 발전 경과</h3>
+    <p class="small">2026-11-22 ~ 11-24. 각 버전은 버전 기록에서 그때 코드를 다시 띄워 캡처했다.</p>
+    <div class="evo">
+      <figure><img src="art/history/t01.jpg" alt="" loading="lazy"><figcaption><b>1</b> 처음 · 같은 길, 다른 거리<span>검은 배경의 다큐멘터리 스타일 첫 화면</span></figcaption></figure>
+      <figure><img src="art/history/t02.jpg" alt="" loading="lazy"><figcaption><b>2</b> 픽셀 게임 첫 시도<span>레퍼런스 이미지를 보고 하늘·구름·잔디가 있는 레트로 게임 화면으로 바꿈</span></figcaption></figure>
+      <figure><img src="art/history/t03.jpg" alt="" loading="lazy"><figcaption><b>3</b> TODAY'S QUEST 리본<span>"수업 가기 퀘스트"라는 설정을 앞세움</span></figcaption></figure>
+      <figure><img src="art/history/t04.jpg" alt="" loading="lazy"><figcaption><b>4</b> 제목 '3교시까지 수업 들으러 가기'<span>"같은 길, 다른 거리"는 반전을 미리 알려 줘서 1부용 평범한 제목으로 교체</span></figcaption></figure>
+      <figure><img src="art/history/t05.jpg" alt="" loading="lazy"><figcaption><b>5</b> 빨간 입체 제목<span>레퍼런스 GIF의 애니메이션 타이틀 화면 스타일을 따라감</span></figcaption></figure>
+      <figure><img src="art/history/t06.jpg" alt="" loading="lazy"><figcaption><b>6</b> 우리 영상 장면을 픽셀아트로<span>실제 캠퍼스 사진을 도트 느낌으로 바꿔 배경에 씀</span></figcaption></figure>
+      <figure><img src="art/history/t07.jpg" alt="" loading="lazy"><figcaption><b>7</b> 코드로 그린 일러스트 (돌계단)<span>배경을 코드로 직접 그려 봄</span></figcaption></figure>
+      <figure><img src="art/history/t08.jpg" alt="" loading="lazy"><figcaption><b>8</b> 코드로 그린 고려대 본관<span>학교라는 걸 한눈에 알 수 있게 본관을 그림</span></figcaption></figure>
+      <figure><img src="art/history/t09.jpg" alt="" loading="lazy"><figcaption><b>9</b> 안암 RUN · Higgsfield 배경·캐릭터<span>제목을 더 게임답게 '안암 RUN'으로 바꾸고, 이미지 생성 AI(Higgsfield)로 배경·캐릭터 시안을 만듦</span>
+        <div class="assets"><img src="art/history/hf_bg.jpg" alt="Higgsfield 배경 시안" loading="lazy"><img src="art/history/hf_chars.jpg" alt="Higgsfield 캐릭터 시안" loading="lazy"></div></figcaption></figure>
+      <figure><img src="art/history/t10.jpg" alt="" loading="lazy"><figcaption><b>10</b> 해상도·48색으로 줄임<span>생성 이미지가 너무 매끈해서 도트 느낌을 살리려고 해상도와 색 수를 줄임</span></figcaption></figure>
+      <figure><img src="art/history/t11.jpg" alt="" loading="lazy"><figcaption><b>11</b> 직접 찍은 도트 로고<span>제목 글씨를 도트로 다시 만듦</span></figcaption></figure>
+      <figure><img src="art/history/t12.jpg" alt="" loading="lazy"><figcaption><b>12</b> 조원이 만든 배경·ANAM RUN! 로고<span>AI 시안 대신 조원이 GPT로 만든 에셋('안암런' 폴더)으로 교체</span>
+        <div class="assets"><img src="art/history/gpt_bg.jpg" alt="조원 GPT 배경" loading="lazy"><img src="art/history/gpt_title.jpg" alt="조원 GPT 합본" loading="lazy"></div></figcaption></figure>
+      <figure><img src="art/history/t13.jpg" alt="" loading="lazy"><figcaption><b>13</b> 깃발·새·낙엽 + 달리는 캐릭터<span>정지된 그림이 심심해서 배경을 움직이게 하고 달리기 스프라이트를 넣음</span></figcaption></figure>
+      <figure><img src="art/history/t14.jpg" alt="" loading="lazy"><figcaption><b>14</b> 가운데 '등교 시작!' 버튼<span>메뉴를 버튼 하나로 줄이고 타자 치듯 나오는 튜토리얼로 연결</span></figcaption></figure>
+      <figure class="now"><img src="art/history/t15.jpg" alt="" loading="lazy"><figcaption><b>15</b> 지금<span>버튼을 작게 내리고 "화면을 한 번 누르면 소리가 나와요" 안내 추가</span></figcaption></figure>
+    </div>
+
+    <h3>게임 화면 발전 경과</h3>
+    <p class="small">같은 장면(걷기 3번 영상 · 카페 앞 자막)으로 비교. 2026-11-24 하루 동안.</p>
+    <div class="evo small-evo">
+      <figure><img src="art/history/g01.jpg" alt="" loading="lazy"><figcaption><b>1</b> 처음 · 하얀 자막 상자</figcaption></figure>
+      <figure><img src="art/history/g02.jpg" alt="" loading="lazy"><figcaption><b>2</b> 픽셀 게임 스타일 첫 시도</figcaption></figure>
+      <figure><img src="art/history/g03.jpg" alt="" loading="lazy"><figcaption><b>3</b> 글씨 키움 · 효과음 · 재생바 제거</figcaption></figure>
+      <figure><img src="art/history/g04.jpg" alt="" loading="lazy"><figcaption><b>4</b> RPG 파란 창 · 노을 배경</figcaption></figure>
+      <figure><img src="art/history/g05.jpg" alt="" loading="lazy"><figcaption><b>5</b> 검은 디지털 시계</figcaption></figure>
+      <figure><img src="art/history/g06.jpg" alt="" loading="lazy"><figcaption><b>6</b> 상자 없는 글씨</figcaption></figure>
+      <figure><img src="art/history/g07.jpg" alt="" loading="lazy"><figcaption><b>7</b> 게임 선택창·아이템창</figcaption></figure>
+      <figure><img src="art/history/g08.jpg" alt="" loading="lazy"><figcaption><b>8</b> 밝은 금속 판으로 통일</figcaption></figure>
+      <figure><img src="art/history/g09.jpg" alt="" loading="lazy"><figcaption><b>9</b> 타이틀 그림체로 통일 (하얀 창)</figcaption></figure>
+      <figure><img src="art/history/g10.jpg" alt="" loading="lazy"><figcaption><b>10</b> 까만 바탕 + 하얀 테두리</figcaption></figure>
+      <figure class="now"><img src="art/history/g11.jpg" alt="" loading="lazy"><figcaption><b>11</b> 돌 틀 + 하늘 배경 (조원 '인게임 합본')
+        <div class="assets"><img src="art/history/gpt_ingame.jpg" alt="조원 GPT 인게임 합본" loading="lazy"></div></figcaption></figure>
+    </div>
+    <p class="small">이후 장소·시계 판을 조원의 '인게임 버튼' 그림(하늘색 강철 판)으로 바꾸고, 글씨를 둥근모꼴로, 빨강을 로고 색으로 맞췄다.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="win" id="limit"><div class="tab">4</div>
+    <h2>한계</h2>
+    <ul>
+      <li><b>한 번의 촬영:</b> 하루, 한 사람, 한 번 지나간 기록이다. 날씨·시간대·혼잡도(엘리베이터 대기 인원 등)에 따라 결과는 얼마든지 달라진다.</li>
+      <li><b>밀어 준 촬영을 환산:</b> 휠체어 촬영은 뒤에서 밀어 준 속도라 혼자 미는 시간은 배율로 <b>추정</b>했다. 실제 휠체어 이용자가 같은 길을 혼자 이동하며 잰 시간이 아니다.</li>
+      <li><b>경사도 미측정:</b> 평지·오르막·급경사 구분은 영상 장면을 보고 판단했다. 실제 경사도는 재지 않았다.</li>
+      <li><b>시간으로 다 담을 수 없는 것:</b> 피로, 위험(턱에 걸리는 순간), 문을 열어 달라고 부탁해야 하는 부담, 주변 시선 같은 경험은 시계 숫자로 표현되지 않는다.</li>
+      <li><b>경로 일부만:</b> 캠퍼스의 모든 길이 아니라 정해진 수업 동선 일부만 촬영했다.</li>
+      <li><b>편집본 길이 ≠ 실제 시간:</b> 화면 속 영상은 빨리감기된 편집본이라, 영상이 끝나는 데 걸리는 시간과 시계의 시간은 다르다.</li>
+      <li><b>자동 모자이크:</b> 얼굴 인식으로 자동 처리해서 일부 프레임에서 누락될 수 있다.</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section class="win" id="keys"><div class="tab">5</div>
+    <h2>조작법·단축키</h2>
+    <div class="tbl"><table>
+      <tr><th>키</th><th>기능</th></tr>
+      <tr><td><kbd>Space</kbd></td><td>영상 재생 / 일시정지</td></tr>
+      <tr><td><kbd>→</kbd></td><td>지금 영상 건너뛰기 (다음 화면으로)</td></tr>
+      <tr><td><kbd>Backspace</kbd></td><td>이전 화면으로 돌아가기 (GAME OVER 화면에선 같은 선택지로)</td></tr>
+      <tr><td><kbd>M</kbd></td><td>소리(효과음·배경음) 끄기 / 켜기</td></tr>
+      <tr><td><kbd>P</kbd></td><td>영상 픽셀 필터 끄기 / 켜기</td></tr>
+      <tr><td><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> + <kbd>Enter</kbd></td><td>메뉴·선택지에서 커서 이동, 선택</td></tr>
+    </table></div>
+    <ul>
+      <li><b>소리:</b> 브라우저 정책 때문에 <b>화면을 한 번 눌러야</b> 소리가 나온다.</li>
+      <li><b>튜토리얼:</b> 오른쪽 위 <b>"건너뛰기 ▶▶"</b> 버튼으로 바로 1교시부터 시작할 수 있다. 대화는 클릭이나 <kbd>Enter</kbd>/<kbd>Space</kbd>로 넘긴다.</li>
+      <li><b>영상 화면:</b> 오른쪽 아래 재생/건너뛰기 버튼으로도 조작할 수 있다.</li>
+      <li><b>자막 편집기:</b> <a href="edit.html">edit.html</a>(자막 수정실)에서 자막·선택지 문구를 고칠 수 있다. 온라인에선 바로 저장되지 않고 <code>subs.json</code> 파일로 내려받아 전달한다.</li>
+      <li><b>새로고침:</b> 수정이 반영되지 않으면 <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> (윈도우는 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>).</li>
+    </ul>
+  </section>
+
+  <!-- 6 -->
+  <section class="win" id="tips"><div class="tab">6</div>
+    <h2>발표 팁</h2>
+    <h3>추천 흐름</h3>
+    <ol>
+      <li><b>1부 플레이:</b> 장애 얘기는 꺼내지 않고 "오늘 3교시까지 수업 가 보자"로 시작한다. 갈림길 선택은 관객에게 맡긴다.</li>
+      <li><b>반전:</b> 1부가 끝나고 휠체어 시점이 공개될 때 잠깐 멈춰서 반응을 본다.</li>
+      <li><b>2부 플레이:</b> 같은 갈림길에서 관객이 계단 쪽을 고르면 GAME OVER를 그대로 보여 준다. 엘리베이터 대기 화면에서 시계가 흐르는 걸 짚어 준다.</li>
+      <li><b>교시 끝 비교:</b> 2부 교시 끝 화면의 "아까 나 → 지금" 숫자를 읽어 준다.</li>
+      <li><b>결과 막대:</b> 교시별 이동 시간 막대로 마무리한다. 2교시(바로 옆 건물인데 8.8배)가 가장 극적이다.</li>
+    </ol>
+    <h3>관객 참여</h3>
+    <p>선택지마다 손을 들게 하거나 앞줄에 고르게 하면 "내가 고른 길이 막혔다"는 경험이 더 강해진다. 시간이 부족하면 <kbd>→</kbd>로 영상을 건너뛰어도 시계와 기록은 원본 시간 기준으로 계산된다.</p>
+    <h3>질문 대비</h3>
+    <ul>
+      <li><b>"배율은 어디서 나왔나?"</b> → 문헌을 참고한 추정치이고 실측이 아니라는 점, 엘리베이터는 배율 없이 실제 시간이라는 점을 먼저 말한다. (<a href="#clock">2번</a>)</li>
+      <li><b>"한 번 찍은 걸로 일반화할 수 있나?"</b> → 할 수 없다. 이 작업은 측정 연구가 아니라 경험을 보여 주는 민족지적 기록에 가깝다. (<a href="#limit">4번</a>)</li>
+      <li><b>"AI는 어디까지 썼나?"</b> → 촬영·문구·길 구조는 조원이, 구현·에셋 보조·자료 조사에 AI를 썼다. (<a href="#ai">3번</a>)</li>
+      <li><b>"왜 지각이 한 번뿐인가?"</b> → 결과를 과장하지 않으려고 원본 시간을 그대로 썼다. 지각하지 않아도 매번 여유가 거의 없다는 게 핵심이다.</li>
+    </ul>
+  </section>
+
+  <footer><a class="back" href="index.html">← 게임으로 돌아가기</a></footer>
+</div>
+</body>
+</html>

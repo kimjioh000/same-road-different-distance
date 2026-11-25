@@ -382,15 +382,19 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 .why summary{cursor:pointer;color:#2e2c3d}.why ul{margin:10px 0 0;padding-left:20px;line-height:1.7;color:#4a4f63}.why b{color:#2e2c3d;font-weight:normal;background:#eaf6fc}
 /* 결과창 스크롤해도 그림 배경이 따라오게 (아래가 파랗게 비던 것) */
 #ov.scroll > .art16{position:fixed}
-/* 대화창 이름표·얼굴 칸: 장소·시계와 같은 강철 판 */
-#sub em,.wheelside #sub em,#sub.late em{background:#a2c1d5;background-clip:padding-box;color:#2b3f55;text-shadow:none;box-shadow:none;
-  border-style:solid;border-width:7px 9px 10px 9px;border-image:url(art/plate.png) 56 67 80 76 round;padding:0 10px;top:-30px;font-size:16px;letter-spacing:0}
+/* 얼굴 칸: 장소·시계와 같은 강철 판 (이름표는 빨강 유지) */
+#sub em{font-size:16px}
 #sub .face{border:0;border-radius:0;box-shadow:none;outline:0;border-style:solid;border-width:7px 9px 10px 9px;border-image:url(art/plate.png) 56 67 80 76 round;background-clip:padding-box;background-color:#d4ecf7}
 /* 둥근모꼴은 16px 배수에서 또렷함 */
 #sub span,#ov.choice .win h2,#ov.choice .opt{font-size:16px}
 #loc b,#loc i,#clock .r{font-size:16px!important}
 #clock .t{font-size:32px}
 @media (min-width:1100px){#sub span,#ov.choice .win h2{font-size:32px;line-height:1.4}#ov.choice .opt{font-size:32px}#sub span{padding-top:18px;padding-bottom:14px}}
+/* 제작 노트 링크 */
+.notes{position:absolute;left:16px;top:14px;z-index:5;font-size:16px;color:#2b3f55;text-decoration:none;background:#a2c1d5;background-clip:padding-box;
+  border-style:solid;border-width:7px 9px 10px 9px;border-image:url(art/plate.png) 56 67 80 76 round;padding:0 8px}
+.notes:hover{color:#d1251f}
+.menu.row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.menu.row .btn{text-decoration:none;display:inline-block}
 </style>
 </head>
 <body>
@@ -858,6 +862,7 @@ function start(){
     <h1 class="sr">ANAM RUN!</h1>
     <button class="btn tstart" id="b">등교 시작!</button>
     <div class="sndhint">🔊 화면을 한 번 누르면 소리가 나와요</div>
+    <a class="notes" href="about.html" target="_blank">제작 노트</a>
     <div class="copy l">© 2026 사회조사방법 8조</div><div class="copy r">고려대학교 안암캠퍼스</div>
     </div>`, 'solid sky', 'start');
   $('#b').onclick = () => { sfx('start'); iris(() => nav('tutorial'), ov.querySelector('.runner')); };
@@ -974,7 +979,7 @@ function result(){
       <li>엘리베이터 기다림·탑승은 미는 속도와 상관없어서 <b>실제로 기다린 시간 그대로</b></li>
       <li>출발 시각은 둘 다 같음: 1교시 9:21 · 2교시 10:15 · 3교시 11:45</li></ul></details>
     <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
-    <button class="btn" id="b">처음부터 다시</button></div>`, 'solid scroll', 'end');
+    <div class="menu row"><button class="btn" id="b">처음부터 다시</button><a class="btn" href="about.html" target="_blank">왜 이렇게 만들었을까?</a></div></div>`, 'solid scroll', 'end');
   $('#b').onclick = () => { hist = []; go('start'); };
 }
 
