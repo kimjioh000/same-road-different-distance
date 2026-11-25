@@ -359,14 +359,44 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 #sub em,#ov.choice .win .tab{box-shadow:0 -2px 0 0 #2e2c3d,0 2px 0 0 #2e2c3d,-2px 0 0 0 #2e2c3d,2px 0 0 0 #2e2c3d,inset 0 -3px 0 0 #95232c}
 #ov.choice .panel.play{bottom:auto;left:50%;top:calc(var(--fy) + var(--fh) * .4);width:min(320px,80vw);transform:translateX(-50%)}
 #ov.choice .panel{position:absolute;left:calc(var(--fx) + var(--fw) * .06);width:calc(var(--fw) * .88);top:auto;bottom:1.5vh}
+/* 4:3 화면 등 아래 공간이 넉넉하면 대화창 자리에 맞춰 (아래로 잘리던 것) */
+@media (max-aspect-ratio:3/2){#ov.choice .panel:not(.play){top:calc(var(--fy) + var(--fh) * .87);bottom:auto}}
 #ov.choice .win{padding:22px 28px 18px;gap:12px}
 #ov.choice .win h2{font-size:clamp(20px,2.2vw,28px)}
 #ov.choice .opt{min-height:60px!important;padding:12px 26px 13px 50px!important}
+/* ── 다듬기 ── */
+/* 엘리베이터 대기 표시: 틀 안 위쪽 가운데 강철 판 */
+#wait{position:absolute;z-index:3;left:50%;top:calc(var(--fy) + var(--fh) * (var(--it) + .14));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;
+  background:#a2c1d5;background-clip:padding-box;color:#2b3f55;border-style:solid;border-width:9px 11px 13px 12px;border-image:url(art/plate.png) 56 67 80 76 round;
+  padding:2px 14px 0;filter:drop-shadow(0 4px 0 rgba(30,45,70,.35));pointer-events:none}
+#wait[hidden]{display:none}
+#wait span{font-size:16px}#wait b{font-size:32px;font-weight:normal;animation:blinkw 1s steps(2) infinite}
+@keyframes blinkw{50%{opacity:.55}}
+/* 교시 끝 비교 */
+.cmp{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 2px;font-size:16px}
+.cmp div{display:flex;flex-direction:column;align-items:center}.cmp span{color:#6a7b92}
+.cmp b{font-size:32px;font-weight:normal}.cmp b.w{color:#2f8bc9}.cmp b.h{color:#d1251f}.cmp i{font-style:normal;color:#6a7b92}
+.cmp em{font-style:normal;color:#fff;background:#d1251f;padding:2px 8px}
+/* 결과: 근거 접이식 */
+.why{width:100%;text-align:left;font-size:16px;padding:14px 20px!important}
+.why summary{cursor:pointer;color:#2e2c3d}.why ul{margin:10px 0 0;padding-left:20px;line-height:1.7;color:#4a4f63}.why b{color:#2e2c3d;font-weight:normal;background:#eaf6fc}
+/* 결과창 스크롤해도 그림 배경이 따라오게 (아래가 파랗게 비던 것) */
+#ov.scroll > .art16{position:fixed}
+/* 대화창 이름표·얼굴 칸: 장소·시계와 같은 강철 판 */
+#sub em,.wheelside #sub em,#sub.late em{background:#a2c1d5;background-clip:padding-box;color:#2b3f55;text-shadow:none;box-shadow:none;
+  border-style:solid;border-width:7px 9px 10px 9px;border-image:url(art/plate.png) 56 67 80 76 round;padding:0 10px;top:-30px;font-size:16px;letter-spacing:0}
+#sub .face{border:0;border-radius:0;box-shadow:none;outline:0;border-style:solid;border-width:7px 9px 10px 9px;border-image:url(art/plate.png) 56 67 80 76 round;background-clip:padding-box;background-color:#d4ecf7}
+/* 둥근모꼴은 16px 배수에서 또렷함 */
+#sub span,#ov.choice .win h2,#ov.choice .opt{font-size:16px}
+#loc b,#loc i,#clock .r{font-size:16px!important}
+#clock .t{font-size:32px}
+@media (min-width:1100px){#sub span,#ov.choice .win h2{font-size:32px;line-height:1.4}#ov.choice .opt{font-size:32px}#sub span{padding-top:18px;padding-bottom:14px}}
 </style>
 </head>
 <body>
 <div id="stage" class="hidehud">
   <div id="frameShadow"></div>
+  <div id="wait" hidden><span>엘리베이터 기다리는 중</span><b>0:00</b></div>
   <video id="v" playsinline muted preload="auto"></video>
   <div id="frame"></div>
   <canvas id="px" hidden></canvas>
@@ -463,6 +493,8 @@ const SFX = {
   start:[[523,.08],[659,.08],[784,.08],[1047,.28]],
   clear:[[784,.1],[659,.1],[784,.1],[1047,.12],[0,.05],[1047,.3]],
   fail:[[392,.16],[349,.16],[311,.16],[262,.5,'triangle',.14]],
+  ding:[[1568,.14,'triangle',.14],[1175,.45,'triangle',.12]],
+  late:[[330,.18,'square',.07],[0,.04],[247,.18,'square',.07],[0,.04],[165,.5,'triangle',.12]],
   reveal:[[262,.07],[330,.07],[392,.07],[523,.07],[659,.07],[784,.07],[1047,.35,'triangle',.12]],
 };
 function sfx(name){
@@ -748,23 +780,42 @@ function go(id){
     // 이번 교시 도착 시각이 수업 시작보다 늦으면 CLEAR 대신 LATE
     const arr = log[side].arrived[n.p], late = arr != null && arr > toSec(CLOCK.cls[n.p][0]);
     const lateBy = late ? fmt(arr - toSec(CLOCK.cls[n.p][0])) : '';
+    // 2부(휠체어)에선 같은 교시에 아까 내가 걸린 시간과 나란히
+    const tr = k => log[k].arrived[n.p] == null ? null : log[k].arrived[n.p] - toSec(CLOCK.depart[n.p]);
+    const a = tr('walk'), b = tr('wheel');
+    const cmp = side === 'wheel' && a != null && b != null ? `<div class="cmp"><div><span>아까 나</span><b class="w">${fmt(a)}</b></div><i>→</i><div><span>지금</span><b class="h">${fmt(b)}</b></div><em>${(b / a).toFixed(1)}배</em></div>` : '';
     show(`<div class="panel" style="width:min(560px,100%)"><div class="bell${late ? ' late' : ''}">STAGE ${n.p} ${late ? 'LATE...' : 'CLEAR!'}</div>
       <div class="win"><div class="tab green">수업 종료</div><h2>${S(id).title ?? n.title}${late ? ` · <span class="latetxt">${lateBy} 지각</span>` : ''}</h2>
       <div class="items">${names.map((x, i) => `<div class="${i < n.p ? 'ok' : i === n.p ? 'now' : ''}">${i + 1}교시 ${x}</div>`).join('')}</div><hr>
-      <p class="lead">${S(id).sub ?? n.sub}</p>
+      ${cmp}<p class="lead">${S(id).sub ?? n.sub}</p>
       <div class="menu"><button class="btn" id="b">다음 수업으로</button></div></div></div>`, 'solid', `p${n.p}`);
     $('#b').onclick = () => fadeThrough(() => nav(n.next));
-    sfx('clear');
+    sfx(late ? 'late' : 'clear');
   }
 }
 
 // 영상 끝나기 3초 전 도착 멘트, 끝나면 다음으로
+// 엘리베이터 기다리는 구간(PUSH 배율 1): 배속을 풀어서 천천히 + 실제로 기다린 시간 표시
+const ELEV_RATE = .5;
+let inElev = null;
+function elevator(t){
+  const seg = (PUSH[cur] || []).find(([a, b, g]) => g === 1 && t >= a && t < b);
+  const box = $('#wait');
+  if (seg){
+    if (inElev !== seg){ inElev = seg; v.playbackRate = ELEV_RATE; box.hidden = false; }
+    box.querySelector('b').textContent = fmt(rawAt(cur, t) - rawAt(cur, seg[0]));
+  } else if (inElev){
+    if (t >= inElev[1]) sfx('ding');
+    inElev = null; v.playbackRate = side === 'walk' ? WALK_RATE : 1; box.hidden = true;
+  }
+}
 const onTime = () => {
   const n = G[cur];
   if (!n || n.t !== 'video' || !v.duration) return;
   const c = renderSub();
   clk = clkBase + origAt(cur, v.currentTime);
   drawClock(n.p, c && /커피|늦/.test(c.text));
+  elevator(v.currentTime);
   if (n.stop && v.currentTime >= n.stop) finish();
 };
 function finish(){
@@ -917,6 +968,11 @@ function result(){
     <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
     <div class="win trips"><div class="tab">이동 시간 비교</div>${bars}</div>
     <div class="compare">${col('walk','나 (비장애 학생)')}${col('wheel','휠체어 이용 학생')}</div>
+    <details class="why win"><summary>시계는 어떻게 계산했나요?</summary><ul>
+      <li>시계는 <b>원본 촬영 시간</b>을 그대로 따라감 (편집본은 빨리감기라 짧음)</li>
+      <li>휠체어 촬영은 뒤에서 밀어준 속도라, 혼자 미는 속도로 바꿔 계산: <b>평지 1.3배 · 오르막 2배 · 급경사 3배</b> (추정치)</li>
+      <li>엘리베이터 기다림·탑승은 미는 속도와 상관없어서 <b>실제로 기다린 시간 그대로</b></li>
+      <li>출발 시각은 둘 다 같음: 1교시 9:21 · 2교시 10:15 · 3교시 11:45</li></ul></details>
     <p class="note">영상 길이는 편집본 기준이라 실제 이동 시간과 다름 · 건너뛴 영상도 전체 길이로 계산</p>
     <button class="btn" id="b">처음부터 다시</button></div>`, 'solid scroll', 'end');
   $('#b').onclick = () => { hist = []; go('start'); };
