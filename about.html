@@ -145,15 +145,15 @@ footer{text-align:center;margin-top:40px}
     <div class="tbl"><table>
       <tr><th>도구</th><th>쓴 곳</th></tr>
       <tr><td>Claude Code</td><td>사이트 코드 전체(화면 흐름·선택지·연출·전환 효과), 자막 타이핑 효과, 효과음·배경음(브라우저 WebAudio로 직접 합성), 지나가는 사람 얼굴 모자이크(macOS Vision 얼굴·자세 인식 + 프레임 간 추적·보간), 편집본↔원본 장면 대조 시간표, 휠체어 속도 배율 자료 조사</td></tr>
-      <tr><td>GPT 이미지 생성</td><td>조원이 만든 게임 그림 에셋: 타이틀 로고, 배경, 인게임 돌 틀·배경, 장소·시계 판, 달리기·휠체어 스프라이트</td></tr>
-      <tr><td>Higgsfield</td><td>초기 시안 이미지 일부를 생성했지만, 최종본에서는 조원이 만든 에셋으로 교체했다</td></tr>
+      <tr><td>GPT 이미지 생성</td><td>GPT로 직접 만든 게임 그림 에셋: 타이틀 로고, 배경, 인게임 돌 틀·배경, 장소·시계 판, 달리기·휠체어 스프라이트</td></tr>
+      <tr><td>Higgsfield</td><td>초기 시안 이미지 일부를 생성했지만, 최종본에서는 GPT로 직접 만든 에셋으로 교체했다</td></tr>
     </table></div>
     <p>촬영(영상)과 자막 문구, 길 선택 구조는 조원들이 직접 정했다. AI는 그것을 게임 형태로 구현하고 다듬는 데 썼다.</p>
     <h3>주요 프롬프트 (요청을 짧게 다듬음 · 누르면 원문)</h3>
     <details class="prompt"><summary><b>"</b>1부는 평범한 수업 들으러 가기 퀘스트처럼 보이게 하고, 끝나고 나서 휠체어 시점이라는 걸 반전으로 공개해 줘<b>"</b></summary><div class="orig"><time>11/24 12:31</time>그리고 이 사이트를 발표하며 알아야할점은... 장애vs비장애 구도로 처음부터 시작하는게 아니라 평범한 캠퍼스 투어인척하다가 도착 후에 그럼 이제 다른 학생의 시점을 한번 알아볼까요? 라고하며 장애학생의 시점을 보여주는 약간의 반전이 있어야돼</div><div class="orig"><time>11/24 12:39</time>아 캠퍼스투어가 아니라 3교시까지 수업들으러 가기인데 이걸 어떻게 제목처럼 만들수잇지</div></details>
     <details class="prompt"><summary><b>"</b>지나가는 사람들 얼굴 모자이크해 줄 수 있어? 더 정확하게<b>"</b></summary><div class="orig"><time>11/24 12:46</time>그리고 너 혹시 영상 모자이크도 할수있어? ㅜㅜ 얼굴이 너무 적나라하게 찍힌 행인들만 모자이크를 좀 해주면 좋을거같은데</div><div class="orig"><time>11/24 13:08</time>그리고 모자이크 좀만 더 정확하게 해주라</div></details>
     <details class="prompt"><summary><b>"</b>레퍼런스 GIF 같은 레트로 픽셀 게임 스타일로, 글씨체도 맞춰 줘<b>"</b></summary><div class="orig"><time>11/24 12:22</time>흠 디자인을 좀 수정해보자. 전체적으로 약간 픽셀게임 느낌이 났음 좋겠어. 내가 방금 데스크탑에 다운받은 11개의 이미지를 참고해서 웹사이트의 모든 디자인을 수정해줘</div><div class="orig"><time>11/24 15:19</time>음... <span class="censor" title="비속어 가림">■■■■</span>하지말고 73070870226982a0854a75764dfc7e5b.gif 이거 일러스트 스타일 완전히 모방해줘 글씨체도 해당 느낌의 한글폰트로 바꾸고</div></details>
-    <details class="prompt"><summary><b>"</b>조원이 만든 안암런 에셋으로 타이틀·인게임 화면을 바꾸고 배경이 움직이게 해 줘<b>"</b></summary><div class="orig"><time>11/24 16:48</time>아 미감이 왜이렇게<span class="censor" title="비속어 가림">■■■■</span> 내가 지피티로만들어서넣어뒀으니까이걸로한번얹어봐 안암런 폴더에있고 이거기본으로 배경 움직이게도 할수있냐?</div><div class="orig"><time>11/24 17:40</time>자 화면 수정하자 안암런 폴더에 인게임 합본 확인해주고 인게임 배경과 인게임 틀 이미지 쓰렴 그리고 대화창은 튜토리얼에서 썼던거 그대로 가져와</div></details>
+    <details class="prompt"><summary><b>"</b>직접 만든 안암런 에셋으로 타이틀·인게임 화면을 바꾸고 배경이 움직이게 해 줘<b>"</b></summary><div class="orig"><time>11/24 16:48</time>아 미감이 왜이렇게<span class="censor" title="비속어 가림">■■■■</span> 내가 지피티로만들어서넣어뒀으니까이걸로한번얹어봐 안암런 폴더에있고 이거기본으로 배경 움직이게도 할수있냐?</div><div class="orig"><time>11/24 17:40</time>자 화면 수정하자 안암런 폴더에 인게임 합본 확인해주고 인게임 배경과 인게임 틀 이미지 쓰렴 그리고 대화창은 튜토리얼에서 썼던거 그대로 가져와</div></details>
     <details class="prompt"><summary><b>"</b>지각했는데 STAGE CLEAR가 뜨면 안 되지<b>"</b></summary><div class="orig"><time>11/25 00:38</time>STAGE 1 CLEAR! 이거 지각했는데 뜨면 안되지<br>그리고 시계 리얼타임으로 가자<br>원본 영상 알지? 그 시간 반영해서 시계 흐르게 해줘<br>둘 다<br>내가 지금까지 시계에 대해 했던 말들은 일단 잊어보고<br>이렇게 하면 엔딩이 어떻게 되는지 적용하고 맗줘봐<br>15분 넘게 촬영한 본이 없었나?</div></details>
     <details class="prompt"><summary><b>"</b>시계를 리얼타임으로, 원본 영상 시간을 반영해서 흐르게 해 줘<b>"</b></summary><div class="orig"><time>11/25 00:38</time>STAGE 1 CLEAR! 이거 지각했는데 뜨면 안되지<br>그리고 시계 리얼타임으로 가자<br>원본 영상 알지? 그 시간 반영해서 시계 흐르게 해줘<br>둘 다<br>내가 지금까지 시계에 대해 했던 말들은 일단 잊어보고<br>이렇게 하면 엔딩이 어떻게 되는지 적용하고 맗줘봐<br>15분 넘게 촬영한 본이 없었나?</div></details>
     <details class="prompt"><summary><b>"</b>촬영 땐 뒤에서 휠체어를 밀어 준 걸 감안해서 계산해 줘<b>"</b></summary><div class="orig"><time>11/25 00:39</time>아... 촬영시엔 뒷사람이 휠체어를 밀어준걸 감안해서 계산해줘</div><div class="orig"><time>11/25 00:40</time>그니까 게임속 휠체어는 혼자 휠체어끌고가는거니까 더 오래걸려야한다는 소리지 얼마나 오래걸릴지는 니가 한번 생각해봐</div></details>
@@ -179,8 +179,8 @@ footer{text-align:center;margin-top:40px}
         <div class="assets"><img src="art/history/hf_bg.jpg" alt="Higgsfield 배경 시안" loading="lazy"><img src="art/history/hf_chars.jpg" alt="Higgsfield 캐릭터 시안" loading="lazy"></div></figcaption></figure>
       <figure><img src="art/history/t10.jpg" alt="" loading="lazy"><figcaption><b>10</b> 해상도·48색으로 줄임<span>생성 이미지가 너무 매끈해서 도트 느낌을 살리려고 해상도와 색 수를 줄임</span></figcaption></figure>
       <figure><img src="art/history/t11.jpg" alt="" loading="lazy"><figcaption><b>11</b> 직접 찍은 도트 로고<span>제목 글씨를 도트로 다시 만듦</span></figcaption></figure>
-      <figure><img src="art/history/t12.jpg" alt="" loading="lazy"><figcaption><b>12</b> 조원이 만든 배경·ANAM RUN! 로고<span>AI 시안 대신 조원이 GPT로 만든 에셋('안암런' 폴더)으로 교체</span>
-        <div class="assets"><img src="art/history/gpt_bg.jpg" alt="조원 GPT 배경" loading="lazy"><img src="art/history/gpt_title.jpg" alt="조원 GPT 합본" loading="lazy"></div></figcaption></figure>
+      <figure><img src="art/history/t12.jpg" alt="" loading="lazy"><figcaption><b>12</b> 직접 만든 배경·ANAM RUN! 로고<span>AI 시안 대신 GPT로 직접 만든 에셋('안암런' 폴더)으로 교체</span>
+        <div class="assets"><img src="art/history/gpt_bg.jpg" alt="직접 만든 GPT 배경" loading="lazy"><img src="art/history/gpt_title.jpg" alt="직접 만든 GPT 합본" loading="lazy"></div></figcaption></figure>
       <figure><img src="art/history/t13.jpg" alt="" loading="lazy"><figcaption><b>13</b> 깃발·새·낙엽 + 달리는 캐릭터<span>정지된 그림이 심심해서 배경을 움직이게 하고 달리기 스프라이트를 넣음</span></figcaption></figure>
       <figure><img src="art/history/t14.jpg" alt="" loading="lazy"><figcaption><b>14</b> 가운데 '등교 시작!' 버튼<span>메뉴를 버튼 하나로 줄이고 타자 치듯 나오는 튜토리얼로 연결</span></figcaption></figure>
       <figure class="now"><img src="art/history/t15.jpg" alt="" loading="lazy"><figcaption><b>15</b> 지금<span>버튼을 작게 내리고 "화면을 한 번 누르면 소리가 나와요" 안내 추가</span></figcaption></figure>
@@ -200,10 +200,10 @@ footer{text-align:center;margin-top:40px}
       <figure><img src="art/history/g08.jpg" alt="" loading="lazy"><figcaption><b>8</b> 밝은 금속 판으로 통일</figcaption></figure>
       <figure><img src="art/history/g09.jpg" alt="" loading="lazy"><figcaption><b>9</b> 타이틀 그림체로 통일 (하얀 창)</figcaption></figure>
       <figure><img src="art/history/g10.jpg" alt="" loading="lazy"><figcaption><b>10</b> 까만 바탕 + 하얀 테두리</figcaption></figure>
-      <figure class="now"><img src="art/history/g11.jpg" alt="" loading="lazy"><figcaption><b>11</b> 돌 틀 + 하늘 배경 (조원 '인게임 합본')
-        <div class="assets"><img src="art/history/gpt_ingame.jpg" alt="조원 GPT 인게임 합본" loading="lazy"></div></figcaption></figure>
+      <figure class="now"><img src="art/history/g11.jpg" alt="" loading="lazy"><figcaption><b>11</b> 돌 틀 + 하늘 배경 (직접 만든 '인게임 합본')
+        <div class="assets"><img src="art/history/gpt_ingame.jpg" alt="직접 만든 GPT 인게임 합본" loading="lazy"></div></figcaption></figure>
     </div>
-    <p class="small">이후 장소·시계 판을 조원의 '인게임 버튼' 그림(하늘색 강철 판)으로 바꾸고, 글씨를 둥근모꼴로, 빨강을 로고 색으로 맞췄다.</p>
+    <p class="small">이후 장소·시계 판을 직접 만든 '인게임 버튼' 그림(하늘색 강철 판)으로 바꾸고, 글씨를 둥근모꼴로, 빨강을 로고 색으로 맞췄다.</p>
   </section>
 
   <!-- 4 -->
