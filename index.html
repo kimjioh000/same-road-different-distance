@@ -402,6 +402,12 @@ h2{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:0;text-shadow:2px 0 0 #
 .bar.over .fill{background:#d1251f;box-shadow:inset 0 -4px 0 #95232c}.bar.over b{color:#d1251f}
 .spare .bar.wheel:not(.over) .fill{background:#2b3f55;box-shadow:inset 0 -4px 0 #1c2a3a}
 .trips .bar b{white-space:nowrap}.trips .bar{grid-template-columns:4em 1fr 6.5em}
+/* 밀어 준 기록 강조 */
+.spare .sp-warn{display:grid;gap:4px;padding:12px 16px;text-align:left;background:#fff3f2;box-shadow:0 0 0 2px #d1251f;font-size:16px;line-height:1.6;color:#2e2c3d}
+.spare .sp-warn b{color:#d1251f;font-weight:normal}.spare .sp-warn em{font-style:normal;color:#d1251f;background:#ffe0dd}
+.spare .bar span small{display:block;font-size:11px;color:#d1251f;line-height:1.1}
+.spare .bar b i{display:block;font-style:normal;font-size:11px;color:#d1251f;line-height:1.2}
+.spare .bar{grid-template-columns:4.6em 1fr 7.5em}
 </style>
 </head>
 <body>
@@ -980,15 +986,16 @@ function result(){
   const spare = (k, p) => log[k].arrived[p] == null ? null : toSec(CLOCK.cls[p][0]) - log[k].arrived[p];
   const smx = Math.max(1, ...[1,2,3].flatMap(p => [spare('walk', p), spare('wheel', p)]).filter(x => x != null).map(Math.abs));
   const sbar = (k, p) => { const s = spare(k, p), late = s != null && s < 0;
-    return `<div class="bar ${k}${late ? ' over' : ''}"><span>${k === 'walk' ? '나' : '휠체어'}</span><div class="track"><div class="fill" style="width:${s == null ? 0 : Math.max(3, Math.abs(s) / smx * 100)}%"></div></div><b>${s == null ? '-' : late ? '지각 ' + fmt(-s) : fmt(s)}</b></div>`; };
+    return `<div class="bar ${k}${late ? ' over' : ''}"><span>${k === 'walk' ? '나' : '휠체어<small>밀어 줌</small>'}</span><div class="track"><div class="fill" style="width:${s == null ? 0 : Math.max(3, Math.abs(s) / smx * 100)}%"></div></div><b>${s == null ? '-' : late ? '지각 ' + fmt(-s) : fmt(s)}${k === 'wheel' && s != null ? `<i>${late ? '▲ 혼자면 더 늦음' : '▼ 혼자면 더 줄어듦'}</i>` : ''}</b></div>`; };
   const spares = [1,2,3].map(p => `<div class="trip"><h3>${p}교시 · ${['미디어관','교양관','국제관'][p-1]}</h3>${sbar('walk', p)}${sbar('wheel', p)}</div>`).join('');
   show(`<div class="panel result"><div class="bell">RESULT</div>
     <h2>같은 시간표, 같은 강의실.<br>그런데 같은 길이었을까?</h2>
     <div class="win trips"><div class="tab">이동 시간 비교</div>${bars}</div>
     <div class="win trips spare"><div class="tab">수업 전 여유 시간</div>
       <p class="sp-lead">지각 여부만 보면 차이가 크지 않을 수 있다. 하지만 수업 시작 전에 남는 시간을 비교하면 다르게 보인다.</p>
+      <div class="sp-warn"><b>⚠ 휠체어 기록은 촬영 때 뒤에서 사람이 밀어 준 시간이다.</b><span>혼자 밀었다면 이동은 더 오래 걸리고, 아래 휠체어 쪽 여유 시간은 <em>이보다 더 짧아진다.</em></span></div>
       ${spares}
-      <p class="sp-note">휠체어는 뒤에서 밀어 준 기록. 빨간 막대는 남은 시간이 아니라 지각한 시간이다. 혼자 밀었다면 휠체어 쪽 여유는 더 줄어든다.</p>
+      <p class="sp-note">빨간 막대는 남은 시간이 아니라 지각한 시간이다.</p>
       <p class="sp-lead">비장애 학생은 일찍 도착해서 커피를 사거나, 화장실에 들르거나, 친구와 이야기를 나눌 수 있다. 휠체어 이용 학생은 같은 시간표를 소화하더라도 그러한 여유가 줄어들 가능성이 있다.</p>
       <div class="sp-quote">같은 수업에 출석했다는 결과가 같은 학교생활을 의미하지는 않는다.</div>
       <p class="sp-note">다만 여유 시간에 실제로 무엇을 하는지는 이번에 조사한 내용이 아니다. 이동 방식에 따라 수업 사이 시간을 쓰는 자율성이 달라지는지는 후속 연구 질문으로 남긴다.</p>
